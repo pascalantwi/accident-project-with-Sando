@@ -1,39 +1,40 @@
 # accident-project-with-Sando
 
-Traffic incident analysis built on the `Incidents.csv` chronology export (~2.7 GB, ~9.2M rows, kept on Google Drive).
+Where do highway incidents cluster in Florida, and where should Road Ranger stations sit to reach them fastest? See [`draft.md`](draft.md) for the paper plan.
+
+## Data
+
+`Incidents.csv` (~2.7 GB, ~9.2M rows) is an event chronology log kept on Google Drive. It is too large for GitHub, so it is not in this repo. Each row is one update to an event, and there are about 227,000 unique events.
 
 ## Preprocessing
 
-`preprocess_incidents.py` cleans the raw file and collapses it from one row per chronology update to one row per event.
-
-Open [`run_preprocessing.ipynb`](https://colab.research.google.com/github/pascalantwi/accident-project-with-sando/blob/main/run_preprocessing.ipynb) in Colab, or run it directly:
+`preprocess_incidents.py` implements steps 1–9 and 11 of the cleaning plan in `draft.md`, and collapses the file to one row per event. It reads the file in 1M-row chunks, so it runs in Colab or on a laptop.
 
 ```bash
-python preprocess_incidents.py --input /content/drive/MyDrive/Data/Incidents.csv --outdir data/processed
+python preprocess_incidents.py --input /path/to/Incidents.csv --outdir data/processed
 ```
 
-The raw file is read in 1M-row chunks, so it fits in Colab's memory.
+| Step | Rule |
+|---|---|
+| Duplicates | Drop exact duplicate rows and repeated `EVENT_CHRONO_ID`s, including across chunks |
+| Time | Parse `CREATED_DATE_x` as UTC, convert to America/New_York (raw offsets mix -05:00 and -04:00) |
+| Coordinates | Divide by 1e6 (raw values are micro-degrees); keep points inside Florida only |
+| Location per event | Use the latest reported location; `location_spread_km` and `flag_moved_gt_1km` show corrections |
+| Roadway | Parse "Columbia on I-75 Southbound, At MM 430" into `county`, `route`, `direction`, `mile_marker` |
+| Event type | Harmonise casing; `in_scope` marks crash / disabled / debris / abandoned events |
+| Event level | One row per `EVENT_ID`: first record's attributes, `last_seen`, `n_updates`, `duration_min`, final `severity` |
+| Duration flags | `flag_duration_lt_1min`, `flag_duration_gt_24h` |
+| Conditions | Surface / weather / lighting kept; `Unknown` stays a category |
+| Sparse columns | Drop `COLUMN1_NAME`, `COLUMN1_OLD_VALUE`, `COLUMN1_NEW_VALUE`, `lighting.short_name` (55–89% missing) |
 
-### Steps
-
-1. Drop columns more than 50% missing: `COLUMN1_NAME`, `COLUMN1_OLD_VALUE`, `COLUMN1_NEW_VALUE`, `lighting.short_name`.
-2. Strip whitespace from text fields and treat blank strings as missing.
-3. Parse `CREATED_DATE_x` with `utc=True` and convert it to `America/New_York`. The raw offsets mix -05:00 and -04:00 (daylight saving time). Without `utc=True` pandas returns an object column and `.dt` raises `AttributeError`.
-4. Divide `POINT_LATITUDE` / `POINT_LONGITUDE` by 1e6, because they are stored as micro-degrees. Drop out-of-range and (0, 0) coordinates.
-5. Drop rows with no event ID or an unparseable timestamp. Drop duplicates, whether exact rows or a repeated `EVENT_CHRONO_ID`.
-6. Collapse to one row per `EVENT_ID`. Attributes come from the event's first record, and these fields are added:
-   - `last_seen`, `n_updates`, `duration_min`: time between the first and last update
-   - `severity`: the last `ATIS SEVERITY` value
-   - `date`, `year`, `month`, `hour`, `day_of_week`, `is_weekend`
-
-`Unknown` condition labels are kept as a category, not dropped.
+Flagged events are kept, not dropped, so the analysis can decide what to exclude and report it.
 
 ### Outputs
 
 | File | Contents |
 |---|---|
-| `incidents_events.csv.gz` | one row per event, ready for analysis |
-| `incidents_summary.json` | row counts, rows dropped per reason, raw missing-value %, event type counts |
+| `incidents_events.csv.gz` | one row per event, ready for analysis (small enough for GitHub) |
+| `incidents_summary.json` | cleaning log (rows dropped per reason), flag counts, missing-value %, event types, top routes, partial years |
 | `incidents_records.csv.gz` | every cleaned chronology row (`--write-records`; large, keep on Drive) |
 
 ## Tests
