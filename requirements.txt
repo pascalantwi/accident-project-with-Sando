@@ -1,6 +1,7 @@
 pandas>=2.0
 numpy
 geopandas>=1.0
+matplotlib
 osmnx>=2.0
 requests
 pytest

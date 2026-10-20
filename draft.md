@@ -6,7 +6,7 @@ Status: outline only, analysis not started. Last updated 2026-10-20.
 
 The paper should answer one question: **where do highway incidents cluster, and where should Road Ranger stations sit so that most incidents are reached within a target response time?**
 
-Working title: *Locating Road Ranger service patrol stations from incident hotspots: a spatial optimisation study of Florida's interstate network.*
+Working title: *Locating Road Ranger service patrol stations from incident hotspots: a spatial optimisation study of FDOT District 2 (Northeast Florida).*
 
 Objectives:
 

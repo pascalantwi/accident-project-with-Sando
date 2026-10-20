@@ -37,6 +37,14 @@ Flagged events are kept, not dropped, so the analysis can decide what to exclude
 | `incidents_summary.json` | cleaning log (rows dropped per reason), flag counts, missing-value %, event types, top routes, partial years |
 | `incidents_records.csv.gz` | every cleaned chronology row (`--write-records`; large, keep on Drive) |
 
+## Exploratory analysis
+
+`eda.py` reads `incidents_events.csv.gz` and writes publication-ready figures and tables to `eda/`. Findings are in [`eda/EDA_REPORT.md`](eda/EDA_REPORT.md).
+
+```bash
+python eda.py
+```
+
 ## External data
 
 `fetch_external_data.py` downloads the other datasets the analysis needs into one folder, with a `sources.json` recording where and when each came from.

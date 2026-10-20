@@ -1,0 +1,16 @@
+{
+  "events_all": 227196,
+  "events_in_scope": 173198,
+  "date_range": [
+    "2022-01-01 00:00:03.472278-05:00",
+    "2024-12-31 23:56:55.162498700-05:00"
+  ],
+  "counties": 15,
+  "cells_with_incidents": 983,
+  "share_top_1pct_cells": 0.064,
+  "cells_for_50pct": 145,
+  "avl_share_in_scope": 0.498,
+  "weekday_share": 0.762,
+  "dry_share": 0.988,
+  "clear_share": 0.983
+}
