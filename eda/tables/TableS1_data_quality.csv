@@ -1,0 +1,10 @@
+indicator,share_pct
+Severity recorded as 'minor',99.9
+Road surface 'Dry',98.8
+Weather 'Clear',98.3
+Lighting code 16 (meaning undocumented),91.7
+Mile marker missing,53.0
+Created by Road Ranger AVL subsystem,49.8
+Duration < 1 min (flagged),0.7
+Duration > 24 h (flagged),2.3
+County not parsed from roadway text,0.0

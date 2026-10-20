@@ -69,6 +69,14 @@ def load(path):
 
 
 def save(fig, outdir, name):
+    """Save without in-figure headlines: journals put that text in the caption."""
+    if fig._suptitle is not None:
+        fig._suptitle.remove()
+        fig._suptitle = None
+    for ax in fig.axes:
+        for loc in ("left", "center"):
+            if not ax.get_title(loc=loc).startswith("("):
+                ax.set_title("", loc=loc)
     fig.savefig(outdir / f"{name}.png")
     plt.close(fig)
 
@@ -89,7 +97,7 @@ def fig_event_types(df, outdir):
     share = df["in_scope"].mean()
     ax.set_title(f"Road Ranger incident types (blue) are {share:.0%} of all events")
     ax.tick_params(axis="y", length=0)
-    save(fig, outdir, "fig01_event_types")
+    save(fig, outdir, "FigureS1_event_types")
 
 
 def fig_monthly_trend(s, outdir):
@@ -111,7 +119,7 @@ def fig_monthly_trend(s, outdir):
     ax.set_axisbelow(True)
     ax.set_ylabel("Incidents per month")
     ax.set_title("Disabled vehicles dominate every month; volumes are stable 2022–2024", pad=22)
-    save(fig, outdir, "fig02_monthly_trend")
+    save(fig, outdir, "FigureS2_monthly_trend")
     return monthly
 
 
@@ -131,7 +139,7 @@ def fig_hour_weekday(s, outdir):
     cb.ax.tick_params(labelsize=7.5, length=0)
     cb.set_label("Avg. incidents per hour", fontsize=8, color=INK_2)
     ax.set_title("Weekday afternoons, 3–6 pm, carry the most Road Ranger incidents")
-    save(fig, outdir, "fig03_hour_weekday")
+    save(fig, outdir, "Figure2_hour_by_weekday")
     return table
 
 
@@ -151,7 +159,7 @@ def fig_hourly_share(s, outdir):
     ax.set_ylabel("Share of the type's incidents (%)")
     ax.set_xlabel("Hour of day")
     ax.set_title("Crashes peak at 4–6 pm; abandoned vehicles are logged at 7–9 am", pad=22)
-    save(fig, outdir, "fig04_hourly_share")
+    save(fig, outdir, "FigureS3_hourly_profile_by_type")
     return share
 
 
@@ -191,6 +199,12 @@ def _hexmap(ax, s, extent, gridsize):
     ax.set_ylim(*extent["lat"])
     ax.set_aspect(1 / np.cos(np.radians(np.mean(extent["lat"]))))
     ax.tick_params(labelsize=7)
+    nd = 1 if np.ptp(extent["lat"]) > 1 else 2
+    ax.xaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda v, _: f"{abs(v):.{nd}f}°W"))
+    ax.yaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda v, _: f"{v:.{nd}f}°N"))
+    if nd == 2:
+        ax.xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(0.1))
+        ax.yaxis.set_major_locator(matplotlib.ticker.MultipleLocator(0.1))
     for sp in ax.spines.values():
         sp.set_visible(True)
         sp.set_color(GRID)
@@ -210,7 +224,7 @@ def fig_density_map(s, cells, outdir):
     zx, zy = JAX_ZOOM["lon"], JAX_ZOOM["lat"]
     ax1.add_patch(plt.Rectangle((zx[0], zy[0]), zx[1] - zx[0], zy[1] - zy[0], fill=False,
                                 edgecolor=INK, lw=0.8, ls="--"))
-    ax1.set_title("FDOT District 2 interstates", fontsize=9)
+    ax1.set_title("(a) FDOT District 2", fontsize=9, loc="left")
 
     _hexmap(ax2, s, JAX_ZOOM, gridsize=70)
     top = cells.head(15)
@@ -221,7 +235,7 @@ def fig_density_map(s, cells, outdir):
         ax2.annotate(name, (lo, la), xytext=(tlo, tla), fontsize=6.5, ha=ha, va="center",
                      color=INK, fontweight="bold", bbox=LABEL_BOX, zorder=5,
                      arrowprops={"arrowstyle": "-", "color": INK, "lw": 0.7, "shrinkB": 4})
-    ax2.set_title("Jacksonville close-up", fontsize=9)
+    ax2.set_title("(b) Jacksonville", fontsize=9, loc="left")
 
     cb = fig.colorbar(hb, ax=[ax1, ax2], orientation="horizontal", fraction=0.05, pad=0.1,
                       aspect=50)
@@ -231,10 +245,7 @@ def fig_density_map(s, cells, outdir):
     cb.set_label("Road Ranger incidents per hexagon, 2022–2024 (log scale)", fontsize=7.5, color=INK_2)
     fig.suptitle("Incidents trace the interstates; the busiest spots cluster in central Jacksonville",
                  x=0.06, ha="left", fontsize=10.5, fontweight="bold")
-    fig.text(0.06, -0.04, f"Red circles: {len(top)} of the 15 busiest 1 km cells (Figure 6); "
-             "the 15th is on I-75 in Gainesville. A few points outside the frame are not shown.",
-             fontsize=6.8, color=INK_2)
-    save(fig, outdir, "fig05_density_map")
+    save(fig, outdir, "Figure1_spatial_distribution")
 
 
 def fig_top_hotspots(cells, outdir, n=15):
@@ -252,7 +263,7 @@ def fig_top_hotspots(cells, outdir, n=15):
     ax.set_xlabel("Road Ranger incidents per year in the 1 km cell")
     share = cells.loc[n - 1, "cum_share"]
     ax.set_title(f"The 15 busiest 1 km cells hold {share:.0%} of incidents")
-    save(fig, outdir, "fig06_top_hotspots")
+    save(fig, outdir, "Figure3_top_hotspot_cells")
 
 
 def fig_routes(s, outdir, n=8):
@@ -274,7 +285,7 @@ def fig_routes(s, outdir, n=8):
     ax.set_xlabel("Road Ranger incidents, 2022–2024")
     ax.legend(ncol=4, loc="lower left", bbox_to_anchor=(0, 1.0), handlelength=1, columnspacing=1)
     ax.set_title("I-75, I-95, I-10 and the I-295 beltway carry 90% of incidents", pad=22)
-    save(fig, outdir, "fig07_routes")
+    save(fig, outdir, "FigureS4_routes_by_type")
     return by
 
 
@@ -301,8 +312,43 @@ def fig_clearance(s, outdir):
     ax.tick_params(axis="y", length=0)
     ax.set_xlabel("Event duration, first to last update (minutes, log scale; whiskers 5th–95th pct.)")
     ax.set_title("Crash events stay open about four times longer than disabled vehicles or debris")
-    save(fig, outdir, "fig08_duration")
+    save(fig, outdir, "Figure4_event_duration")
     return ok.groupby("event_type")["duration_min"].describe(percentiles=[.25, .5, .75, .9]).round(1)
+
+
+def table_incident_characteristics(s):
+    """Table 2: characteristics of Road Ranger incidents by type."""
+    ok = s[~s["flag_duration_lt_1min"] & ~s["flag_duration_gt_24h"]]
+    rows = {}
+    for t in TYPES + ["All"]:
+        g = s if t == "All" else s[s["event_type"] == t]
+        d = ok["duration_min"] if t == "All" else ok.loc[ok["event_type"] == t, "duration_min"]
+        q1, q2, q3 = d.quantile([.25, .5, .75])
+        row = {"n": len(g), "share_pct": round(len(g) / len(s) * 100, 1)}
+        row.update({str(y): int((g["year"] == y).sum()) for y in sorted(s["year"].unique())})
+        row.update({
+            "median_duration_min": round(q2, 1), "duration_iqr_min": f"{q1:.1f}–{q3:.1f}",
+            "weekday_pct": round((~g["is_weekend"]).mean() * 100, 1),
+            "pm_peak_15_18h_pct": round(g["hour"].between(15, 17).mean() * 100, 1),
+            "avl_detected_pct": round((g["created_by"] == "avlrrsubsystem").mean() * 100, 1),
+        })
+        rows[t] = row
+    return pd.DataFrame(rows).T
+
+
+def table_data_quality(df, s):
+    """Table S1: completeness and variability of candidate covariates."""
+    return pd.DataFrame([
+        ("Severity recorded as 'minor'", (s["severity"] == "minor").mean()),
+        ("Road surface 'Dry'", (s["road_surface"] == "Dry").mean()),
+        ("Weather 'Clear'", (s["weather"] == "Clear").mean()),
+        ("Lighting code 16 (meaning undocumented)", (s["lighting_code"] == 16).mean()),
+        ("Mile marker missing", s["mile_marker"].isna().mean()),
+        ("Created by Road Ranger AVL subsystem", (s["created_by"] == "avlrrsubsystem").mean()),
+        ("Duration < 1 min (flagged)", s["flag_duration_lt_1min"].mean()),
+        ("Duration > 24 h (flagged)", s["flag_duration_gt_24h"].mean()),
+        ("County not parsed from roadway text", df["county"].isna().mean()),
+    ], columns=["indicator", "share_pct"]).assign(share_pct=lambda d: (d["share_pct"] * 100).round(1))
 
 
 def main():
@@ -327,10 +373,16 @@ def main():
     fig_top_hotspots(cells, figs)
     fig_routes(s, figs).to_csv(tables / "route_by_type.csv")
     fig_clearance(s, figs).to_csv(tables / "duration_by_type.csv")
-    cells.head(50).to_csv(tables / "top50_hotspot_cells_1km.csv", index_label="rank")
+    cells.head(50).rename(index=lambda i: i + 1).to_csv(
+        tables / "TableS2_top50_hotspot_cells_1km.csv", index_label="rank")
+    table_incident_characteristics(s).to_csv(tables / "Table2_incident_characteristics.csv",
+                                             index_label="incident_type")
+    table_data_quality(df, s).to_csv(tables / "TableS1_data_quality.csv", index=False)
 
     df["event_type"].value_counts().to_csv(tables / "event_type_counts.csv")
-    s.groupby("county").size().sort_values(ascending=False).to_csv(tables / "county_counts.csv")
+    (s.groupby("county").size().sort_values(ascending=False).rename("incidents").to_frame()
+     .assign(share_pct=lambda d: (d["incidents"] / d["incidents"].sum() * 100).round(1))
+     .to_csv(tables / "TableS3_county_counts.csv"))
     s.groupby(["year", "event_type"]).size().unstack()[TYPES].to_csv(tables / "year_by_type.csv")
     avl = (s.assign(avl=s["created_by"] == "avlrrsubsystem")
            .groupby("route")["avl"].agg(["size", "mean"]).sort_values("size", ascending=False).head(10))
