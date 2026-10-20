@@ -37,6 +37,27 @@ Flagged events are kept, not dropped, so the analysis can decide what to exclude
 | `incidents_summary.json` | cleaning log (rows dropped per reason), flag counts, missing-value %, event types, top routes, partial years |
 | `incidents_records.csv.gz` | every cleaned chronology row (`--write-records`; large, keep on Drive) |
 
+## External data
+
+`fetch_external_data.py` downloads the other datasets the analysis needs into one folder, with a `sources.json` recording where and when each came from.
+
+| File | Source | Use |
+|---|---|---|
+| `osm_interstates.gpkg` / `.graphml` | OpenStreetMap (motorways: interstates, Turnpike, expressways) | Snap incidents, drive times |
+| `osm_candidate_sites.gpkg` | OpenStreetMap interchanges, rest areas, service plazas | Candidate station sites |
+| `aadt_current.gpkg`, `aadt_historical.gpkg` | FDOT TDA Annual Average Daily Traffic | Incident rates per traffic volume |
+| `fl_counties.gpkg` | US Census TIGER 2023 | Maps, county summaries |
+| `fl_primary_secondary_roads.gpkg` | US Census TIGER 2023 | Backup road network |
+
+Current Road Ranger stations and patrol beats are not open data; request them from the FDOT district Traffic Incident Management office.
+
+Run it in Colab (this repo's cloud sessions cannot reach these sites). The OpenStreetMap download is statewide and can take 15–30 minutes.
+
+```python
+!pip install -q osmnx
+!python /content/repo/fetch_external_data.py --outdir /content/drive/MyDrive/Data/external
+```
+
 ## Tests
 
 ```bash
