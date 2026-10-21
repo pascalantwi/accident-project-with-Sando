@@ -3,152 +3,188 @@
 **Locating Road Ranger service patrol stations from incident hotspots: a spatial optimisation study of FDOT District 2, Northeast Florida**
 
 Pascal Antwi¹, [Co-author] Sando²
+¹ [Affiliation] · ² [Affiliation] · Corresponding author: [name, email]
 
-¹ [Affiliation] · ² [Affiliation]
-Corresponding author: [name, email]
-
-*Draft of 21 October 2026. Sections 4.6–4.8 and the parts of the Abstract, Discussion and Conclusion that depend on them are placeholders, marked [pending]. All figures and tables are in the appendices: [Appendix A](#appendix-a-figures) (figures), [Appendix B](#appendix-b-tables) (tables) and [Appendix C](#appendix-c-supplementary-material) (supplementary material).*
+*Outline draft, 21 October 2026. Sections are outlined as bullet points to be written up. [Section 5 (Exploratory data analysis)](#sec-5) is drafted in full. The modelling results ([Section 6](#sec-6)) will follow. All figures and tables are in the appendices: [Appendix A](#appendix-a-figures) (figures), [Appendix B](#appendix-b-tables) (tables), [Appendix C](#appendix-c-supplementary-material) (supplementary).*
 
 ---
 
-## Abstract
+## Abstract (outline, about 250 words; write last)
 
-Freeway service patrols such as Florida's Road Rangers reduce incident clearance times and secondary crashes, but where they are based is rarely derived from incident data. This study uses three years (2022–2024) of traffic management records from Florida Department of Transportation (FDOT) District 2 to identify where Road Ranger incidents concentrate and to propose station locations that maximise timely coverage. The records, comprising 9.2 million chronology updates, were reconstructed into 227,196 unique events, of which 173,198 were Road Ranger service incidents: disabled vehicles (58.9%), crashes (25.5%), debris (9.8%) and abandoned vehicles (5.8%). Demand was stable across years and strongly concentrated in space and time. Five interstate corridors carried 90.3% of incidents, half of all incidents fell within 14.8% of occupied 1 km grid cells, and 14 of the 15 busiest cells lay in central Jacksonville. Incidents peaked on weekday afternoons between 15:00 and 17:59. Crash events remained open about four times longer than other incident types (median 56.7 vs 13.4 minutes for disabled vehicles), and crash-dominated interchange hotspots were distinct from bridge and rural hotspots dominated by disabled vehicles. [pending: network hotspot results; optimal station locations; coverage gain over the current layout.] The findings provide an evidence base for siting service patrol stations and highlight detection bias from patrol-generated records as a methodological concern for incident-based planning.
+- **Background:** freeway service patrols cut clearance time and secondary crashes, but station locations are rarely derived from incident data.
+- **Objective:** identify where Road Ranger incidents concentrate in FDOT District 2 and choose station locations that maximise timely coverage.
+- **Data:** 9.2 million chronology records (2022–2024) reconstructed into 227,196 events; 173,198 Road Ranger incidents.
+- **Methods:** exploratory analysis; network kernel density and Gi* hotspots; maximal covering and p-median location models; hold-out validation.
+- **Key EDA findings:** 90.3% of incidents on five corridors; half of incidents in 14.8% of occupied 1 km cells; weekday 15:00–17:59 peak; crash events open about four times longer than other types.
+- **Modelling results:** [pending] number and location of stations; coverage gain over the current layout.
+- **Implication:** an evidence base for station siting, plus a warning about detection bias in patrol-generated records.
+- **Keywords:** freeway service patrol; Road Rangers; traffic incident management; hotspot analysis; maximal covering location problem; Florida.
 
-**Keywords:** freeway service patrol; Road Rangers; traffic incident management; hotspot analysis; maximal covering location problem; Florida
+## 1. Introduction (outline)
 
----
+1. **Problem.** Incidents cause non-recurrent congestion; each minute on the roadway raises secondary-crash risk [REF].
+2. **Service patrols.** What Road Rangers do; evidence of their benefits [REF: FDOT Road Ranger evaluations; FHWA TIM].
+3. **Gap.** Station and staging locations follow practice, not systematic incident analysis; hotspot studies stop at the map.
+4. **Aim and objectives.** (i) Characterise when and where incidents occur; (ii) identify significant network hotspots; (iii) optimise station locations and compare them with the current layout.
+5. **Contribution.** A reproducible workflow from raw chronology logs to an optimised station plan, plus an assessment of detection bias.
+6. **Paper structure.** One sentence per section.
 
-## 1. Introduction
+## 2. Literature review (outline, 40–60 references)
 
-Traffic incidents such as crashes, disabled vehicles and debris are a leading cause of non-recurrent congestion on freeways, and each minute an incident remains on the roadway raises the risk of a secondary crash [REF: secondary crash risk and incident duration]. Freeway service patrols shorten detection, response and clearance times by keeping roving units on the network [REF: FHWA Traffic Incident Management handbook]. In Florida, the Road Ranger program provides this service free of charge on limited-access highways in every FDOT district [REF: FDOT Road Ranger program description; benefit–cost evaluation].
+### 2.1 Freeway service patrols
+- Effects on detection, response and clearance time; secondary crashes.
+- Benefit–cost evaluations of Road Rangers and comparable programmes [REF].
 
-Patrol effectiveness depends on where units are based and how far they must travel to reach an incident. Station and staging locations, however, are typically set by operational convenience and historical practice rather than by systematic analysis of where incidents occur. Incident records from traffic management centres now allow demand to be mapped at fine spatial and temporal resolution, but they are rarely linked to formal facility-location methods.
+### 2.2 Incident and crash hotspot detection
+- Planar vs network kernel density estimation (Xie and Yan, 2008; Okabe et al., 2009).
+- Local spatial statistics: Getis-Ord Gi* (Getis and Ord, 1992; Ord and Getis, 1995).
+- Count vs exposure-based (AADT) hotspots.
 
-This study addresses that gap for FDOT District 2 in Northeast Florida. It has three objectives: (i) to characterise the temporal and spatial distribution of Road Ranger incidents; (ii) to identify statistically significant incident hotspots on the road network; and (iii) to determine station locations that maximise the share of incidents reachable within a response-time standard and compare them with the current layout. The contribution is a reproducible workflow that moves from raw incident chronology logs to an optimised station plan, together with an assessment of how patrol-generated records may bias incident-based planning.
+### 2.3 Facility location for emergency response
+- Set covering (Toregas et al., 1971), maximal covering (Church and ReVelle, 1974), p-median (Hakimi, 1964).
+- Response-time standards; backup coverage.
 
-## 2. Literature review
+### 2.4 Patrol beat and fleet design
+- Beat length, fleet size, time-of-day deployment [REF].
 
-[To be written. Four strands, 40–60 references; see `draft.md` §2.]
+### 2.5 Research gap
+- One paragraph: no study links network-constrained incident hotspots to optimised service-patrol station locations with validation.
 
-1. **Freeway service patrols.** Effects on clearance time and secondary crashes; benefit–cost evaluations of Road Rangers and comparable programmes [REF].
-2. **Crash and incident hotspot detection.** Planar versus network kernel density estimation (Xie and Yan, 2008; Okabe et al., 2009); local spatial statistics (Getis and Ord, 1992; Ord and Getis, 1995).
-3. **Facility location for emergency response.** Set covering (Toregas et al., 1971), maximal covering (Church and ReVelle, 1974) and p-median (Hakimi, 1964) models.
-4. **Patrol beat and fleet design.** Beat length, fleet size and dynamic allocation of service patrols [REF].
+## 3. Data (outline)
 
-*Gap to argue:* hotspot studies typically stop at the map, and location studies rarely use network-constrained, real-world incident demand.
+### 3.1 Study area <a id="sec-3-1"></a>
+- FDOT District 2: 15 counties of Northeast Florida; Jacksonville, Gainesville, Lake City; I-75, I-95, I-10 and the I-295 beltway.
+- [Figure 1](#figure-1) shows the area and the incident distribution.
 
-## 3. Data and methods
+### 3.2 Incident data <a id="sec-3-2"></a>
+- Source: regional traffic management system event chronology export, 1 Jan 2022 – 31 Dec 2024 [REF: data owner, permission].
+- Structure: one record per update to an event; key fields (event ID, timestamp, type, roadway, coordinates, conditions).
+- Processing summary: [Table 1](#table-1).
 
-### 3.1 Study area and data
+### 3.3 Supplementary data
+- Road network: OpenStreetMap (Boeing, 2017).
+- Traffic volume: FDOT AADT.
+- Boundaries: US Census TIGER/Line.
+- Current Road Ranger stations and beats: FDOT District 2 [pending].
 
-The study area is FDOT District 2, covering 15 counties of Northeast Florida, including Jacksonville (Duval County), Gainesville (Alachua County) and Lake City (Columbia County). Incident data were obtained from the regional traffic management system as an event chronology export (`Incidents.csv`, 2.7 GB) covering 1 January 2022 to 31 December 2024 [REF: data source and permission]. Each record is one update to an event (e.g., status, ownership, severity or location change) and carries the event identifier, timestamp, event type, roadway description, coordinates and recorded road surface, weather and lighting conditions.
+## 4. Methodology (outline)
 
-Supplementary datasets for the network analysis are the road network from OpenStreetMap (Boeing, 2017), annual average daily traffic (AADT) from the FDOT Transportation Data and Analytics Office, county boundaries from US Census TIGER/Line files, and current Road Ranger station and beat locations from FDOT District 2 [pending].
+### 4.1 Data processing
+- Chunked cleaning; duplicates and repeated chronology IDs removed.
+- Timestamps parsed in UTC, converted to US Eastern time.
+- Coordinates rescaled from micro-degrees; points outside Florida removed.
+- One row per event: type and conditions from the first record, location from the latest.
+- Roadway text parsed into county, route, direction, mile marker.
+- Duration = first to last log update; values < 1 min or > 24 h flagged.
+- Analysis sample: disabled vehicle, crash, debris, abandoned vehicle ([Table 1](#table-1)).
 
-### 3.2 Data processing
+### 4.2 Exploratory data analysis
+- Temporal aggregation by month, weekday and hour.
+- Spatial concentration on a 1 km grid: incidents per year, crash share, modal location per cell.
+- Hexagonal density mapping (log scale).
+- Data-quality screening of candidate covariates.
+- Results: [Section 5](#sec-5).
 
-Records were cleaned in chunks and reconstructed into one row per event. Exact duplicates and repeated chronology identifiers were removed. Timestamps, recorded with mixed UTC offsets of −05:00 and −04:00, were parsed in UTC and converted to US Eastern time so that hour and weekday are correct across daylight-saving transitions. Coordinates, stored as integer micro-degrees, were rescaled, and records falling outside Florida's bounding box were removed. Four attributes with more than 50% missing values were dropped.
+### 4.3 Network hotspot detection [modelling, to do]
+- Snap incidents to the network; 0.5-mile segments.
+- Network KDE (Okabe et al., 2009); Gi* with FDR correction (Benjamini and Hochberg, 1995).
+- Counts and AADT-based rates; year-by-year persistence.
 
-Each event took its type and conditions from its first record and its location from its latest record, because operators correct locations as an event unfolds. Roadway descriptions were parsed into county, route, direction and mile marker. Event duration was defined as the time between the first and last log update. Durations under 1 minute or over 24 hours were flagged and excluded from duration analyses only. The analysis sample comprises the four event types served by Road Rangers: disabled vehicle, crash, debris on roadway and abandoned vehicle. The processing stages and record counts are summarised in [Table 1](#table-1).
-
-### 3.3 Exploratory analysis
-
-Incidents were aggregated by month, weekday and hour to describe temporal patterns. Spatial concentration was assessed on a 1 km × 1 km grid in a local equal-distance projection. For each occupied cell, the mean annual number of incidents, the share of crashes and the modal location description were recorded, and cells were ranked by incident count. Spatial density was visualised with hexagonal binning on a logarithmic scale. This grid-based analysis is descriptive and planar; network-constrained inference follows in Section 3.4.
-
-### 3.4 Network hotspot detection [pending]
-
-Incidents will be snapped to the limited-access network and aggregated to 0.5-mile segments. Network kernel density estimation (Okabe et al., 2009) will map continuous intensity along the network, and the Getis-Ord Gi* statistic (Getis and Ord, 1992) will identify statistically significant hot and cold segments, with false discovery rate correction (Benjamini and Hochberg, 1995). The analysis will be repeated on incident rates per million vehicle-miles travelled using AADT, and year by year to assess persistence.
-
-### 3.5 Station location models [pending]
-
-Station sites will be selected with the maximal covering location problem (MCLP; Church and ReVelle, 1974). Let *I* be the set of demand segments with weights *aᵢ* (incidents per year), *J* the set of candidate sites, *tᵢⱼ* the network travel time from site *j* to segment *i*, *T* the response-time standard and *p* the number of stations:
+### 4.4 Station location models [modelling, to do] <a id="sec-4-4"></a>
+- Maximal covering location problem (Church and ReVelle, 1974):
 
 $$
-\max \sum_{i \in I} a_i y_i \quad \text{s.t.} \quad \sum_{j \in N_i} x_j \ge y_i \;\; \forall i \in I, \qquad \sum_{j \in J} x_j = p, \qquad x_j, y_i \in \{0, 1\},
+\max \sum_{i \in I} a_i y_i \quad \text{s.t.} \quad \sum_{j \in N_i} x_j \ge y_i \;\; \forall i, \qquad \sum_{j \in J} x_j = p, \qquad x_j, y_i \in \{0, 1\},
 $$
 
-where *Nᵢ* = {*j* ∈ *J* : *tᵢⱼ* ≤ *T*}. The p-median model (Hakimi, 1964) will be solved as a companion to minimise demand-weighted mean travel time. The current Road Ranger layout will be evaluated under both models as the baseline.
+  where *aᵢ* is the demand on segment *i*, *Nᵢ* the candidate sites within response time *T* of *i*, and *p* the number of stations.
+- p-median companion model (Hakimi, 1964); the current layout as the baseline.
 
-### 3.6 Validation and sensitivity [pending]
+### 4.5 Validation and sensitivity [modelling, to do] <a id="sec-4-5"></a>
+- Fit on 2022–2023, test on 2024.
+- Vary segment length, bandwidth, *T* (10/15/20 min), demand weights (count, crash, duration) and exclusion of AVL-detected incidents.
 
-Layouts will be fitted on 2022–2023 incidents and evaluated on 2024 incidents. Sensitivity will be tested for segment length, kernel bandwidth, response-time standard (*T* = 10, 15 and 20 minutes), demand weighting (counts, crash-weighted, duration-weighted), and exclusion of patrol-detected (AVL) incidents.
+## 5. Exploratory data analysis <a id="sec-5"></a>
 
-## 4. Results
+### 5.1 Sample characteristics <a id="sec-5-1"></a>
 
-### 4.1 Sample characteristics
+Between 1 January 2022 and 31 December 2024, 227,196 unique events were recorded in FDOT District 2, reconstructed from 9,206,764 chronology records ([Table 1](#table-1)). The four Road Ranger service types made up 173,198 events (76.2%) and form the analysis sample. The remaining events were traffic-management notices, chiefly congestion (22,053), scheduled road work (12,658) and bridge openings (4,392) ([Figure S1](#figure-s1)). Disabled vehicles were the most frequent incident type (58.9%), followed by crashes (25.5%), debris (9.8%) and abandoned vehicles (5.8%) ([Table 2](#table-2)). Annual totals varied by less than 7% (56,450 to 59,981), with no sustained trend in any type ([Figure S2](#figure-s2)).
 
-Between 1 January 2022 and 31 December 2024, the traffic management system recorded 227,196 unique events in District 2, reconstructed from 9,206,764 chronology records ([Table 1](#table-1)). The four Road Ranger service types made up 173,198 events (76.2%) and form the analysis sample. The remaining events were traffic-management notices such as congestion (22,053), scheduled road work (12,658) and bridge openings (4,392) ([Figure S1](#figure-s1)). Disabled vehicles were the most frequent incident type (58.9%), followed by crashes (25.5%), debris on the roadway (9.8%) and abandoned vehicles (5.8%) ([Table 2](#table-2)). Annual totals varied by less than 7% (56,450 in 2023 to 59,981 in 2024), and no incident type showed a sustained trend over the 36 months ([Figure S2](#figure-s2)).
+**Interpretation.** Patrol demand is dominated by non-crash assistance: disabled vehicles outnumber crashes by more than two to one ([Table 2](#table-2)), so planning from crash data alone would miss most of the workload. The stability shown in [Figure S2](#figure-s2) supports pooling 2022–2024 as the demand input for the location models ([Section 4.4](#sec-4-4)).
 
-**Interpretation.** Road Ranger demand in District 2 is dominated by non-crash assistance: disabled vehicles alone outnumber crashes by more than two to one ([Table 2](#table-2)). Service planning based on crash data alone would therefore miss most of the patrol workload. The year-to-year stability seen in [Figure S2](#figure-s2) indicates that pooling 2022–2024 yields a representative demand surface for the location models (Section 3.5), rather than one shaped by a transient surge.
+### 5.2 Temporal patterns <a id="sec-5-2"></a>
 
-### 4.2 Temporal patterns
+Weekdays accounted for 76.2% of incidents, and the mean daily count was 28% higher on weekdays than at weekends (168.7 vs 131.5) ([Table 2](#table-2)). Incidents peaked between 15:00 and 17:59 on weekdays, with a maximum on Fridays from 15:00 to 15:59 (14.7 per hour), against about two per hour between 01:00 and 04:59 ([Figure 2](#figure-2)). Crashes had a morning peak at 07:00 (5.9%) and a larger evening peak at 17:00 (9.0%). Debris showed a midday plateau (09:00–16:00), and abandoned vehicles clustered at 07:00–08:59 (24.6%) ([Figure S3](#figure-s3)).
 
-Weekdays accounted for 76.2% of incidents ([Table 2](#table-2)), and the mean daily count was 28% higher on weekdays than at weekends (168.7 vs 131.5 incidents per day). Incidents peaked between 15:00 and 17:59 from Monday to Friday, with a maximum on Friday from 15:00 to 15:59 (14.7 incidents per hour on average), against about two per hour between 01:00 and 04:59 ([Figure 2](#figure-2)). The hourly profiles differed by type ([Figure S3](#figure-s3)). Crashes had a morning peak at 07:00 (5.9% of crashes) and a larger evening peak at 17:00 (9.0%). Debris showed a broad midday plateau from 09:00 to 16:00, and abandoned vehicles were concentrated between 07:00 and 08:59 (24.6%).
+**Interpretation.** The afternoon peak in [Figure 2](#figure-2) coincides with commuter traffic, consistent with exposure rather than time of day driving occurrence. The roughly sevenfold gap between overnight and peak demand argues for evaluating coverage separately for peak and off-peak periods. The morning spike in abandoned vehicles ([Figure S3](#figure-s3)) most plausibly reflects detection on first patrols rather than when vehicles were abandoned.
 
-**Interpretation.** The weekday afternoon peak in [Figure 2](#figure-2) coincides with commuter traffic, consistent with exposure (vehicle-miles travelled) rather than time of day per se driving incident occurrence. The sevenfold difference between overnight and peak demand suggests that station requirements should be assessed separately for peak and off-peak periods. The morning concentration of abandoned vehicles in [Figure S3](#figure-s3) most plausibly reflects when vehicles left overnight are found on the first patrols, rather than when they were abandoned; it should not be read as an occurrence pattern.
+### 5.3 Spatial distribution and concentration <a id="sec-5-3"></a>
 
-### 4.3 Spatial distribution and concentration
+Incidents were confined to the limited-access network and concentrated around Jacksonville ([Figure 1](#figure-1)a). Duval County accounted for 53.2% of incidents ([Table S3](#table-s3)). Five routes, I-75 (26.3%), I-95 (22.3%), I-10 (18.5%), I-295 W (14.4%) and I-295 E (8.8%), carried 90.3% ([Figure S4](#figure-s4)). Crashes made up 34.8% of incidents on I-95 but 8.9% on I-75, where disabled vehicles accounted for 76.0%. Of the 983 occupied 1 km cells, 145 (14.8%) contained half of all incidents. The 15 busiest contained 9.9% ([Figure 3](#figure-3)) and the 50 busiest 24.2% ([Table S2](#table-s2)). Fourteen of the top 15 cells lie in central Jacksonville in four clusters: the Buckman Bridge (I-295 W), the I-95/I-10 interchange, I-95 at Butler Boulevard and I-295 E at Butler Boulevard ([Figure 1](#figure-1)b). Interchange cells had crash shares of 40–48%, whereas bridge and rural cells (the Buckman Bridge and I-75 near Gainesville) had 6–11% ([Figure 3](#figure-3)).
 
-Road Ranger incidents were confined to the limited-access network and concentrated around Jacksonville ([Figure 1a](#figure-1)). Duval County accounted for 53.2% of incidents, followed by Alachua (12.8%) and Columbia (10.6%) ([Table S3](#table-s3)). Five routes, I-75 (26.3%), I-95 (22.3%), I-10 (18.5%), I-295 W (14.4%) and I-295 E (8.8%), carried 90.3% of incidents ([Figure S4](#figure-s4)). The incident mix differed by corridor: crashes made up 34.8% of incidents on I-95 but 8.9% on I-75, where disabled vehicles accounted for 76.0% ([Figure S4](#figure-s4)).
+**Interpretation.** The concentration in [Figure 3](#figure-3) and [Table S2](#table-s2) is the precondition for coverage-based siting: a few stations can reach a large share of demand. The contiguous clusters in [Figure 1](#figure-1)b suggest that each cluster is one candidate service zone. Crash-dominated interchange hotspots call for rapid clearance; bridge and rural hotspots call for fast vehicle removal. These planar results are descriptive; network significance and AADT normalisation follow in the modelling ([Section 6](#sec-6)).
 
-Demand was strongly concentrated. Of the 983 occupied 1 km grid cells, 145 (14.8%) contained half of all incidents. The 15 busiest cells contained 9.9% ([Figure 3](#figure-3)) and the 50 busiest 24.2% ([Table S2](#table-s2)). Fourteen of the 15 busiest cells lie in central Jacksonville and form four clusters: the Buckman Bridge on I-295 W, the I-95/I-10 interchange downtown, I-95 at Butler Boulevard and I-295 E at Butler Boulevard ([Figure 1b](#figure-1)). The fifteenth lies on I-75 near Gainesville (mile marker 386). Most leading cells fell into one of two types ([Figure 3](#figure-3)). Interchange cells had crash shares of 40–48%, for example I-95 at the I-10 ramp (41.0%) and I-95 at MLK Parkway (48.3%). Bridge and rural cells were dominated by disabled vehicles, with crash shares of 6–11%: the three Buckman Bridge cells and I-75 near Gainesville. Further down the ranking, several interchange cells exceeded 55% crashes, among them I-95 at 8th Street (60.1%), I-295 W at Blanding Boulevard (58.2%) and I-95 at Airport Road (58.2%) ([Table S2](#table-s2)).
+### 5.4 Event duration <a id="sec-5-4"></a>
 
-**Interpretation.** The concentration shown in [Figure 3](#figure-3) and [Table S2](#table-s2) is the precondition for coverage-based siting: a few well-placed stations can reach a large share of demand. [Figure 1b](#figure-1) shows that the busiest cells form a small number of contiguous clusters rather than isolated points, which suggests that each cluster is a single candidate service zone. The two hotspot types call for different responses. Crash-dominated interchange hotspots need rapid clearance to limit secondary crashes and queueing. Bridge and rural hotspots, where shoulders are limited or response distances long, need fast vehicle removal. The corridor differences in [Figure S4](#figure-s4) point the same way: I-75 demand is mostly disabled vehicles on long rural sections, whereas I-95 through Jacksonville carries the highest crash load. These results are planar and descriptive; Section 4.6 tests their statistical significance on the network and adjusts for traffic volume.
+The median event duration was 18.9 minutes (IQR 5.7–45.6) ([Table 2](#table-2)). Crash events remained open for a median of 56.7 minutes, about four times longer than disabled vehicles (13.4) and debris (12.8). Abandoned vehicles were shortest at 4.7 minutes ([Figure 4](#figure-4)). The 5,189 flagged events (3.0%) were excluded ([Table 1](#table-1)).
 
-### 4.4 Event duration
+**Interpretation.** Crash events tie up units about four times longer ([Figure 4](#figure-4)), so crash-dominated hotspots consume more capacity than their counts imply. This motivates a duration-weighted demand scenario ([Section 4.5](#sec-4-5)). Duration is a log-based proxy for how long an event stayed open, not on-scene clearance time.
 
-The median event duration was 18.9 minutes (IQR 5.7–45.6) ([Table 2](#table-2)). Crash events remained open for a median of 56.7 minutes (IQR 29.9–88.2), about four times longer than disabled vehicles (13.4 minutes) and debris (12.8 minutes). Abandoned vehicles had the shortest durations (4.7 minutes) ([Figure 4](#figure-4)). The 5,189 events (3.0%) flagged as shorter than 1 minute or longer than 24 hours were excluded ([Table 1](#table-1)).
+### 5.5 Data quality and detection <a id="sec-5-5"></a>
 
-**Interpretation.** Because crash events occupy patrol units about four times longer ([Figure 4](#figure-4)), a crash-dominated hotspot consumes more service capacity than its incident count alone implies. This supports weighting demand by expected service time as a sensitivity case in the location models (Section 3.6). Duration here is measured from log updates and reflects how long an event remained open in the system, not on-scene clearance time; it is therefore an upper-bound proxy for patrol occupancy.
+Half of all incidents (49.8%) were created by the Road Ranger AVL subsystem ([Table S1](#table-s1)), from 4.9% of crashes to 86.8% of abandoned vehicles ([Table 2](#table-2)), and from 35% on I-95 to 73% on I-75. Severity was recorded as minor for 99.9% of incidents, pavement as dry for 98.8% and weather as clear for 98.3%. Mile markers were missing for 53.0% ([Table S1](#table-s1)).
 
-### 4.5 Data quality and detection
+**Interpretation.** The AVL shares in [Table 2](#table-2) indicate that many non-crash incidents are discovered by patrols themselves, so recorded demand may partly mirror existing patrol coverage (detection bias). Crashes, rarely AVL-detected, are less exposed to this bias. Hotspot and location analyses will be repeated without AVL-detected incidents. The near-constant covariates in [Table S1](#table-s1) are uninformative and are excluded from modelling.
 
-Half of all incidents (49.8%) were created automatically by the Road Ranger automatic vehicle location (AVL) subsystem ([Table S1](#table-s1)). The share ranged from 4.9% of crashes to 86.8% of abandoned vehicles ([Table 2](#table-2)), and from 35% on I-95 to 73% on I-75. Several candidate covariates showed almost no variation: 99.9% of incidents were recorded as minor severity, 98.8% occurred on dry pavement and 98.3% in clear weather. Mile markers were missing for 53.0% of incidents ([Table S1](#table-s1)).
+## 6. Modelling results (outline, to do) <a id="sec-6"></a>
 
-**Interpretation.** The AVL shares in [Table 2](#table-2) imply that many non-crash incidents are discovered by patrols themselves. Recorded demand may therefore partly reflect where patrols already operate, a detection bias that could reinforce existing deployment if left uncorrected. The near-absence of crashes among AVL records suggests that crash detection relies on other channels (e.g., 911 and law enforcement), so crash locations are less affected by this bias. The hotspot and location analyses will be repeated without AVL-detected incidents (Section 3.6). The near-constant severity and weather variables in [Table S1](#table-s1) are uninformative in this dataset and are excluded from modelling, and locations are referenced by coordinates rather than by mile markers.
+### 6.1 Network hotspots
+- Network KDE and Gi* hotspots on counts and rates → [Figure 5](#figure-5), [Table 3](#table-3).
+- Persistence across years → [Figure S5](#figure-s5).
+- Comparison with the EDA clusters ([Section 5.3](#sec-5-3)).
 
-### 4.6 Network hotspots [pending]
+### 6.2 Optimal station locations
+- Coverage vs number of stations for *T* = 10, 15, 20 min → [Figure 6](#figure-6).
+- Optimised vs current layout → [Figure 7](#figure-7), [Table 4](#table-4).
 
-[Figure 5, Figure S5 and Table 3: network KDE and Gi* hotspots on counts and AADT-based rates; persistence across years.]
+### 6.3 Validation and sensitivity
+- Hold-out coverage of 2024 incidents.
+- Sensitivity, including exclusion of AVL-detected incidents ([Section 5.5](#sec-5-5)) → [Figure S6](#figure-s6).
 
-### 4.7 Optimal station locations [pending]
+## 7. Discussion (outline)
 
-[Figure 6, Figure 7 and Table 4: coverage curve by number of stations; MCLP and p-median solutions; comparison with the current Road Ranger layout.]
+### 7.1 Implications for station siting
+- Stable, concentrated, time-dependent demand favours data-driven siting ([Sections 5.1](#sec-5-1)–[5.3](#sec-5-3)).
+- Central Jacksonville as the focus; I-75 near Gainesville as the leading rural candidate.
+- Plan station location and unit capability together: crash vs assistance hotspots.
+- [pending: what the optimised layout changes relative to today.]
 
-### 4.8 Validation and sensitivity [pending]
+### 7.2 Comparison with previous studies
+- Hotspot concentration and patrol benefits relative to the literature [REF].
 
-[Hold-out coverage of 2024 incidents; Figure S6: sensitivity to segment length, bandwidth, response-time standard, demand weights and exclusion of AVL-detected incidents.]
+### 7.3 Limitations
+- One district; transferability.
+- Detection bias from AVL-created records ([Section 5.5](#sec-5-5)).
+- Duration is a log-based proxy, not measured clearance ([Section 5.4](#sec-5-4)).
+- No dispatch or arrival times; response time is modelled from travel time.
+- EDA grid is planar and not volume-adjusted (addressed in [Section 6](#sec-6)).
 
-## 5. Discussion
+### 7.4 Future work
+- Time-of-day staging plans; dispatch data; other districts.
 
-### 5.1 Implications for station siting
+## 8. Conclusion (outline)
 
-The exploratory results establish three conditions that favour data-driven siting. Demand is stable from year to year (Section 4.1), concentrated in a few clusters (Section 4.3), and strongly time-dependent (Section 4.2). Central Jacksonville, which contains 14 of the 15 busiest cells, is the obvious focus for station capacity, while the I-75 corridor near Gainesville is the leading rural candidate. The distinction between crash-dominated interchange hotspots and assistance-dominated bridge and rural hotspots suggests that station siting and unit specification (e.g., heavy towing capability) should be planned together. [pending: discussion of optimised layouts and coverage gains.]
+- Three to four sentences: what demand looks like (stable, concentrated, peaked), where the hotspots are, [pending: recommended stations and coverage gain], and the policy takeaway.
 
-### 5.2 Limitations
+## Declarations (outline)
 
-First, the data cover one FDOT district, and results may not transfer to districts with different network structure or patrol coverage. Second, half of the incidents were detected by patrols, so recorded demand may be biased toward currently patrolled segments (Section 4.5). Third, event duration is a log-based proxy, not measured clearance time. Fourth, the grid-based concentration measures are planar and do not adjust for traffic volume; the network and rate-based analyses (Sections 3.4 and 4.6) address this. Fifth, the records do not include dispatch or arrival times, so response times will be modelled from network travel times rather than observed.
-
-### 5.3 Future work
-
-[pending: dynamic, time-of-day station or staging plans; integration with dispatch data; extension to other districts.]
-
-## 6. Conclusion
-
-Three years of traffic management records show that Road Ranger demand in FDOT District 2 is dominated by disabled vehicles, stable over time, peaked on weekday afternoons and concentrated in a small number of clusters, most of them in central Jacksonville. Crash-dominated interchange hotspots and assistance-dominated bridge and rural hotspots differ in the service they require. [pending: optimised station locations and expected coverage gain.]
-
-## Declarations
-
-- **Data availability.** Incident data were provided by [FDOT District 2 / data owner] and are not publicly available. Processed event-level data are available from the authors on reasonable request, subject to the data owner's permission.
-- **Code availability.** Processing and analysis code: [repository URL or DOI on publication].
-- **Author contributions (CRediT).** [pending]
-- **Funding.** [pending]
-- **Competing interests.** [pending]
+- Data availability: data owner, access conditions.
+- Code availability: repository or DOI.
+- Author contributions (CRediT), funding, competing interests.
 
 ## References
 
-*Verify every entry before submission; [REF] markers in the text still need sources.*
+*Starting list; verify every entry. [REF] markers still need sources.*
 
 - Benjamini, Y., Hochberg, Y., 1995. Controlling the false discovery rate: a practical and powerful approach to multiple testing. *Journal of the Royal Statistical Society: Series B* 57(1), 289–300.
 - Boeing, G., 2017. OSMnx: new methods for acquiring, constructing, analyzing, and visualizing complex street networks. *Computers, Environment and Urban Systems* 65, 126–139.
@@ -166,29 +202,39 @@ Three years of traffic management records show that Road Ranger demand in FDOT D
 
 <a id="figure-1"></a>**Figure 1.** Spatial distribution of Road Ranger incidents in FDOT District 2, 2022–2024. (a) District overview; the dashed box marks panel (b). (b) Central Jacksonville; red circles mark 14 of the 15 busiest 1 km grid cells (the 15th lies on I-75 near Gainesville). Hexagon shading shows incident counts on a logarithmic scale.
 
+*Referenced in [Section 3.1](#sec-3-1), [Section 5.3](#sec-5-3).*
+
 ![Figure 1](eda/figures/Figure1_spatial_distribution.png)
 
 <a id="figure-2"></a>**Figure 2.** Mean number of Road Ranger incidents per hour, by hour of day and day of week, 2022–2024.
+
+*Referenced in [Section 5.2](#sec-5-2).*
 
 ![Figure 2](eda/figures/Figure2_hour_by_weekday.png)
 
 <a id="figure-3"></a>**Figure 3.** The 15 one-kilometre grid cells with the highest mean annual number of Road Ranger incidents. Labels give the most frequent location description in each cell; annotations give incidents per year and the share of crashes. Rows 3 and 4 are adjacent cells on the Buckman Bridge.
 
+*Referenced in [Section 5.3](#sec-5-3).*
+
 ![Figure 3](eda/figures/Figure3_top_hotspot_cells.png)
 
 <a id="figure-4"></a>**Figure 4.** Event duration (first to last log update) by incident type. Boxes show the interquartile range, the vertical line the median and whiskers the 5th–95th percentiles; logarithmic scale. Events shorter than 1 minute or longer than 24 hours are excluded (n = 5,189).
 
+*Referenced in [Section 5.4](#sec-5-4).*
+
 ![Figure 4](eda/figures/Figure4_event_duration.png)
 
-**Figure 5.** [pending] Network kernel density and Getis-Ord Gi* hotspots on 0.5-mile segments: counts and AADT-based rates.
+<a id="figure-5"></a>**Figure 5.** [to do: modelling, [Section 6](#sec-6)] Network kernel density and Getis-Ord Gi* hotspots on 0.5-mile segments: counts and AADT-based rates.
 
-**Figure 6.** [pending] Share of incidents covered within 10, 15 and 20 minutes by number of stations.
+<a id="figure-6"></a>**Figure 6.** [to do: modelling, [Section 6](#sec-6)] Share of incidents covered within 10, 15 and 20 minutes by number of stations.
 
-**Figure 7.** [pending] Optimised and current Road Ranger station locations with coverage areas.
+<a id="figure-7"></a>**Figure 7.** [to do: modelling, [Section 6](#sec-6)] Optimised and current Road Ranger station locations with coverage areas.
 
 ## Appendix B. Tables
 
 <a id="table-1"></a>**Table 1.** Data processing summary.
+
+*Referenced in [Section 3.2](#sec-3-2), [Section 5.1](#sec-5-1), [Section 5.4](#sec-5-4).*
 
 | Stage | Records | Note |
 | --- | ---: | --- |
@@ -201,6 +247,8 @@ Three years of traffic management records show that Road Ranger demand in FDOT D
 
 <a id="table-2"></a>**Table 2.** Characteristics of Road Ranger incidents by type, FDOT District 2, 2022–2024.
 
+*Referenced in [Sections 5.1](#sec-5-1), [5.2](#sec-5-2), [5.4](#sec-5-4), [5.5](#sec-5-5).*
+
 | Incident type | n | % | 2022 | 2023 | 2024 | Median duration, min (IQR) | Weekday % | 15:00–17:59 % | AVL-detected % |
 | --- | ---: | ---: | ---: | ---: | ---: | --- | ---: | ---: | ---: |
 | Disabled vehicle | 101,933 | 58.9 | 33,260 | 32,828 | 35,845 | 13.4 (4.9–31.7) | 75.4 | 23.0 | 67.9 |
@@ -211,33 +259,43 @@ Three years of traffic management records show that Road Ranger demand in FDOT D
 
 *Note:* Duration excludes 5,189 flagged events ([Table 1](#table-1)). AVL-detected: event created by the Road Ranger automatic vehicle location subsystem. IQR: interquartile range.
 
-**Table 3.** [pending] Top 20 hotspot segments: route, county, location, incidents per year, rate per AADT, Gi* z-score.
+<a id="table-3"></a>**Table 3.** [to do: modelling, [Section 6](#sec-6)] Top 20 hotspot segments: route, county, location, incidents per year, rate per AADT, Gi* z-score.
 
-**Table 4.** [pending] Current and optimised station layouts: incidents covered, mean response time, hold-out performance.
+<a id="table-4"></a>**Table 4.** [to do: modelling, [Section 6](#sec-6)] Current and optimised station layouts: incidents covered, mean response time, hold-out performance.
 
 ## Appendix C. Supplementary material
 
 <a id="figure-s1"></a>**Figure S1.** Frequency of all recorded event types, 2022–2024. Blue bars mark the four Road Ranger service types analysed; grey bars are traffic-management events excluded from the analysis.
 
+*Referenced in [Section 5.1](#sec-5-1).*
+
 ![Figure S1](eda/figures/FigureS1_event_types.png)
 
 <a id="figure-s2"></a>**Figure S2.** Monthly number of Road Ranger incidents by type, January 2022 – December 2024.
+
+*Referenced in [Section 5.1](#sec-5-1).*
 
 ![Figure S2](eda/figures/FigureS2_monthly_trend.png)
 
 <a id="figure-s3"></a>**Figure S3.** Hourly distribution of incidents within each type, as a percentage of the type's total.
 
+*Referenced in [Section 5.2](#sec-5-2).*
+
 ![Figure S3](eda/figures/FigureS3_hourly_profile_by_type.png)
 
 <a id="figure-s4"></a>**Figure S4.** Road Ranger incidents by route and incident type for the eight routes with the most incidents, 2022–2024.
 
+*Referenced in [Section 5.3](#sec-5-3).*
+
 ![Figure S4](eda/figures/FigureS4_routes_by_type.png)
 
-**Figure S5.** [pending] Emerging hotspot categories by year.
+<a id="figure-s5"></a>**Figure S5.** [to do: modelling, [Section 6](#sec-6)] Emerging hotspot categories by year.
 
-**Figure S6.** [pending] Sensitivity of hotspots and station solutions to segment length, bandwidth, response-time standard and demand weights.
+<a id="figure-s6"></a>**Figure S6.** [to do: modelling, [Section 6](#sec-6)] Sensitivity of hotspots and station solutions to segment length, bandwidth, response-time standard and demand weights.
 
 <a id="table-s1"></a>**Table S1.** Completeness and variability of candidate explanatory variables (Road Ranger incidents, n = 173,198).
+
+*Referenced in [Section 5.5](#sec-5-5).*
 
 | Indicator | Share of incidents (%) |
 | --- | ---: |
@@ -252,6 +310,8 @@ Three years of traffic management records show that Road Ranger demand in FDOT D
 | County not parsed from roadway text | < 0.1 |
 
 <a id="table-s2"></a>**Table S2.** The 50 one-kilometre grid cells with the most Road Ranger incidents, 2022–2024. Together they contain 24.2% of incidents. Coordinates are cell centroids (WGS84).
+
+*Referenced in [Section 5.3](#sec-5-3).*
 
 | Rank | Location (most frequent description) | Route | Incidents per year | Crash share (%) | Latitude | Longitude |
 | ---: | --- | --- | ---: | ---: | ---: | ---: |
@@ -307,6 +367,8 @@ Three years of traffic management records show that Road Ranger demand in FDOT D
 | 50 | Duval on I-295 W, Beyond MM 1 | I-295 W | 200.7 | 23.6 | 30.1672 | -81.5712 |
 
 <a id="table-s3"></a>**Table S3.** Road Ranger incidents by county, 2022–2024.
+
+*Referenced in [Section 5.3](#sec-5-3).*
 
 | County | Incidents | Share (%) |
 | --- | ---: | ---: |
