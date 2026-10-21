@@ -1,7 +1,7 @@
 # Locating freeway service patrol stations with deep spatio-temporal incident forecasting: a predict-then-optimise study of FDOT District 2, Northeast Florida
 
 Pascal Antwi¹, [Co-author] Sando²
-¹ [Affiliation] · ² [Affiliation] · Corresponding author: [name, email]
+¹ [University of North Florida] · ² [University of North Florida] · Corresponding author: [name, email]
 
 ## 1. Introduction <a id="sec-1"></a>
 
@@ -172,7 +172,6 @@ Pascal Antwi¹, [Co-author] Sando²
 
 **Figure 9.** Recommended static station locations (10 stations, 15-minute standard), labelled S1–S10. Blue cells are within 15 minutes of a station at off-peak speed. (a) FDOT District 2; (b) Jacksonville.
 
-*Cited in [Section 3.8](#sec-3-8).*
 
 ## Appendix B. Tables
 
@@ -188,7 +187,6 @@ Pascal Antwi¹, [Co-author] Sando²
 
 *Note:* Duration excludes 5,189 flagged events (< 1 min or > 24 h). AVL-created: event created by the `avlrrsubsystem` account. IQR: interquartile range.
 
-*Cited in [Section 3.1](#sec-3-1).*
 
 <a id="table-2"></a>**Table 2.** Incident hotspot clusters: contiguous Gi* hot cells (q < 0.05), named after their busiest cell, 2022–2024.
 
@@ -205,7 +203,6 @@ Pascal Antwi¹, [Co-author] Sando²
 
 *Note:* Incidents per year are summed over the cluster's cells.
 
-*Cited in [Section 3.6](#sec-3-6).*
 
 <a id="table-3"></a>**Table 3.** Day-ahead forecast performance on 2024 (366 days × 8 windows × 983 cells); mean ± s.d. over five seeds where applicable.
 
@@ -220,7 +217,6 @@ Pascal Antwi¹, [Co-author] Sando²
 
 *Note:* PAI: predictive accuracy index.
 
-*Cited in [Section 3.7](#sec-3-7).*
 
 <a id="table-4"></a>**Table 4.** Station layouts with 10 stations or units, evaluated on the 59,981 incidents of 2024.
 
@@ -237,7 +233,6 @@ Pascal Antwi¹, [Co-author] Sando²
 
 *Note:* Static layouts are solved separately for each response-time standard; their mean travel time refers to the 15-minute layout.
 
-*Cited in [Section 3.8](#sec-3-8).*
 
 <a id="table-5"></a>**Table 5.** Recommended station locations (10 stations, 15-minute standard, 2022–2023 demand).
 
@@ -256,7 +251,6 @@ Pascal Antwi¹, [Co-author] Sando²
 
 *Note:* Coordinates are cell centroids (WGS84).
 
-*Cited in [Section 3.8](#sec-3-8).*
 
 ## Appendix C. Supplementary material
 
@@ -290,7 +284,6 @@ Pascal Antwi¹, [Co-author] Sando²
 
 **Figure S4.** Incidents by route and type for the eight routes with the most incidents, 2022–2024.
 
-*Cited in [Section 3.3](#sec-3-3).*
 
 <a id="figure-s5"></a>
 
@@ -306,7 +299,6 @@ Pascal Antwi¹, [Co-author] Sando²
 
 **Figure S6.** Sensitivity of the static layout (10 stations, 15-minute standard): coverage within 15 minutes and base-case stations retained under alternative speeds, circuity and demand definitions.
 
-*Cited in [Section 3.9](#sec-3-9).*
 
 <a id="table-s1"></a>**Table S1.** Completeness and variability of candidate explanatory variables (incidents, n = 173,198).
 
