@@ -120,10 +120,36 @@ The coverage model assumes that every unit is free when an incident occurs. A di
 ## 3. Results <a id="sec-3"></a>
 
 ### 3.1 Incident characteristics <a id="sec-3-1"></a>
-*Figures and tables: [Table 1](#table-1); [Figure S1](#figure-s1); [Figure S2](#figure-s2).*
+
+Between 1 January 2022 and 31 December 2024, the traffic management system logged 227,196 events in District 2, of which 173,198 (76.2%) were of the four types attended by Road Rangers ([Table 1](#table-1)). Disabled vehicles were the most frequent type (101,933; 58.9%), followed by crashes (44,158; 25.5%), debris on the roadway (16,979; 9.8%) and abandoned vehicles (10,128; 5.8%). The most common events outside the analysis sample were congestion (22,053), scheduled road work (12,658) and reduced visibility (6,653) ([Figure S1](#figure-s1)).
+
+Annual totals ranged from 56,450 in 2023 to 59,981 in 2024, a difference of 6.3%. The increase in 2024 came mainly from disabled vehicles (9.2% more than in 2023) and abandoned vehicles (22.2% more), whereas annual crash counts differed by less than 5% across the three years ([Figure S2](#figure-s2)). Monthly totals ranged from 3,897 (February 2023) to 5,621 (May 2024), with a mean of 4,811.
+
+The incident types differed in how they were reported and how long they lasted. Half of all incidents (49.8%) were created through the vehicle-location subsystem, ranging from 4.9% of crashes to 67.9% of disabled vehicles and 86.8% of abandoned vehicles. The median event duration was 18.9 minutes, ranging from 4.7 minutes for abandoned vehicles to 56.7 minutes for crashes ([Section 3.4](#sec-3-4)). The shares of incidents occurring on weekdays (75.0–78.0%) were similar across types, whereas the share between 15:00 and 17:59 was about half as large for abandoned vehicles (12.5%) as for the other types (22.1–25.3%).
+
+<a id="table-1"></a>**Table 1.** Characteristics of incidents by type, FDOT District 2, 2022–2024.
+
+| Incident type | n | % | 2022 | 2023 | 2024 | Median duration, min (IQR) | Weekday % | 15:00–17:59 % | AVL-created % |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | ---: | ---: | ---: |
+| Disabled vehicle | 101,933 | 58.9 | 33,260 | 32,828 | 35,845 | 13.4 (4.9–31.7) | 75.4 | 23.0 | 67.9 |
+| Crash | 44,158 | 25.5 | 14,401 | 15,013 | 14,744 | 56.7 (29.9–88.2) | 77.4 | 25.3 | 4.9 |
+| Debris on roadway | 16,979 | 9.8 | 5,822 | 5,529 | 5,628 | 12.8 (3.8–28.6) | 78.0 | 22.1 | 36.3 |
+| Abandoned vehicle | 10,128 | 5.8 | 3,284 | 3,080 | 3,764 | 4.7 (3.0–9.9) | 75.0 | 12.5 | 86.8 |
+| **All** | **173,198** | **100.0** | **56,767** | **56,450** | **59,981** | **18.9 (5.7–45.6)** | **76.2** | **22.9** | **49.8** |
+
+*Note:* Duration excludes 5,189 flagged events (< 1 min or > 24 h). AVL-created: event created by the `avlrrsubsystem` account. IQR: interquartile range.
 
 ### 3.2 Temporal patterns <a id="sec-3-2"></a>
-*Figures and tables: [Figure 3](#figure-3); [Figure S3](#figure-s3).*
+
+Incidents followed a weekday commuting pattern ([Figure 3](#figure-3)). On average, 168.7 incidents were logged per weekday and 131.5 per weekend day. On weekdays, the hourly rate rose from 1.7 incidents per hour at 03:00–04:59 to a morning peak of 11.3 at 08:00–08:59, stayed between 9.0 and 10.1 from 09:00 to 13:59, and reached its maximum of 13.2–13.7 between 15:00 and 17:59 before falling to 3.0 by 23:00. The highest rate in any hour of the week, 14.8 incidents per hour, occurred on Fridays between 15:00 and 15:59, and the lowest, 1.4, on Tuesdays between 04:00 and 04:59. Weekend days had no morning peak; their rate rose gradually to a broad maximum of 8.0–8.9 incidents per hour between 12:00 and 16:59, and between midnight and 04:59 it was higher than on weekdays (2.2–3.1 against 1.7–2.3).
+
+The timing differed by incident type ([Figure S3](#figure-s3)). Disabled vehicles and crashes peaked at 17:00–17:59 (7.7% and 9.0% of each type), with 23.0% and 25.3% occurring between 15:00 and 17:59. Debris on the roadway peaked earlier, at 14:00–14:59 (8.2%), and had the smallest share between midnight and 05:59 (4.7%, against 8.5–9.1% for the other types). Abandoned vehicles peaked in the morning, at 08:00–08:59 (12.4%), with 27.5% occurring between 06:00 and 08:59.
+
+<a id="figure-3"></a>
+
+![Figure 3](../results/figures/Figure3_hour_by_weekday.png)
+
+**Figure 3.** Mean number of incidents per hour, by hour of day and day of week, 2022–2024.
 
 ### 3.3 Spatial distribution and concentration <a id="sec-3-3"></a>
 *Figures and tables: [Figure 1](#figure-1); [Figure 4](#figure-4); [Figure S4](#figure-s4).*
@@ -220,14 +246,6 @@ The coverage model assumes that every unit is free when an incident occurs. A di
 
 ## Appendix A. Figures
 
-<a id="figure-3"></a>
-
-![Figure 3](../results/figures/Figure3_hour_by_weekday.png)
-
-**Figure 3.** Mean number of incidents per hour, by hour of day and day of week, 2022–2024.
-
-*Cited in [Section 3.2](#sec-3-2).*
-
 <a id="figure-4"></a>
 
 ![Figure 4](../results/figures/Figure4_top_hotspot_cells.png)
@@ -286,19 +304,6 @@ The coverage model assumes that every unit is free when an incident occurs. A di
 
 
 ## Appendix B. Tables
-
-<a id="table-1"></a>**Table 1.** Characteristics of incidents by type, FDOT District 2, 2022–2024.
-
-| Incident type | n | % | 2022 | 2023 | 2024 | Median duration, min (IQR) | Weekday % | 15:00–17:59 % | AVL-created % |
-| --- | ---: | ---: | ---: | ---: | ---: | --- | ---: | ---: | ---: |
-| Disabled vehicle | 101,933 | 58.9 | 33,260 | 32,828 | 35,845 | 13.4 (4.9–31.7) | 75.4 | 23.0 | 67.9 |
-| Crash | 44,158 | 25.5 | 14,401 | 15,013 | 14,744 | 56.7 (29.9–88.2) | 77.4 | 25.3 | 4.9 |
-| Debris on roadway | 16,979 | 9.8 | 5,822 | 5,529 | 5,628 | 12.8 (3.8–28.6) | 78.0 | 22.1 | 36.3 |
-| Abandoned vehicle | 10,128 | 5.8 | 3,284 | 3,080 | 3,764 | 4.7 (3.0–9.9) | 75.0 | 12.5 | 86.8 |
-| **All** | **173,198** | **100.0** | **56,767** | **56,450** | **59,981** | **18.9 (5.7–45.6)** | **76.2** | **22.9** | **49.8** |
-
-*Note:* Duration excludes 5,189 flagged events (< 1 min or > 24 h). AVL-created: event created by the `avlrrsubsystem` account. IQR: interquartile range.
-
 
 <a id="table-2"></a>**Table 2.** Incident hotspot clusters: contiguous Gi* hot cells (q < 0.05), named after their busiest cell, 2022–2024.
 
