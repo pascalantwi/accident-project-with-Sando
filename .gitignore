@@ -4,3 +4,5 @@ __pycache__/
 data/raw/
 Incidents.csv
 incidents_records.csv.gz
+data/interim/
+data/external/

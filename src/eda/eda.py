@@ -5,7 +5,7 @@ publication-ready figures (300 dpi PNG) to eda/figures/ and supporting tables
 to eda/tables/. eda/EDA_REPORT.md discusses the results.
 
 Usage:
-  python eda.py [--input incidents_events.csv.gz] [--outdir eda]
+  python src/eda/eda.py   # reads data/processed, writes results/figures and results/tables/eda
 """
 import argparse
 import json
@@ -19,6 +19,8 @@ import matplotlib.ticker  # noqa: E402
 import numpy as np  # noqa: E402
 import pandas as pd  # noqa: E402
 from matplotlib.colors import LinearSegmentedColormap, LogNorm  # noqa: E402
+
+ROOT = pathlib.Path(__file__).resolve().parents[2]
 
 # Incident types served by Road Rangers (the analysis sample), in fixed categorical order (validated palette slots 1-4).
 TYPES = ["Disabled Vehicle", "Crash", "Debris On Roadway", "Abandoned Vehicle"]
@@ -353,11 +355,11 @@ def table_data_quality(df, s):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--input", default="incidents_events.csv.gz")
-    p.add_argument("--outdir", default="eda")
+    p.add_argument("--input", default=str(ROOT / "data" / "processed" / "incidents_events.csv.gz"))
+    p.add_argument("--figures", default=str(ROOT / "results" / "figures"))
+    p.add_argument("--tables", default=str(ROOT / "results" / "tables" / "eda"))
     a = p.parse_args()
-    out = pathlib.Path(a.outdir)
-    figs, tables = out / "figures", out / "tables"
+    figs, tables = pathlib.Path(a.figures), pathlib.Path(a.tables)
     figs.mkdir(parents=True, exist_ok=True)
     tables.mkdir(parents=True, exist_ok=True)
 

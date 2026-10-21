@@ -1,0 +1,44 @@
+{
+  "cells": 983,
+  "band_km": 2.0,
+  "class_counts": {
+    "Not significant": 938,
+    "Hot, q < 0.01": 30,
+    "Hot, q < 0.10": 10,
+    "Hot, q < 0.05": 5
+  },
+  "hot_cells_q05": 35,
+  "hot_cells_share_pct": 3.6,
+  "incidents_in_hot_cells_pct": 13.1,
+  "cold_cells_q05": 0,
+  "hot_cells_by_route": {
+    "I-295 W": 16,
+    "I-95": 11,
+    "I-295 E": 5,
+    "I-10": 2,
+    "Acosta Bridge": 1
+  },
+  "years_hot_counts": {
+    "0": 933,
+    "1": 12,
+    "2": 7,
+    "3": 31
+  },
+  "hot_all_years_pct_of_hot": 88.6,
+  "robustness_no_avl": {
+    "hot_cells": 68,
+    "baseline_hot_retained_pct": 97.1,
+    "jaccard": 0.493
+  },
+  "robustness_no_near_duplicates": {
+    "hot_cells": 35,
+    "baseline_hot_retained_pct": 100.0,
+    "jaccard": 1.0
+  },
+  "robustness_crash_only": {
+    "hot_cells": 80,
+    "baseline_hot_retained_pct": 65.7,
+    "jaccard": 0.25
+  },
+  "duval_share_of_hot_pct": 100.0
+}

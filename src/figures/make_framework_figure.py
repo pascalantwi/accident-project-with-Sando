@@ -1,7 +1,7 @@
 """Draw the study framework diagram (manuscript Figure 5).
 
 Usage:
-  python make_framework_figure.py   # writes figures/Figure5_framework.png
+  python src/figures/make_framework_figure.py   # writes results/figures/Figure5_framework.png
 """
 import pathlib
 
@@ -58,7 +58,7 @@ def main():
         ax.add_patch(FancyArrowPatch(edge_point(a, b), edge_point(b, a), arrowstyle="-|>", mutation_scale=8,
                                      color=EDGE, lw=0.8, shrinkA=1, shrinkB=1))
     ax.text(7.55, 1.7, "deep learning component", ha="center", fontsize=6.2, color=ACCENT, style="italic")
-    out = pathlib.Path("figures")
+    out = pathlib.Path(__file__).resolve().parents[2] / "results" / "figures"
     out.mkdir(exist_ok=True)
     fig.savefig(out / "Figure5_framework.png", dpi=300, bbox_inches="tight", facecolor="white")
 

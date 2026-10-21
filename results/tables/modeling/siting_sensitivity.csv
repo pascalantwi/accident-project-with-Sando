@@ -1,0 +1,11 @@
+variant,covered_15min_pct,stations_shared_with_base
+Base case,90.78541538153748,10
+Peak speed 30 mph,85.01025324686151,0
+Peak speed 50 mph,94.47825144629132,2
+Off-peak speed 50 mph,87.38267117920675,3
+Off-peak speed 70 mph,92.77104416398527,2
+Circuity 1.1,93.73301545489406,1
+Circuity 1.4,84.6017905670129,0
+Demand without AVL-created incidents,89.25993231189877,6
+Demand without near-duplicates,90.78541538153748,10
+Crash-only demand,86.00890281922608,2

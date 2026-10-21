@@ -209,31 +209,31 @@ $$
 
 *Referenced in [Section 3.1](#sec-3-1), [Section 4.3](#sec-4-3).*
 
-![Figure 1](eda/figures/Figure1_spatial_distribution.png)
+![Figure 1](../results/figures/Figure1_spatial_distribution.png)
 
 <a id="figure-2"></a>**Figure 2.** Mean number of incidents per hour, by hour of day and day of week, 2022–2024.
 
 *Referenced in [Section 4.2](#sec-4-2).*
 
-![Figure 2](eda/figures/Figure2_hour_by_weekday.png)
+![Figure 2](../results/figures/Figure2_hour_by_weekday.png)
 
 <a id="figure-3"></a>**Figure 3.** The 15 one-kilometre grid cells with the highest mean annual number of incidents. Labels give the most frequent location description in each cell; annotations give incidents per year and the share of crashes. Rows 3 and 4 are adjacent cells on the Buckman Bridge.
 
 *Referenced in [Section 4.3](#sec-4-3).*
 
-![Figure 3](eda/figures/Figure3_top_hotspot_cells.png)
+![Figure 3](../results/figures/Figure3_top_hotspot_cells.png)
 
 <a id="figure-4"></a>**Figure 4.** Event duration (first to last log update) by incident type. Boxes show the interquartile range, the vertical line the median and whiskers the 5th–95th percentiles; logarithmic scale. Events shorter than 1 minute or longer than 24 hours are excluded (n = 5,189).
 
 *Referenced in [Section 4.4](#sec-4-4).*
 
-![Figure 4](eda/figures/Figure4_event_duration.png)
+![Figure 4](../results/figures/Figure4_event_duration.png)
 
 <a id="figure-5"></a>**Figure 5.** Study framework. Incident, network and context data form a segment-by-time graph used for hotspot detection and demand forecasting (deep learning component highlighted); predicted demand feeds the station location models, and all outputs are evaluated on 2024 incidents. HA: historical average; NB: negative binomial; MCLP: maximal covering location problem.
 
 *Referenced in [Section 5.1](#sec-5-1).*
 
-![Figure 5](figures/Figure5_framework.png)
+![Figure 5](../results/figures/Figure5_framework.png)
 
 <a id="figure-6"></a>**Figure 6.** [to do] Network hotspots: (a) network KDE; (b) Gi* hot and cold segments on counts; (c) on AADT-based rates. *Referenced in [Section 6.1](#sec-6-1).*
 
@@ -301,25 +301,25 @@ $$
 
 *Referenced in [Section 4.1](#sec-4-1).*
 
-![Figure S1](eda/figures/FigureS1_event_types.png)
+![Figure S1](../results/figures/FigureS1_event_types.png)
 
 <a id="figure-s2"></a>**Figure S2.** Monthly number of incidents by type, January 2022 – December 2024.
 
 *Referenced in [Section 4.1](#sec-4-1).*
 
-![Figure S2](eda/figures/FigureS2_monthly_trend.png)
+![Figure S2](../results/figures/FigureS2_monthly_trend.png)
 
 <a id="figure-s3"></a>**Figure S3.** Hourly distribution of incidents within each type, as a percentage of the type's total.
 
 *Referenced in [Section 4.2](#sec-4-2).*
 
-![Figure S3](eda/figures/FigureS3_hourly_profile_by_type.png)
+![Figure S3](../results/figures/FigureS3_hourly_profile_by_type.png)
 
 <a id="figure-s4"></a>**Figure S4.** Incidents by route and type for the eight routes with the most incidents, 2022–2024.
 
 *Referenced in [Section 4.3](#sec-4-3).*
 
-![Figure S4](eda/figures/FigureS4_routes_by_type.png)
+![Figure S4](../results/figures/FigureS4_routes_by_type.png)
 
 <a id="figure-s5"></a>**Figure S5.** [to do] Hotspot persistence by year (emerging hotspot categories). *Referenced in [Section 6.1](#sec-6-1).*
 

@@ -1,0 +1,11 @@
+cell,lat,lon,route,location,incidents_2024_nearest
+78,30.337559887096774,-83.10800425268818,I-10,"Suwannee on I-10 Westbound, Beyond MM 274",2792
+107,30.491465800000004,-83.0236132,I-75,"Hamilton on I-75 Northbound, At MM 457",2877
+203,30.25454119069768,-82.7169352511628,I-10,"Columbia on I-10 Eastbound, At MM 299",6380
+271,29.91562,-82.55413899999999,I-75,"Alachua on I-75 Northbound, At MM 407",4551
+357,29.598327384615384,-82.37100330769232,I-75,"Alachua on I-75 Northbound, At SR-121",5115
+437,30.2626,-82.10755,I-10,"Baker on I-10 Westbound, Ramp From SR-228",2926
+542,30.270656,-81.736003,SR-21 / Blanding Blvd,"Duval on SR-21 / Blanding Blvd Southbound, At Wilson Blvd",11285
+658,30.46392489084507,-81.6482484330986,I-95,"Duval on I-95 Southbound, Ramp To I-295 W",6506
+779,30.24984224342105,-81.55614592105263,SR-202 / Butler Blvd,"Duval on SR-202 / Butler Blvd Eastbound, Ramp To Southside Blvd SB",14394
+924,29.913288924050637,-81.41083043037975,I-95,"St. Johns on I-95 Southbound, Beyond MM 317",3155

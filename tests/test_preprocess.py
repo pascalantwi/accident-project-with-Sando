@@ -5,7 +5,7 @@ import sys
 
 import pandas as pd
 
-sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / "src" / "preprocessing"))
 from preprocess_incidents import run  # noqa: E402
 
 HEADER = ("EVENT_ID,CREATED_DATE_x,Roadway,Event Type,CREATED_BY,CHRONOTYPE,CHRONO_DESC,"
