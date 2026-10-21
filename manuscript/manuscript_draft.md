@@ -37,9 +37,9 @@ Five data sources were combined.
 
 ### 2.3 Data processing <a id="sec-2-3"></a>
 
-The raw export was cleaned in chunks. Time stamps were converted to local time and coordinates from micro-degrees to decimal degrees. Five records with an invalid time stamp and 458 with missing or out-of-state coordinates were removed, leaving 9,206,301; none were duplicated, and four fields missing in more than half of the records were dropped. Records were grouped into 227,196 events: event type, creation time, creating account and condition codes were taken from the first record, location from the latest record, and duration as the time between the first and last update. The roadway description was parsed into county, route, direction and mile marker (99.98% of events parsed).
+Time stamps were converted to local time and coordinates from micro-degrees to decimal degrees. Five records with an invalid time stamp and 458 with missing or out-of-state coordinates were removed, leaving 9,206,301; none were duplicated, and four fields missing in more than half of the records were dropped. Records were grouped into 227,196 events: event type, creation time, creating account and condition codes were taken from the first record, location from the latest record, and duration as the time between the first and last update. The roadway description was parsed into county, route, direction and mile marker.
 
-The four Road Ranger event types gave 173,198 incidents. Questionable records were flagged, not deleted: implausible durations (under 1 minute or over 24 hours; 5,189 incidents, excluded only from duration analyses), near-duplicates (same route and direction within 0.5 km and 15 minutes; 1.8%) and incidents created by the `avlrrsubsystem` account (49.8%). The last two were tested in robustness checks ([Section 2.10](#sec-2-10)). Daylight, twilight and darkness were assigned from solar elevation, with thresholds of −0.833° and −6°. Recorded condition codes varied little (99.9% minor severity) and were not used as explanatory variables ([Table S1](#table-s1)).
+The four Road Ranger event types gave 173,198 incidents. Questionable records were flagged, not deleted: implausible durations (under 1 minute or over 24 hours; 5,189 incidents, excluded only from duration analyses), near-duplicates (same route and direction within 0.5 km and 15 minutes; 1.8%) and incidents created by the `avlrrsubsystem` account (49.8%). The last two were tested in robustness checks ([Section 2.10](#sec-2-10)). Daylight, twilight and darkness were assigned from solar elevation, with thresholds of −0.833° and −6°. Recorded condition codes varied little (99.9% minor severity; lighting code undocumented) and contradicted independent data: 94.9% of incidents logged during NOAA-recorded precipitation were coded as clear weather. Precipitation and darkness were therefore taken from NOAA and solar position ([Table S1](#table-s1)).
 
 Incidents were assigned to 1 km × 1 km grid cells in a local equirectangular projection; the 983 cells with incidents form the spatial units. Time was divided into 8,768 three-hour windows, giving a cell-by-window panel with a mean of 0.020 incidents, in which 98.1% of cell-windows are empty.
 
@@ -175,25 +175,22 @@ Event duration, measured from the first to the last logged update, differed mark
 
 **Figure 5.** Event duration (first to last log update) by incident type; boxes show the interquartile range, whiskers the 5th–95th percentiles; logarithmic scale. Events shorter than 1 minute or longer than 24 hours excluded (n = 5,189).
 
-### 3.5 Data quality <a id="sec-3-5"></a>
-*Figures and tables: [Table S1](#table-s1).*
-
-### 3.6 Precipitation and incident rates <a id="sec-3-6"></a>
+### 3.5 Precipitation and incident rates <a id="sec-3-5"></a>
 *Figures and tables: [Figure S8](#figure-s8).*
 
-### 3.7 Hotspots <a id="sec-3-7"></a>
+### 3.6 Hotspots <a id="sec-3-6"></a>
 *Figures and tables: [Figure 6](#figure-6); [Table 2](#table-2); [Figure S5](#figure-s5); [Figure S7](#figure-s7); [Table S2](#table-s2).*
 
-### 3.8 Forecasting performance <a id="sec-3-8"></a>
+### 3.7 Forecasting performance <a id="sec-3-7"></a>
 *Figures and tables: [Table 3](#table-3); [Figure 7](#figure-7); [Table S3](#table-s3); [Table S7](#table-s7).*
 
-### 3.9 Station locations and coverage <a id="sec-3-9"></a>
+### 3.8 Station locations and coverage <a id="sec-3-8"></a>
 *Figures and tables: [Figure 8](#figure-8); [Table 4](#table-4); [Figure 9](#figure-9); [Table 5](#table-5).*
 
-### 3.10 Sensitivity analysis and temporal validation <a id="sec-3-10"></a>
+### 3.9 Sensitivity analysis and temporal validation <a id="sec-3-9"></a>
 *Figures and tables: [Figure S6](#figure-s6); [Table S4](#table-s4); [Figure S9](#figure-s9); [Table S5](#table-s5); [Table S6](#table-s6).*
 
-### 3.11 Fleet size with busy units <a id="sec-3-11"></a>
+### 3.10 Fleet size with busy units <a id="sec-3-10"></a>
 *Figures and tables: [Table 6](#table-6); [Figure 10](#figure-10).*
 
 ## 4. Discussion <a id="sec-4"></a>
@@ -270,7 +267,7 @@ Event duration, measured from the first to the last logged update, differed mark
 
 **Figure 6.** Getis-Ord Gi* hotspots of incidents on 1 km road cells, 2022–2024 (binary weights within 2 km; Benjamini–Hochberg q-values). (a) FDOT District 2; (b) Jacksonville, with hotspot cluster IDs H1–H8.
 
-*Cited in [Section 3.7](#sec-3-7).*
+*Cited in [Section 3.6](#sec-3-6).*
 
 <a id="figure-7"></a>
 
@@ -278,7 +275,7 @@ Event duration, measured from the first to the last logged update, differed mark
 
 **Figure 7.** Day-ahead forecast performance on 2024. (a) Mean Poisson deviance of each deep model relative to LightGBM, by three-hour window. (b) Observed vs predicted 2024 incidents per cell, Graph WaveNet (log scales; dashed line: equality).
 
-*Cited in [Section 3.8](#sec-3-8).*
+*Cited in [Section 3.7](#sec-3-7).*
 
 <a id="figure-8"></a>
 
@@ -286,7 +283,7 @@ Event duration, measured from the first to the last logged update, differed mark
 
 **Figure 8.** Share of 2024 incidents within 10, 15 and 20 minutes of the nearest station or staged unit, by number of stations or units: static layouts (2022–2023 demand), day-ahead staging from five forecasts (line: mean; band: range), and the oracle upper bound.
 
-*Cited in [Section 3.9](#sec-3-9).*
+*Cited in [Section 3.8](#sec-3-8).*
 
 <a id="figure-9"></a>
 
@@ -294,7 +291,7 @@ Event duration, measured from the first to the last logged update, differed mark
 
 **Figure 9.** Recommended static station locations (10 stations, 15-minute standard), labelled S1–S10, and the 307 candidate sites (interchanges, rest areas and service plazas). Blue cells: at least half of the cell's 2024 incidents within 15 minutes of a station at off-peak speed. (a) FDOT District 2; (b) Jacksonville.
 
-*Cited in [Section 3.9](#sec-3-9).*
+*Cited in [Section 3.8](#sec-3-8).*
 
 <a id="figure-10"></a>
 
@@ -302,7 +299,7 @@ Event duration, measured from the first to the last logged update, differed mark
 
 **Figure 10.** Simulated share of 2024 incidents reached within 15 minutes by fleet size, for layouts of 10, 15 and 20 stations, with equal units per station (solid) or units allocated in proportion to 2022–2023 demand (dashed). Dotted lines: coverage when units are always free.
 
-*Cited in [Section 3.11](#sec-3-11).*
+*Cited in [Section 3.10](#sec-3-10).*
 
 
 ## Appendix B. Tables
@@ -397,7 +394,7 @@ Event duration, measured from the first to the last logged update, differed mark
 
 *Note:* Each incident is assigned to the unit that can reach it first; a unit is busy for travel, on-scene time (logged event duration; type median where flagged) and return to its station. Utilisation above 100%: demand exceeds capacity and the queue grows through the year. Sensitivity rows: 10 stations, 20 units, proportional allocation.
 
-*Cited in [Section 3.11](#sec-3-11).*
+*Cited in [Section 3.10](#sec-3-10).*
 
 
 ## Appendix C. Supplementary material
@@ -439,7 +436,7 @@ Event duration, measured from the first to the last logged update, differed mark
 
 **Figure S5.** Number of years (2022, 2023, 2024) in which each cell was a Gi* hot spot (q < 0.05).
 
-*Cited in [Section 3.7](#sec-3-7).*
+*Cited in [Section 3.6](#sec-3-6).*
 
 <a id="figure-s6"></a>
 
@@ -453,7 +450,7 @@ Event duration, measured from the first to the last logged update, differed mark
 
 **Figure S7.** Getis-Ord Gi* hotspots of incident rates per million vehicle-km (empirical Bayes-smoothed), 2022–2024 (binary weights within 2 km; Benjamini–Hochberg q-values). Open squares: cells without matched AADT segments. (a) FDOT District 2; (b) Jacksonville; cluster IDs R1–R4.
 
-*Cited in [Section 3.7](#sec-3-7).*
+*Cited in [Section 3.6](#sec-3-6).*
 
 <a id="figure-s8"></a>
 
@@ -461,7 +458,7 @@ Event duration, measured from the first to the last logged update, differed mark
 
 **Figure S8.** Incident rate ratios for three-hour windows with vs without precipitation at the nearest NOAA station, by incident type and precipitation total in the window. Mantel–Haenszel estimates stratified by window of day, month and day type, with 95% confidence intervals; logarithmic scale.
 
-*Cited in [Section 3.6](#sec-3-6).*
+*Cited in [Section 3.5](#sec-3-5).*
 
 <a id="figure-s9"></a>
 
@@ -469,7 +466,7 @@ Event duration, measured from the first to the last logged update, differed mark
 
 **Figure S9.** Share of re-solved layouts (10 stations, 15-minute standard) that select each candidate site: 200 bootstrap resamples of 2022–2023 days, 2022 and 2023 alone, and seven speed and demand scenarios. Triangles: recommended stations S1–S10. (a) FDOT District 2; (b) Jacksonville.
 
-*Cited in [Section 3.10](#sec-3-10).*
+*Cited in [Section 3.9](#sec-3-9).*
 
 
 <a id="table-s1"></a>**Table S1.** Completeness and variability of candidate explanatory variables (incidents, n = 173,198).
@@ -488,6 +485,8 @@ Event duration, measured from the first to the last logged update, differed mark
 | Dark at time of incident (solar elevation below −6°) | 21.7 |
 | Near-duplicate (same route and direction, ≤ 0.5 km, ≤ 15 min) | 1.8 |
 
+*Cited in [Section 2.3](#sec-2-3), [Section 2.5](#sec-2-5).*
+
 
 <a id="table-s2"></a>**Table S2.** Rate hotspot clusters: contiguous Gi* hot cells (q < 0.05) on incidents per million vehicle-km, named after their busiest cell, 2022–2024.
 
@@ -500,7 +499,7 @@ Event duration, measured from the first to the last logged update, differed mark
 
 *Note:* Rates are cluster totals (incidents ÷ vehicle-km). Gi* used empirical Bayes-smoothed cell rates for the 944 cells with exposure data.
 
-*Cited in [Section 3.7](#sec-3-7).*
+*Cited in [Section 3.6](#sec-3-6).*
 
 
 <a id="table-s3"></a>**Table S3.** LightGBM input ablation, day-ahead forecasts for 2024; mean ± s.d. over five seeds.
@@ -514,7 +513,7 @@ Event duration, measured from the first to the last logged update, differed mark
 
 *Note:* Differences: day-level bootstrap (2,000 resamples) of mean daily deviance, seed-averaged predictions.
 
-*Cited in [Section 3.8](#sec-3-8).*
+*Cited in [Section 3.7](#sec-3-7).*
 
 
 <a id="table-s4"></a>**Table S4.** Temporal validation of the static layout (10 stations, 15-minute standard): sites selected on one period and evaluated on the following year.
@@ -527,7 +526,7 @@ Event duration, measured from the first to the last logged update, differed mark
 
 *Note:* The layout optimised on the evaluation year uses that year's incidents and is shown for reference.
 
-*Cited in [Section 3.10](#sec-3-10).*
+*Cited in [Section 3.9](#sec-3-9).*
 
 
 <a id="table-s5"></a>**Table S5.** Robustness of the recommended station sites: share of re-solved layouts that select the site, or any candidate site within 5 km of it.
@@ -547,7 +546,7 @@ Event duration, measured from the first to the last logged update, differed mark
 
 *Note:* Demand resamples: 200 bootstrap samples of 2022–2023 days. All re-solved layouts: the 200 resamples, 2022 and 2023 alone, four speed scenarios and three demand definitions (209 layouts).
 
-*Cited in [Section 3.10](#sec-3-10).*
+*Cited in [Section 3.9](#sec-3-9).*
 
 
 <a id="table-s6"></a>**Table S6.** Coverage of 2024 incidents within 15 minutes under alternative travel speeds: the recommended layout compared with the layout optimised for each speed scenario.
@@ -562,7 +561,7 @@ Event duration, measured from the first to the last logged update, differed mark
 
 *Note:* Layouts are optimised on road-edge midpoints and evaluated at exact incident locations, so a scenario-optimised layout can score slightly below the recommended layout (negative difference).
 
-*Cited in [Section 3.10](#sec-3-10).*
+*Cited in [Section 3.9](#sec-3-9).*
 
 
 <a id="table-s7"></a>**Table S7.** Hyperparameter tuning of the deep learning models on the validation period (1 October – 31 December 2023), one seed per configuration, at most 30 epochs with early stopping (patience 3).
@@ -584,4 +583,4 @@ Event duration, measured from the first to the last logged update, differed mark
 
 *Note:* Bold: lowest validation deviance for each model. Differences below 0.1% were treated as ties and the smaller configuration (hidden size 32, learning rate 10⁻³) was retained for all three models.
 
-*Cited in [Section 2.8](#sec-2-8), [Section 3.8](#sec-3-8).*
+*Cited in [Section 2.8](#sec-2-8), [Section 3.7](#sec-3-7).*
