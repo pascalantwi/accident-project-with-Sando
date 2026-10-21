@@ -334,121 +334,121 @@ Some limitations qualify these findings. First, the optimised layouts could not 
 
 <a id="ref-fhwa2010"></a>[1] Federal Highway Administration, "Traffic incident management handbook," U.S. Dept. of Transportation, Washington, DC, USA, Rep. FHWA-HOP-10-013, 2010.
 
-<a id="ref-karlaftis1999"></a>[2] M. G. Karlaftis, S. P. Latoski, N. J. Richards, and K. C. Sinha, "ITS impacts on safety and traffic management: An investigation of secondary crash causes," *J. Intell. Transp. Syst.*, vol. 5, no. 1, pp. 39–52, 1999.
+<a id="ref-karlaftis1999"></a>[2] M. G. Karlaftis, S. P. Latoski, N. J. Richards, and K. C. Sinha, "ITS impacts on safety and traffic management: An investigation of secondary crash causes," *J. Intell. Transp. Syst.*, vol. 5, no. 1, pp. 39–52, 1999, doi: 10.1080/10248079908903756.
 
 <a id="ref-skabardonis1998"></a>[3] A. Skabardonis, K. Petty, P. Varaiya, and R. Bertini, "Evaluation of the freeway service patrol (FSP) in Los Angeles," California PATH Program, Univ. of California, Berkeley, CA, USA, Res. Rep. UCB-ITS-PRR-98-31, 1998.
 
-<a id="ref-lin2012"></a>[4] P.-S. Lin, A. Fabregas, and H. Chen, "Cost benefit analysis of freeway service patrol programs: A case study in Florida," in *Sustainable Transportation Systems: Plan, Design, Build, Manage, and Maintain (Proc. 9th Asia Pacific Transp. Develop. Conf.)*, Chongqing, China, 2012, pp. 1–8.
+<a id="ref-lin2012"></a>[4] P.-S. Lin, A. Fabregas, and H. Chen, "Cost benefit analysis of freeway service patrol programs: A case study in Florida," in *Sustainable Transportation Systems: Plan, Design, Build, Manage, and Maintain (Proc. 9th Asia Pacific Transp. Develop. Conf.)*, Chongqing, China, 2012, pp. 1–8, doi: 10.1061/9780784412299.0001.
 
-<a id="ref-pal2002"></a>[5] R. Pal and K. C. Sinha, "Simulation model for evaluating and improving effectiveness of freeway service patrol programs," *J. Transp. Eng.*, vol. 128, no. 4, pp. 355–365, 2002.
+<a id="ref-pal2002"></a>[5] R. Pal and K. C. Sinha, "Simulation model for evaluating and improving effectiveness of freeway service patrol programs," *J. Transp. Eng.*, vol. 128, no. 4, pp. 355–365, 2002, doi: 10.1061/(ASCE)0733-947X(2002)128:4(355).
 
-<a id="ref-yin2008"></a>[6] Y. Yin, "A scenario-based model for fleet allocation of freeway service patrols," *Netw. Spat. Econ.*, vol. 8, no. 4, pp. 407–417, 2008.
+<a id="ref-yin2008"></a>[6] Y. Yin, "A scenario-based model for fleet allocation of freeway service patrols," *Netw. Spat. Econ.*, vol. 8, no. 4, pp. 407–417, 2008, doi: 10.1007/s11067-006-9015-2.
 
 <a id="ref-lou2011"></a>[7] Y. Lou, Y. Yin, and S. Lawphongpanich, "Freeway service patrol deployment planning for incident management and congestion mitigation," *Transp. Res. Part C Emerg. Technol.*, vol. 19, no. 2, pp. 283–295, 2011.
 
-<a id="ref-ozbay2013"></a>[8] K. Ozbay, C. Iyigun, M. Baykal-Gürsoy, and W. Xiao, "Probabilistic programming models for traffic incident management operations planning," *Ann. Oper. Res.*, vol. 203, no. 1, pp. 389–406, 2013.
+<a id="ref-ozbay2013"></a>[8] K. Ozbay, C. Iyigun, M. Baykal-Gürsoy, and W. Xiao, "Probabilistic programming models for traffic incident management operations planning," *Ann. Oper. Res.*, vol. 203, no. 1, pp. 389–406, 2013, doi: 10.1007/s10479-012-1174-6.
 
-<a id="ref-toregas1971"></a>[9] C. Toregas, R. Swain, C. ReVelle, and L. Bergman, "The location of emergency service facilities," *Oper. Res.*, vol. 19, no. 6, pp. 1363–1373, 1971.
+<a id="ref-toregas1971"></a>[9] C. Toregas, R. Swain, C. ReVelle, and L. Bergman, "The location of emergency service facilities," *Oper. Res.*, vol. 19, no. 6, pp. 1363–1373, 1971, doi: 10.1287/opre.19.6.1363.
 
-<a id="ref-hakimi1964"></a>[10] S. L. Hakimi, "Optimum locations of switching centers and the absolute centers and medians of a graph," *Oper. Res.*, vol. 12, no. 3, pp. 450–459, 1964.
+<a id="ref-hakimi1964"></a>[10] S. L. Hakimi, "Optimum locations of switching centers and the absolute centers and medians of a graph," *Oper. Res.*, vol. 12, no. 3, pp. 450–459, 1964, doi: 10.1287/opre.12.3.450.
 
-<a id="ref-church1974"></a>[11] R. Church and C. ReVelle, "The maximal covering location problem," *Pap. Reg. Sci. Assoc.*, vol. 32, pp. 101–118, 1974.
+<a id="ref-church1974"></a>[11] R. Church and C. ReVelle, "The maximal covering location problem," *Pap. Reg. Sci. Assoc.*, vol. 32, pp. 101–118, 1974, doi: 10.1007/BF01942293.
 
-<a id="ref-daskin1983"></a>[12] M. S. Daskin, "A maximum expected covering location model: Formulation, properties and heuristic solution," *Transp. Sci.*, vol. 17, no. 1, pp. 48–70, 1983.
+<a id="ref-daskin1983"></a>[12] M. S. Daskin, "A maximum expected covering location model: Formulation, properties and heuristic solution," *Transp. Sci.*, vol. 17, no. 1, pp. 48–70, 1983, doi: 10.1287/trsc.17.1.48.
 
-<a id="ref-gendreau2001"></a>[13] M. Gendreau, G. Laporte, and F. Semet, "A dynamic model and parallel tabu search heuristic for real-time ambulance relocation," *Parallel Comput.*, vol. 27, no. 12, pp. 1641–1653, 2001.
+<a id="ref-gendreau2001"></a>[13] M. Gendreau, G. Laporte, and F. Semet, "A dynamic model and parallel tabu search heuristic for real-time ambulance relocation," *Parallel Comput.*, vol. 27, no. 12, pp. 1641–1653, 2001, doi: 10.1016/S0167-8191(01)00103-X.
 
-<a id="ref-brotcorne2003"></a>[14] L. Brotcorne, G. Laporte, and F. Semet, "Ambulance location and relocation models," *Eur. J. Oper. Res.*, vol. 147, no. 3, pp. 451–463, 2003.
+<a id="ref-brotcorne2003"></a>[14] L. Brotcorne, G. Laporte, and F. Semet, "Ambulance location and relocation models," *Eur. J. Oper. Res.*, vol. 147, no. 3, pp. 451–463, 2003, doi: 10.1016/S0377-2217(02)00364-8.
 
-<a id="ref-xie2008"></a>[15] Z. Xie and J. Yan, "Kernel density estimation of traffic accidents in a network space," *Comput. Environ. Urban Syst.*, vol. 32, no. 5, pp. 396–406, 2008.
+<a id="ref-xie2008"></a>[15] Z. Xie and J. Yan, "Kernel density estimation of traffic accidents in a network space," *Comput. Environ. Urban Syst.*, vol. 32, no. 5, pp. 396–406, 2008, doi: 10.1016/j.compenvurbsys.2008.05.001.
 
-<a id="ref-anderson2009"></a>[16] T. K. Anderson, "Kernel density estimation and K-means clustering to profile road accident hotspots," *Accid. Anal. Prev.*, vol. 41, no. 3, pp. 359–364, 2009.
+<a id="ref-anderson2009"></a>[16] T. K. Anderson, "Kernel density estimation and K-means clustering to profile road accident hotspots," *Accid. Anal. Prev.*, vol. 41, no. 3, pp. 359–364, 2009, doi: 10.1016/j.aap.2008.12.014.
 
-<a id="ref-okabe2009"></a>[17] A. Okabe, T. Satoh, and K. Sugihara, "A kernel density estimation method for networks, its computational method and a GIS-based tool," *Int. J. Geogr. Inf. Sci.*, vol. 23, no. 1, pp. 7–32, 2009.
+<a id="ref-okabe2009"></a>[17] A. Okabe, T. Satoh, and K. Sugihara, "A kernel density estimation method for networks, its computational method and a GIS-based tool," *Int. J. Geogr. Inf. Sci.*, vol. 23, no. 1, pp. 7–32, 2009, doi: 10.1080/13658810802475491.
 
-<a id="ref-getis1992"></a>[18] A. Getis and J. K. Ord, "The analysis of spatial association by use of distance statistics," *Geogr. Anal.*, vol. 24, no. 3, pp. 189–206, 1992.
+<a id="ref-getis1992"></a>[18] A. Getis and J. K. Ord, "The analysis of spatial association by use of distance statistics," *Geogr. Anal.*, vol. 24, no. 3, pp. 189–206, 1992, doi: 10.1111/j.1538-4632.1992.tb00261.x.
 
-<a id="ref-ord1995"></a>[19] J. K. Ord and A. Getis, "Local spatial autocorrelation statistics: Distributional issues and an application," *Geogr. Anal.*, vol. 27, no. 4, pp. 286–306, 1995.
+<a id="ref-ord1995"></a>[19] J. K. Ord and A. Getis, "Local spatial autocorrelation statistics: Distributional issues and an application," *Geogr. Anal.*, vol. 27, no. 4, pp. 286–306, 1995, doi: 10.1111/j.1538-4632.1995.tb00912.x.
 
-<a id="ref-eisenberg2004"></a>[20] D. Eisenberg, "The mixed effects of precipitation on traffic crashes," *Accid. Anal. Prev.*, vol. 36, no. 4, pp. 637–647, 2004.
+<a id="ref-eisenberg2004"></a>[20] D. Eisenberg, "The mixed effects of precipitation on traffic crashes," *Accid. Anal. Prev.*, vol. 36, no. 4, pp. 637–647, 2004, doi: 10.1016/S0001-4575(03)00085-X.
 
 <a id="ref-theofilatos2014"></a>[21] A. Theofilatos and G. Yannis, "A review of the effect of traffic and weather characteristics on road safety," *Accid. Anal. Prev.*, vol. 72, pp. 244–256, 2014.
 
 <a id="ref-li2018"></a>[22] Y. Li, R. Yu, C. Shahabi, and Y. Liu, "Diffusion convolutional recurrent neural network: Data-driven traffic forecasting," in *Proc. Int. Conf. Learn. Represent. (ICLR)*, 2018.
 
-<a id="ref-yu2018"></a>[23] B. Yu, H. Yin, and Z. Zhu, "Spatio-temporal graph convolutional networks: A deep learning framework for traffic forecasting," in *Proc. 27th Int. Joint Conf. Artif. Intell. (IJCAI)*, 2018, pp. 3634–3640.
+<a id="ref-yu2018"></a>[23] B. Yu, H. Yin, and Z. Zhu, "Spatio-temporal graph convolutional networks: A deep learning framework for traffic forecasting," in *Proc. 27th Int. Joint Conf. Artif. Intell. (IJCAI)*, 2018, pp. 3634–3640, doi: 10.24963/ijcai.2018/505.
 
-<a id="ref-wu2019"></a>[24] Z. Wu, S. Pan, G. Long, J. Jiang, and C. Zhang, "Graph WaveNet for deep spatial-temporal graph modeling," in *Proc. 28th Int. Joint Conf. Artif. Intell. (IJCAI)*, 2019, pp. 1907–1913.
+<a id="ref-wu2019"></a>[24] Z. Wu, S. Pan, G. Long, J. Jiang, and C. Zhang, "Graph WaveNet for deep spatial-temporal graph modeling," in *Proc. 28th Int. Joint Conf. Artif. Intell. (IJCAI)*, 2019, pp. 1907–1913, doi: 10.24963/ijcai.2019/264.
 
-<a id="ref-yuan2018"></a>[25] Z. Yuan, X. Zhou, and T. Yang, "Hetero-ConvLSTM: A deep learning approach to traffic accident prediction on heterogeneous spatio-temporal data," in *Proc. 24th ACM SIGKDD Int. Conf. Knowl. Discov. Data Min.*, 2018, pp. 984–992.
+<a id="ref-yuan2018"></a>[25] Z. Yuan, X. Zhou, and T. Yang, "Hetero-ConvLSTM: A deep learning approach to traffic accident prediction on heterogeneous spatio-temporal data," in *Proc. 24th ACM SIGKDD Int. Conf. Knowl. Discov. Data Min.*, 2018, pp. 984–992, doi: 10.1145/3219819.3219922.
 
-<a id="ref-ren2018"></a>[26] H. Ren, Y. Song, J. Wang, Y. Hu, and J. Lei, "A deep learning approach to the citywide traffic accident risk prediction," in *Proc. 21st Int. Conf. Intell. Transp. Syst. (ITSC)*, 2018, pp. 3346–3351.
+<a id="ref-ren2018"></a>[26] H. Ren, Y. Song, J. Wang, Y. Hu, and J. Lei, "A deep learning approach to the citywide traffic accident risk prediction," in *Proc. 21st Int. Conf. Intell. Transp. Syst. (ITSC)*, 2018, pp. 3346–3351, doi: 10.1109/ITSC.2018.8569437.
 
-<a id="ref-zhou2020"></a>[27] Z. Zhou, Y. Wang, X. Xie, L. Chen, and H. Liu, "RiskOracle: A minute-level citywide traffic accident forecasting framework," in *Proc. AAAI Conf. Artif. Intell.*, vol. 34, no. 1, 2020, pp. 1258–1265.
+<a id="ref-zhou2020"></a>[27] Z. Zhou, Y. Wang, X. Xie, L. Chen, and H. Liu, "RiskOracle: A minute-level citywide traffic accident forecasting framework," in *Proc. AAAI Conf. Artif. Intell.*, vol. 34, no. 1, 2020, pp. 1258–1265, doi: 10.1609/aaai.v34i01.5480.
 
-<a id="ref-wang2021"></a>[28] B. Wang, Y. Lin, S. Guo, and H. Wan, "GSNet: Learning spatial-temporal correlations from geographical and semantic aspects for traffic accident risk forecasting," in *Proc. AAAI Conf. Artif. Intell.*, vol. 35, no. 5, 2021, pp. 4402–4409.
+<a id="ref-wang2021"></a>[28] B. Wang, Y. Lin, S. Guo, and H. Wan, "GSNet: Learning spatial-temporal correlations from geographical and semantic aspects for traffic accident risk forecasting," in *Proc. AAAI Conf. Artif. Intell.*, vol. 35, no. 5, 2021, pp. 4402–4409, doi: 10.1609/aaai.v35i5.16566.
 
-<a id="ref-elmachtoub2022"></a>[29] A. N. Elmachtoub and P. Grigas, "Smart ‘predict, then optimize’," *Manage. Sci.*, vol. 68, no. 1, pp. 9–26, 2022.
+<a id="ref-elmachtoub2022"></a>[29] A. N. Elmachtoub and P. Grigas, "Smart ‘predict, then optimize’," *Manage. Sci.*, vol. 68, no. 1, pp. 9–26, 2022, doi: 10.1287/mnsc.2020.3922.
 
-<a id="ref-fdot-aadt"></a>[30] Florida Department of Transportation, "Annual Average Daily Traffic (historical), 2021–2025," Transportation Data and Analytics Office, Tallahassee, FL, USA. [Online]. Available: https://gis-fdot.opendata.arcgis.com
+<a id="ref-fdot-aadt"></a>[30] Florida Department of Transportation, "Annual Average Daily Traffic Historical," Transportation Data and Analytics Office, Tallahassee, FL, USA. [Online]. Available: https://www.fdot.gov/statistics/gis
 
 <a id="ref-noaa-isd"></a>[31] National Centers for Environmental Information, "Global Hourly – Integrated Surface Database (ISD)," NOAA, Asheville, NC, USA. [Online]. Available: https://www.ncei.noaa.gov/products/land-based-station/integrated-surface-database
 
 <a id="ref-osm"></a>[32] OpenStreetMap contributors, "OpenStreetMap," Florida extract distributed by Geofabrik GmbH, 2026. [Online]. Available: https://download.geofabrik.de/north-america/us/florida.html
 
-<a id="ref-boeing2017"></a>[33] G. Boeing, "OSMnx: New methods for acquiring, constructing, analyzing, and visualizing complex street networks," *Comput. Environ. Urban Syst.*, vol. 65, pp. 126–139, 2017.
+<a id="ref-boeing2017"></a>[33] G. Boeing, "OSMnx: New methods for acquiring, constructing, analyzing, and visualizing complex street networks," *Comput. Environ. Urban Syst.*, vol. 65, pp. 126–139, 2017, doi: 10.1016/j.compenvurbsys.2017.05.004.
 
-<a id="ref-census-tiger"></a>[34] U.S. Census Bureau, "TIGER/Line Shapefiles 2023: Counties; Primary and secondary roads, Florida," Washington, DC, USA, 2023. [Online]. Available: https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html
+<a id="ref-census-tiger"></a>[34] U.S. Census Bureau, "TIGER/Line Shapefiles 2023: Counties; Primary and secondary roads, Florida," Washington, DC, USA, 2023. [Online]. Available: https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.2023.html
 
 <a id="ref-spencer1971"></a>[35] J. W. Spencer, "Fourier series representation of the position of the sun," *Search*, vol. 2, no. 5, p. 172, 1971.
 
-<a id="ref-benjamini1995"></a>[36] Y. Benjamini and Y. Hochberg, "Controlling the false discovery rate: A practical and powerful approach to multiple testing," *J. R. Stat. Soc. Ser. B*, vol. 57, no. 1, pp. 289–300, 1995.
+<a id="ref-benjamini1995"></a>[36] Y. Benjamini and Y. Hochberg, "Controlling the false discovery rate: A practical and powerful approach to multiple testing," *J. R. Stat. Soc. Ser. B*, vol. 57, no. 1, pp. 289–300, 1995, doi: 10.1111/j.2517-6161.1995.tb02031.x.
 
-<a id="ref-ke2017"></a>[37] G. Ke, Q. Meng, T. Finley, T. Wang, W. Chen, W. Ma, Q. Ye, and T.-Y. Liu, "LightGBM: A highly efficient gradient boosting decision tree," in *Adv. Neural Inf. Process. Syst.*, vol. 30, 2017.
+<a id="ref-ke2017"></a>[37] G. Ke, Q. Meng, T. Finley, T. Wang, W. Chen, W. Ma, Q. Ye, and T.-Y. Liu, "LightGBM: A highly efficient gradient boosting decision tree," in *Adv. Neural Inf. Process. Syst.*, vol. 30, 2017, pp. 3146–3154.
 
-<a id="ref-hochreiter1997"></a>[38] S. Hochreiter and J. Schmidhuber, "Long short-term memory," *Neural Comput.*, vol. 9, no. 8, pp. 1735–1780, 1997.
+<a id="ref-hochreiter1997"></a>[38] S. Hochreiter and J. Schmidhuber, "Long short-term memory," *Neural Comput.*, vol. 9, no. 8, pp. 1735–1780, 1997, doi: 10.1162/neco.1997.9.8.1735.
 
-<a id="ref-vaswani2017"></a>[39] A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez, Ł. Kaiser, and I. Polosukhin, "Attention is all you need," in *Adv. Neural Inf. Process. Syst.*, vol. 30, 2017.
+<a id="ref-vaswani2017"></a>[39] A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez, Ł. Kaiser, and I. Polosukhin, "Attention is all you need," in *Adv. Neural Inf. Process. Syst.*, vol. 30, 2017, pp. 5998–6008.
 
-<a id="ref-marshall1991"></a>[40] R. J. Marshall, "Mapping disease and mortality rates using empirical Bayes estimators," *J. R. Stat. Soc. Ser. C (Appl. Stat.)*, vol. 40, no. 2, pp. 283–294, 1991.
+<a id="ref-marshall1991"></a>[40] R. J. Marshall, "Mapping disease and mortality rates using empirical Bayes estimators," *J. R. Stat. Soc. Ser. C (Appl. Stat.)*, vol. 40, no. 2, pp. 283–294, 1991, doi: 10.2307/2347593.
 
-<a id="ref-mantel1959"></a>[41] N. Mantel and W. Haenszel, "Statistical aspects of the analysis of data from retrospective studies of disease," *J. Natl. Cancer Inst.*, vol. 22, no. 4, pp. 719–748, 1959.
+<a id="ref-mantel1959"></a>[41] N. Mantel and W. Haenszel, "Statistical aspects of the analysis of data from retrospective studies of disease," *J. Natl. Cancer Inst.*, vol. 22, no. 4, pp. 719–748, 1959, doi: 10.1093/jnci/22.4.719.
 
-<a id="ref-greenland1985"></a>[42] S. Greenland and J. M. Robins, "Estimation of a common effect parameter from sparse follow-up data," *Biometrics*, vol. 41, no. 1, pp. 55–68, 1985.
+<a id="ref-greenland1985"></a>[42] S. Greenland and J. M. Robins, "Estimation of a common effect parameter from sparse follow-up data," *Biometrics*, vol. 41, no. 1, pp. 55–68, 1985, doi: 10.2307/2530643.
 
 <a id="ref-kingma2015"></a>[43] D. P. Kingma and J. Ba, "Adam: A method for stochastic optimization," in *Proc. Int. Conf. Learn. Represent. (ICLR)*, 2015.
 
-<a id="ref-huangfu2018"></a>[44] Q. Huangfu and J. A. J. Hall, "Parallelizing the dual revised simplex method," *Math. Program. Comput.*, vol. 10, no. 1, pp. 119–142, 2018.
+<a id="ref-huangfu2018"></a>[44] Q. Huangfu and J. A. J. Hall, "Parallelizing the dual revised simplex method," *Math. Program. Comput.*, vol. 10, no. 1, pp. 119–142, 2018, doi: 10.1007/s12532-017-0130-5.
 
-<a id="ref-virtanen2020"></a>[45] P. Virtanen *et al.*, "SciPy 1.0: Fundamental algorithms for scientific computing in Python," *Nat. Methods*, vol. 17, pp. 261–272, 2020.
+<a id="ref-virtanen2020"></a>[45] P. Virtanen *et al.*, "SciPy 1.0: Fundamental algorithms for scientific computing in Python," *Nat. Methods*, vol. 17, no. 3, pp. 261–272, 2020, doi: 10.1038/s41592-019-0686-2.
 
-<a id="ref-chainey2008"></a>[46] S. Chainey, L. Tompson, and S. Uhlig, "The utility of hotspot mapping for predicting spatial patterns of crime," *Secur. J.*, vol. 21, pp. 4–28, 2008.
+<a id="ref-chainey2008"></a>[46] S. Chainey, L. Tompson, and S. Uhlig, "The utility of hotspot mapping for predicting spatial patterns of crime," *Secur. J.*, vol. 21, no. 1–2, pp. 4–28, 2008, doi: 10.1057/palgrave.sj.8350066.
 
 <a id="ref-hsm2010"></a>[47] American Association of State Highway and Transportation Officials, *Highway Safety Manual*, 1st ed. Washington, DC, USA: AASHTO, 2010.
 
-<a id="ref-hauer2002"></a>[48] E. Hauer, D. W. Harwood, F. M. Council, and M. S. Griffith, "Estimating safety by the empirical Bayes method: A tutorial," *Transp. Res. Rec.*, no. 1784, pp. 126–131, 2002.
+<a id="ref-hauer2002"></a>[48] E. Hauer, D. W. Harwood, F. M. Council, and M. S. Griffith, "Estimating safety by the empirical Bayes method: A tutorial," *Transp. Res. Rec.*, no. 1784, pp. 126–131, 2002, doi: 10.3141/1784-16.
 
-<a id="ref-makridakis2018"></a>[49] S. Makridakis, E. Spiliotis, and V. Assimakopoulos, "Statistical and machine learning forecasting methods: Concerns and ways forward," *PLoS ONE*, vol. 13, no. 3, e0194889, 2018.
+<a id="ref-makridakis2018"></a>[49] S. Makridakis, E. Spiliotis, and V. Assimakopoulos, "Statistical and machine learning forecasting methods: Concerns and ways forward," *PLoS ONE*, vol. 13, no. 3, e0194889, 2018, doi: 10.1371/journal.pone.0194889.
 
 <a id="ref-grinsztajn2022"></a>[50] L. Grinsztajn, E. Oyallon, and G. Varoquaux, "Why do tree-based models still outperform deep learning on typical tabular data?" in *Adv. Neural Inf. Process. Syst.*, vol. 35, 2022, pp. 507–520.
 
-<a id="ref-belanger2019"></a>[51] V. Bélanger, A. Ruiz, and P. Soriano, "Recent optimization models and trends in location, relocation, and dispatching of emergency medical vehicles," *Eur. J. Oper. Res.*, vol. 272, no. 1, pp. 1–23, 2019.
+<a id="ref-belanger2019"></a>[51] V. Bélanger, A. Ruiz, and P. Soriano, "Recent optimization models and trends in location, relocation, and dispatching of emergency medical vehicles," *Eur. J. Oper. Res.*, vol. 272, no. 1, pp. 1–23, 2019, doi: 10.1016/j.ejor.2018.02.055.
 
-<a id="ref-abdelaty2005"></a>[52] M. Abdel-Aty and A. Pande, "Identifying crash propensity using specific traffic speed conditions," *J. Saf. Res.*, vol. 36, no. 1, pp. 97–108, 2005.
+<a id="ref-abdelaty2005"></a>[52] M. Abdel-Aty and A. Pande, "Identifying crash propensity using specific traffic speed conditions," *J. Saf. Res.*, vol. 36, no. 1, pp. 97–108, 2005, doi: 10.1016/j.jsr.2004.11.002.
 
-<a id="ref-li2018duration"></a>[53] R. Li, F. C. Pereira, and M. E. Ben-Akiva, "Overview of traffic incident duration analysis and prediction," *Eur. Transp. Res. Rev.*, vol. 10, no. 2, art. 22, 2018.
+<a id="ref-li2018duration"></a>[53] R. Li, F. C. Pereira, and M. E. Ben-Akiva, "Overview of traffic incident duration analysis and prediction," *Eur. Transp. Res. Rev.*, vol. 10, no. 2, art. 22, 2018, doi: 10.1186/s12544-018-0300-1.
 
-<a id="ref-snyder2006"></a>[54] L. V. Snyder, "Facility location under uncertainty: A review," *IIE Trans.*, vol. 38, no. 7, pp. 547–564, 2006.
+<a id="ref-snyder2006"></a>[54] L. V. Snyder, "Facility location under uncertainty: A review," *IIE Trans.*, vol. 38, no. 7, pp. 547–564, 2006, doi: 10.1080/07408170500216480.
 
-<a id="ref-larson1974"></a>[55] R. C. Larson, "A hypercube queuing model for facility location and redistricting in urban emergency services," *Comput. Oper. Res.*, vol. 1, no. 1, pp. 67–95, 1974.
+<a id="ref-larson1974"></a>[55] R. C. Larson, "A hypercube queuing model for facility location and redistricting in urban emergency services," *Comput. Oper. Res.*, vol. 1, no. 1, pp. 67–95, 1974, doi: 10.1016/0305-0548(74)90076-8.
 
-<a id="ref-revelle1989"></a>[56] C. ReVelle and K. Hogan, "The maximum availability location problem," *Transp. Sci.*, vol. 23, no. 3, pp. 192–200, 1989.
+<a id="ref-revelle1989"></a>[56] C. ReVelle and K. Hogan, "The maximum availability location problem," *Transp. Sci.*, vol. 23, no. 3, pp. 192–200, 1989, doi: 10.1287/trsc.23.3.192.
 
-<a id="ref-khattak2009"></a>[57] A. J. Khattak, X. Wang, and H. Zhang, "Are incident durations and secondary incidents interdependent?" *Transp. Res. Rec.*, no. 2099, pp. 39–49, 2009.
+<a id="ref-khattak2009"></a>[57] A. J. Khattak, X. Wang, and H. Zhang, "Are incident durations and secondary incidents interdependent?" *Transp. Res. Rec.*, no. 2099, pp. 39–49, 2009, doi: 10.3141/2099-05.
 
-<a id="ref-wilder2019"></a>[58] B. Wilder, B. Dilkina, and M. Tambe, "Melding the data-decisions pipeline: Decision-focused learning for combinatorial optimization," in *Proc. AAAI Conf. Artif. Intell.*, vol. 33, 2019, pp. 1658–1665.
+<a id="ref-wilder2019"></a>[58] B. Wilder, B. Dilkina, and M. Tambe, "Melding the data-decisions pipeline: Decision-focused learning for combinatorial optimization," in *Proc. AAAI Conf. Artif. Intell.*, vol. 33, 2019, pp. 1658–1665, doi: 10.1609/aaai.v33i01.33011658.
 
-<a id="ref-mandi2024"></a>[59] J. Mandi, J. Kotary, S. Berden, M. Mulamba, V. Bucarey, T. Guns, and F. Fioretto, "Decision-focused learning: Foundations, state of the art, benchmark and future opportunities," *J. Artif. Intell. Res.*, pp. 1623–1701, 2024, doi: 10.1613/jair.1.15320.
+<a id="ref-mandi2024"></a>[59] J. Mandi, J. Kotary, S. Berden, M. Mulamba, V. Bucarey, T. Guns, and F. Fioretto, "Decision-focused learning: Foundations, state of the art, benchmark and future opportunities," *J. Artif. Intell. Res.*, vol. 80, pp. 1623–1701, 2024, doi: 10.1613/jair.1.15320.
 
 ---
 
