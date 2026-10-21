@@ -44,7 +44,18 @@ The four Road Ranger event types gave 173,198 incidents. Questionable records we
 Incidents were assigned to 1 km × 1 km grid cells in a local equirectangular projection; the 983 cells with incidents form the spatial units. Time was divided into 8,768 three-hour windows, giving a cell-by-window panel with a mean of 0.020 incidents, in which 98.1% of cell-windows are empty.
 
 ### 2.4 Research framework <a id="sec-2-4"></a>
-*Figures and tables: [Figure 2](#figure-2).*
+
+The study follows a predict-then-optimise framework in four stages ([Figure 2](#figure-2)). The incident records, road cells, traffic and weather data, and calendar and daylight variables are first combined into a cell graph, in which neighbouring 1 km cells are linked and each cell carries incident counts for consecutive three-hour windows ([Sections 2.3](#sec-2-3) and [2.6](#sec-2-6)).
+
+In the first stage, persistent concentrations of incidents are identified with the Getis-Ord Gi\* statistic [[7]](#ref-getis1992) on incident counts and on traffic-adjusted incident rates, with significance adjusted for multiple testing by the false discovery rate [[8]](#ref-benjamini1995) ([Section 2.7](#sec-2-7)). In the second stage, incidents are forecast one day ahead for every cell and window. Three baselines, a historical average, a Poisson log-linear model and gradient-boosted trees (LightGBM [[9]](#ref-ke2017)), are compared with three deep learning models: a long short-term memory network [[10]](#ref-hochreiter1997), Graph WaveNet [[11]](#ref-wu2019) and a spatio-temporal Transformer [[12]](#ref-vaswani2017) ([Section 2.8](#sec-2-8)). In the third stage, the observed and predicted demand is used to locate Road Ranger stations at candidate interchanges, rest areas and service plazas with the maximal covering location problem [[13]](#ref-church1974), as fixed stations and as day-ahead staging of units ([Section 2.9](#sec-2-9)).
+
+In the fourth stage, all models are fitted on data up to 30 September 2023, tuned on October–December 2023 and evaluated on the unseen incidents of 2024. Evaluation covers forecast error and the share of incidents reached within 10, 15 and 20 minutes, followed by sensitivity analyses, temporal validation and a simulation in which units can be busy ([Sections 2.10](#sec-2-10) and [2.11](#sec-2-11)).
+
+<a id="figure-2"></a>
+
+![Figure 2](../results/figures/Figure2_framework.png)
+
+**Figure 2.** Study framework. AADT: annual average daily traffic; NOAA: National Oceanic and Atmospheric Administration; HA: historical average; FDR: false discovery rate; MCLP: maximal covering location problem.
 
 ### 2.5 Exploratory data analysis <a id="sec-2-5"></a>
 
@@ -113,39 +124,39 @@ Incidents were assigned to 1 km × 1 km grid cells in a local equirectangular pr
 
 <a id="ref-spencer1971"></a>[6] J. W. Spencer, "Fourier series representation of the position of the sun," *Search*, vol. 2, no. 5, p. 172, 1971.
 
-<a id="ref-benjamini1995"></a>[7] Y. Benjamini and Y. Hochberg, "Controlling the false discovery rate: A practical and powerful approach to multiple testing," *J. R. Stat. Soc. Ser. B*, vol. 57, no. 1, pp. 289–300, 1995.
+<a id="ref-getis1992"></a>[7] A. Getis and J. K. Ord, "The analysis of spatial association by use of distance statistics," *Geogr. Anal.*, vol. 24, no. 3, pp. 189–206, 1992.
 
-<a id="ref-chainey2008"></a>[8] S. Chainey, L. Tompson, and S. Uhlig, "The utility of hotspot mapping for predicting spatial patterns of crime," *Secur. J.*, vol. 21, pp. 4–28, 2008.
+<a id="ref-benjamini1995"></a>[8] Y. Benjamini and Y. Hochberg, "Controlling the false discovery rate: A practical and powerful approach to multiple testing," *J. R. Stat. Soc. Ser. B*, vol. 57, no. 1, pp. 289–300, 1995.
 
-<a id="ref-church1974"></a>[9] R. Church and C. ReVelle, "The maximal covering location problem," *Pap. Reg. Sci. Assoc.*, vol. 32, pp. 101–118, 1974.
+<a id="ref-ke2017"></a>[9] G. Ke, Q. Meng, T. Finley, T. Wang, W. Chen, W. Ma, Q. Ye, and T.-Y. Liu, "LightGBM: A highly efficient gradient boosting decision tree," in *Adv. Neural Inf. Process. Syst.*, vol. 30, 2017.
 
-<a id="ref-getis1992"></a>[10] A. Getis and J. K. Ord, "The analysis of spatial association by use of distance statistics," *Geogr. Anal.*, vol. 24, no. 3, pp. 189–206, 1992.
+<a id="ref-hochreiter1997"></a>[10] S. Hochreiter and J. Schmidhuber, "Long short-term memory," *Neural Comput.*, vol. 9, no. 8, pp. 1735–1780, 1997.
 
-<a id="ref-greenland1985"></a>[11] S. Greenland and J. M. Robins, "Estimation of a common effect parameter from sparse follow-up data," *Biometrics*, vol. 41, no. 1, pp. 55–68, 1985.
+<a id="ref-wu2019"></a>[11] Z. Wu, S. Pan, G. Long, J. Jiang, and C. Zhang, "Graph WaveNet for deep spatial-temporal graph modeling," in *Proc. 28th Int. Joint Conf. Artif. Intell. (IJCAI)*, 2019, pp. 1907–1913.
 
-<a id="ref-hakimi1964"></a>[12] S. L. Hakimi, "Optimum locations of switching centers and the absolute centers and medians of a graph," *Oper. Res.*, vol. 12, no. 3, pp. 450–459, 1964.
+<a id="ref-vaswani2017"></a>[12] A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez, Ł. Kaiser, and I. Polosukhin, "Attention is all you need," in *Adv. Neural Inf. Process. Syst.*, vol. 30, 2017.
 
-<a id="ref-hochreiter1997"></a>[13] S. Hochreiter and J. Schmidhuber, "Long short-term memory," *Neural Comput.*, vol. 9, no. 8, pp. 1735–1780, 1997.
+<a id="ref-church1974"></a>[13] R. Church and C. ReVelle, "The maximal covering location problem," *Pap. Reg. Sci. Assoc.*, vol. 32, pp. 101–118, 1974.
 
-<a id="ref-ke2017"></a>[14] G. Ke, Q. Meng, T. Finley, T. Wang, W. Chen, W. Ma, Q. Ye, and T.-Y. Liu, "LightGBM: A highly efficient gradient boosting decision tree," in *Adv. Neural Inf. Process. Syst.*, vol. 30, 2017.
+<a id="ref-chainey2008"></a>[14] S. Chainey, L. Tompson, and S. Uhlig, "The utility of hotspot mapping for predicting spatial patterns of crime," *Secur. J.*, vol. 21, pp. 4–28, 2008.
 
-<a id="ref-li2018"></a>[15] Y. Li, R. Yu, C. Shahabi, and Y. Liu, "Diffusion convolutional recurrent neural network: Data-driven traffic forecasting," in *Proc. Int. Conf. Learn. Represent. (ICLR)*, 2018.
+<a id="ref-greenland1985"></a>[15] S. Greenland and J. M. Robins, "Estimation of a common effect parameter from sparse follow-up data," *Biometrics*, vol. 41, no. 1, pp. 55–68, 1985.
 
-<a id="ref-lundberg2017"></a>[16] S. M. Lundberg and S.-I. Lee, "A unified approach to interpreting model predictions," in *Adv. Neural Inf. Process. Syst.*, vol. 30, 2017.
+<a id="ref-hakimi1964"></a>[16] S. L. Hakimi, "Optimum locations of switching centers and the absolute centers and medians of a graph," *Oper. Res.*, vol. 12, no. 3, pp. 450–459, 1964.
 
-<a id="ref-mantel1959"></a>[17] N. Mantel and W. Haenszel, "Statistical aspects of the analysis of data from retrospective studies of disease," *J. Natl. Cancer Inst.*, vol. 22, no. 4, pp. 719–748, 1959.
+<a id="ref-li2018"></a>[17] Y. Li, R. Yu, C. Shahabi, and Y. Liu, "Diffusion convolutional recurrent neural network: Data-driven traffic forecasting," in *Proc. Int. Conf. Learn. Represent. (ICLR)*, 2018.
 
-<a id="ref-marshall1991"></a>[18] R. J. Marshall, "Mapping disease and mortality rates using empirical Bayes estimators," *J. R. Stat. Soc. Ser. C (Appl. Stat.)*, vol. 40, no. 2, pp. 283–294, 1991.
+<a id="ref-lundberg2017"></a>[18] S. M. Lundberg and S.-I. Lee, "A unified approach to interpreting model predictions," in *Adv. Neural Inf. Process. Syst.*, vol. 30, 2017.
 
-<a id="ref-okabe2009"></a>[19] A. Okabe, T. Satoh, and K. Sugihara, "A kernel density estimation method for networks, its computational method and a GIS-based tool," *Int. J. Geogr. Inf. Sci.*, vol. 23, no. 1, pp. 7–32, 2009.
+<a id="ref-mantel1959"></a>[19] N. Mantel and W. Haenszel, "Statistical aspects of the analysis of data from retrospective studies of disease," *J. Natl. Cancer Inst.*, vol. 22, no. 4, pp. 719–748, 1959.
 
-<a id="ref-ord1995"></a>[20] J. K. Ord and A. Getis, "Local spatial autocorrelation statistics: Distributional issues and an application," *Geogr. Anal.*, vol. 27, no. 4, pp. 286–306, 1995.
+<a id="ref-marshall1991"></a>[20] R. J. Marshall, "Mapping disease and mortality rates using empirical Bayes estimators," *J. R. Stat. Soc. Ser. C (Appl. Stat.)*, vol. 40, no. 2, pp. 283–294, 1991.
 
-<a id="ref-toregas1971"></a>[21] C. Toregas, R. Swain, C. ReVelle, and L. Bergman, "The location of emergency service facilities," *Oper. Res.*, vol. 19, no. 6, pp. 1363–1373, 1971.
+<a id="ref-okabe2009"></a>[21] A. Okabe, T. Satoh, and K. Sugihara, "A kernel density estimation method for networks, its computational method and a GIS-based tool," *Int. J. Geogr. Inf. Sci.*, vol. 23, no. 1, pp. 7–32, 2009.
 
-<a id="ref-vaswani2017"></a>[22] A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez, Ł. Kaiser, and I. Polosukhin, "Attention is all you need," in *Adv. Neural Inf. Process. Syst.*, vol. 30, 2017.
+<a id="ref-ord1995"></a>[22] J. K. Ord and A. Getis, "Local spatial autocorrelation statistics: Distributional issues and an application," *Geogr. Anal.*, vol. 27, no. 4, pp. 286–306, 1995.
 
-<a id="ref-wu2019"></a>[23] Z. Wu, S. Pan, G. Long, J. Jiang, and C. Zhang, "Graph WaveNet for deep spatial-temporal graph modeling," in *Proc. 28th Int. Joint Conf. Artif. Intell. (IJCAI)*, 2019, pp. 1907–1913.
+<a id="ref-toregas1971"></a>[23] C. Toregas, R. Swain, C. ReVelle, and L. Bergman, "The location of emergency service facilities," *Oper. Res.*, vol. 19, no. 6, pp. 1363–1373, 1971.
 
 <a id="ref-xie2008"></a>[24] Z. Xie and J. Yan, "Kernel density estimation of traffic accidents in a network space," *Comput. Environ. Urban Syst.*, vol. 32, no. 5, pp. 396–406, 2008.
 
@@ -156,14 +167,6 @@ Incidents were assigned to 1 km × 1 km grid cells in a local equirectangular pr
 ---
 
 ## Appendix A. Figures
-
-<a id="figure-2"></a>
-
-![Figure 2](../results/figures/Figure2_framework.png)
-
-**Figure 2.** Study framework. AADT: annual average daily traffic; NOAA: National Oceanic and Atmospheric Administration; HA: historical average; FDR: false discovery rate; MCLP: maximal covering location problem.
-
-*Cited in [Section 2.4](#sec-2-4).*
 
 <a id="figure-3"></a>
 
