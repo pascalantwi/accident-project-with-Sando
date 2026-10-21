@@ -1,8 +1,8 @@
 """Fetch the external datasets the station-siting analysis needs (draft.md, section 3).
 
-  osm_interstates.gpkg / .graphml   District 2 motorway network (interstates,
-                                    expressways) from OpenStreetMap, for snapping
-                                    incidents and computing drive times
+  osm_roads.gpkg / .graphml         District 2 directed road network from OpenStreetMap
+                                    (motorways, trunk and primary roads with their ramps),
+                                    for one-way-aware drive times
   osm_candidate_sites.gpkg          interchanges, rest areas and service plazas from
                                     OpenStreetMap: candidate Road Ranger station sites
   aadt_current.gpkg                 FDOT Annual Average Daily Traffic, current year
@@ -17,8 +17,12 @@
 Current Road Ranger stations and patrol beats are not published as open data;
 request them from the FDOT district Traffic Incident Management office.
 
+OpenStreetMap data come from the Geofabrik Florida extract, cut to the study area with
+osmium-tool; the public Overpass API (used only if that fails) is often over capacity for an
+area this large.
+
 Usage (Colab, which has open internet access):
-  !pip install -q osmnx
+  !pip install -q osmnx && apt-get -qq install -y osmium-tool
   !python fetch_external_data.py --outdir /content/drive/MyDrive/Data/external
   !python fetch_external_data.py --outdir ... --only aadt_current fl_counties
 """
@@ -26,6 +30,8 @@ import argparse
 import datetime
 import json
 import pathlib
+import shutil
+import subprocess
 import tempfile
 import time
 
@@ -44,10 +50,15 @@ TIGER_ROADS = (f"https://www2.census.gov/geo/tiger/TIGER{TIGER_YEAR}/PRISECROADS
 FDOT_TDA = "https://services1.arcgis.com/O1JpcwDW8sjYuddV/ArcGIS/rest/services"
 AADT_CURRENT = f"{FDOT_TDA}/Annual_Average_Daily_Traffic_TDA/FeatureServer/0"
 AADT_HISTORICAL = f"{FDOT_TDA}/Annual_Average_Daily_Traffic_Historical_TDA/FeatureServer/0"
-# Limited-access roads: interstates, Florida's Turnpike and the toll expressways are
-# tagged motorway in OpenStreetMap.
-OSM_ROAD_FILTER = '["highway"~"motorway|motorway_link"]'
+# Interstates, Florida's Turnpike and toll expressways are tagged motorway in OpenStreetMap;
+# patrolled arterials such as Butler Blvd and Blanding Blvd are trunk or primary.
+OSM_HIGHWAYS = ["motorway", "motorway_link", "trunk", "trunk_link", "primary", "primary_link"]
+OSM_ROAD_FILTER = f'["highway"~"^({"|".join(OSM_HIGHWAYS)})$"]'
 OSM_SITE_TAGS = {"highway": ["motorway_junction", "rest_area", "services"]}
+GEOFABRIK_FL = "https://download.geofabrik.de/north-america/us/florida-latest.osm.pbf"
+OVERPASS_MIRRORS = ["https://overpass-api.de/api", "https://overpass.kumi.systems/api",
+                    "https://overpass.private.coffee/api"]
+OSM_CACHE = pathlib.Path(tempfile.gettempdir()) / "osm_cache"   # ~600 MB, kept out of --outdir
 
 
 def _get(session, url, retries=3, **kw):
@@ -97,26 +108,84 @@ def read_zip_url(url, session=None):
         return gpd.read_file(f"zip://{f.name}")
 
 
-def fetch_osm_interstates(outdir):
+def osm_study_area():
+    """Geofabrik Florida extract cut to BBOX, cached between runs. Needs osmium-tool."""
+    if shutil.which("osmium") is None:
+        raise RuntimeError("osmium-tool not found (Colab: !apt-get -qq install -y osmium-tool)")
+    OSM_CACHE.mkdir(exist_ok=True)
+    pbf, area = OSM_CACHE / "florida-latest.osm.pbf", OSM_CACHE / "district2.osm.pbf"
+    if not pbf.exists():
+        part = pbf.with_suffix(".part")
+        with requests.get(GEOFABRIK_FL, stream=True, timeout=600) as r:
+            r.raise_for_status()
+            with open(part, "wb") as f:
+                for block in r.iter_content(1 << 20):
+                    f.write(block)
+        part.rename(pbf)
+    if not area.exists():
+        subprocess.run(["osmium", "extract", "-b", ",".join(map(str, BBOX)), str(pbf), "-o", str(area),
+                        "--overwrite"], check=True)
+    return area
+
+
+def osm_filter(area, expressions, name):
+    """osmium tags-filter to an .osm XML file that osmnx can read."""
+    out = OSM_CACHE / f"{name}.osm"
+    subprocess.run(["osmium", "tags-filter", str(area), *expressions, "-o", str(out), "--overwrite"], check=True)
+    return out
+
+
+def overpass(call):
+    """Run an osmnx Overpass query, rotating mirrors with exponential backoff."""
     import osmnx as ox
-    ox.settings.requests_timeout = 600
-    G = ox.graph_from_bbox(BBOX, custom_filter=OSM_ROAD_FILTER, simplify=True, retain_all=True)
-    ox.save_graphml(G, outdir / "osm_interstates.graphml")
-    ox.save_graph_geopackage(G, outdir / "osm_interstates.gpkg")
-    return G.number_of_edges(), "OpenStreetMap via Overpass API (osmnx), bbox " + str(BBOX) + ", filter " + OSM_ROAD_FILTER
+    ox.settings.requests_timeout = 900
+    ox.settings.max_query_area_size = 2.5e10   # fewer, larger sub-queries
+    wait = 30
+    for attempt in range(6):
+        ox.settings.overpass_url = OVERPASS_MIRRORS[attempt % len(OVERPASS_MIRRORS)]
+        try:
+            return call(ox)
+        except Exception as e:  # noqa: BLE001  (osmnx raises several error types for busy servers)
+            print(f"  Overpass {ox.settings.overpass_url} failed ({str(e)[:80]}); retry in {wait}s", flush=True)
+            time.sleep(wait)
+            wait *= 2
+    raise RuntimeError("all Overpass attempts failed")
+
+
+def fetch_osm_roads(outdir):
+    import osmnx as ox
+    try:
+        xml = osm_filter(osm_study_area(), ["w/highway=" + ",".join(OSM_HIGHWAYS)], "roads")
+        G = ox.graph_from_xml(xml, simplify=True, retain_all=True)
+        source = f"Geofabrik Florida extract ({GEOFABRIK_FL}), osmium bbox {BBOX}, highway in {OSM_HIGHWAYS}"
+    except Exception as e:  # noqa: BLE001
+        print(f"  Geofabrik route failed ({e}); trying Overpass", flush=True)
+        G = overpass(lambda ox: ox.graph_from_bbox(BBOX, custom_filter=OSM_ROAD_FILTER, simplify=True,
+                                                    retain_all=True))
+        source = f"OpenStreetMap via Overpass API (osmnx), bbox {BBOX}, filter {OSM_ROAD_FILTER}"
+    ox.save_graphml(G, outdir / "osm_roads.graphml")
+    ox.save_graph_geopackage(G, outdir / "osm_roads.gpkg")
+    return G.number_of_edges(), source
 
 
 def fetch_osm_candidate_sites(outdir):
     import osmnx as ox
-    ox.settings.requests_timeout = 600
-    sites = ox.features_from_bbox(BBOX, tags=OSM_SITE_TAGS).reset_index()
+    try:
+        expr = ["n/highway=" + ",".join(OSM_SITE_TAGS["highway"]), "wr/highway=rest_area,services"]
+        xml = osm_filter(osm_study_area(), expr, "sites")
+        sites = ox.features_from_xml(xml, tags=OSM_SITE_TAGS).reset_index()
+        source = f"Geofabrik Florida extract ({GEOFABRIK_FL}), osmium bbox {BBOX}, tags {OSM_SITE_TAGS}"
+    except Exception as e:  # noqa: BLE001
+        print(f"  Geofabrik route failed ({e}); trying Overpass", flush=True)
+        sites = overpass(lambda ox: ox.features_from_bbox(BBOX, tags=OSM_SITE_TAGS)).reset_index()
+        source = f"OpenStreetMap via Overpass API (osmnx), bbox {BBOX}, tags {OSM_SITE_TAGS}"
     keep = [c for c in ["element", "id", "highway", "name", "ref", "operator", "amenity"] if c in sites]
     sites = sites[keep + ["geometry"]].copy()
     # Rest areas come back as polygons; a station site needs a point.
     sites["geometry"] = sites.geometry.to_crs(3086).centroid.to_crs(4326)
     sites = sites.astype({c: str for c in keep})
     sites.to_file(outdir / "osm_candidate_sites.gpkg", driver="GPKG")
-    return len(sites), f"OpenStreetMap via Overpass API (osmnx), bbox {BBOX}, tags {OSM_SITE_TAGS}"
+    return len(sites), source
 
 
 def fetch_aadt(url, name):
@@ -191,7 +260,7 @@ def fetch_noaa_weather(outdir):
 
 
 DATASETS = {
-    "osm_interstates": fetch_osm_interstates,
+    "osm_roads": fetch_osm_roads,
     "osm_candidate_sites": fetch_osm_candidate_sites,
     "aadt_current": fetch_aadt(AADT_CURRENT, "aadt_current"),
     "aadt_historical": fetch_aadt(AADT_HISTORICAL, "aadt_historical"),
