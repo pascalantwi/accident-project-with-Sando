@@ -61,7 +61,7 @@ Pascal Antwi¹, Thobias Sando²,
 *Figures and tables: [Figure 8](#figure-8); [Table 4](#table-4); [Figure 9](#figure-9); [Table 5](#table-5).*
 
 ### 3.10 Sensitivity analysis and temporal validation <a id="sec-3-10"></a>
-*Figures and tables: [Figure S6](#figure-s6); [Table S4](#table-s4).*
+*Figures and tables: [Figure S6](#figure-s6); [Table S4](#table-s4); [Figure S9](#figure-s9); [Table S5](#table-s5); [Table S6](#table-s6).*
 
 ### 3.11 Fleet size with busy units <a id="sec-3-11"></a>
 *Figures and tables: [Table 6](#table-6); [Figure 10](#figure-10).*
@@ -378,6 +378,14 @@ Pascal Antwi¹, Thobias Sando²,
 
 *Cited in [Section 3.6](#sec-3-6).*
 
+<a id="figure-s9"></a>
+
+![Figure S9](../results/figures/FigureS9_site_robustness.png)
+
+**Figure S9.** Share of re-solved layouts (10 stations, 15-minute standard) that select each candidate site: 200 bootstrap resamples of 2022–2023 days, 2022 and 2023 alone, and seven speed and demand scenarios. Triangles: recommended stations S1–S10. (a) FDOT District 2; (b) Jacksonville.
+
+*Cited in [Section 3.10](#sec-3-10).*
+
 
 <a id="table-s1"></a>**Table S1.** Completeness and variability of candidate explanatory variables (incidents, n = 173,198).
 
@@ -433,5 +441,40 @@ Pascal Antwi¹, Thobias Sando²,
 | 2022–2023 | 2024 | 80.7 | 80.6 | 7 of 10 | 10 of 10 |
 
 *Note:* The layout optimised on the evaluation year uses that year's incidents and is shown for reference.
+
+*Cited in [Section 3.10](#sec-3-10).*
+
+
+<a id="table-s5"></a>**Table S5.** Robustness of the recommended station sites: share of re-solved layouts that select the site, or any candidate site within 5 km of it.
+
+| ID | Station site | Selected, demand resamples (%) | Site within 5 km selected, demand resamples (%) | Selected, all re-solved layouts (%) | Site within 5 km selected, all layouts (%) |
+| --- | --- | ---: | ---: | ---: | ---: |
+| S1 | I-295 Exit 54, Duval County | 20.5 | 58.5 | 20.1 | 59.3 |
+| S2 | I-10 Exit 358, Duval County | 34.0 | 91.5 | 33.5 | 91.9 |
+| S3 | I-295 Exit 10, Duval County | 33.0 | 33.0 | 33.5 | 34.0 |
+| S4 | I-75 Exit 435, Columbia County | 100.0 | 100.0 | 100.0 | 100.0 |
+| S5 | I-10 Exit 283, Suwannee County | 100.0 | 100.0 | 99.0 | 99.0 |
+| S6 | I-95 Exit 366, Duval County | 71.0 | 71.0 | 70.3 | 70.3 |
+| S7 | I-75 Exit 384, Alachua County | 100.0 | 100.0 | 97.6 | 99.0 |
+| S8 | I-75 Exit 404, Alachua County | 100.0 | 100.0 | 99.5 | 99.5 |
+| S9 | I-95 Exit 318, St. Johns County | 82.5 | 82.5 | 80.9 | 81.3 |
+| S10 | I-10 Exit 333, Baker County | 67.5 | 68.5 | 66.0 | 67.9 |
+
+*Note:* Demand resamples: 200 bootstrap samples of 2022–2023 days. All re-solved layouts: the 200 resamples, 2022 and 2023 alone, four speed scenarios and three demand definitions (209 layouts).
+
+*Cited in [Section 3.10](#sec-3-10).*
+
+
+<a id="table-s6"></a>**Table S6.** Coverage of 2024 incidents within 15 minutes under alternative travel speeds: the recommended layout compared with the layout optimised for each speed scenario.
+
+| Travel-speed scenario | Recommended layout, covered ≤ 15 min (%) | Layout optimised for the scenario (%) | Difference (percentage points) | Sites shared |
+| --- | ---: | ---: | ---: | ---: |
+| Base case | 80.7 | 80.7 | 0.0 | 10 of 10 |
+| Peak speed 50% of off-peak | 74.5 | 75.1 | 0.5 | 5 of 10 |
+| Peak speed 83% of off-peak | 84.8 | 85.3 | 0.4 | 4 of 10 |
+| Off-peak speeds −15% | 72.7 | 73.2 | 0.6 | 3 of 10 |
+| Off-peak speeds +15% | 86.5 | 85.9 | -0.6 | 4 of 10 |
+
+*Note:* Layouts are optimised on road-edge midpoints and evaluated at exact incident locations, so a scenario-optimised layout can score slightly below the recommended layout (negative difference).
 
 *Cited in [Section 3.10](#sec-3-10).*

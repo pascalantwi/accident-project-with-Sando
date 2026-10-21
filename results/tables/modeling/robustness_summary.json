@@ -1,0 +1,21 @@
+{
+  "bootstrap_samples": 200,
+  "scenarios": 7,
+  "years": 2,
+  "near_km": 5.0,
+  "recommended_in_t5_matches_resolved": true,
+  "bootstrap_mean_sites_shared": 7.085,
+  "distinct_sites_ever_selected": 49,
+  "other_sites_selected_pct": {
+    "I-295 Exit 5A, Duval County": 48.3,
+    "Interchange near US-90 / Beach Blvd at Southside Blvd, Duval County": 32.1,
+    "I-10 Exit 327, Baker County": 31.6,
+    "I-295 Exit 21B, Duval County": 31.6,
+    "I-95 Exit 362A, Duval County": 28.7,
+    "Interchange near SR-202 / Butler Blvd between Kernan Blvd and I-295 E, Duval County": 23.0,
+    "I-10 Exit 357, Duval County": 22.5,
+    "I-95 Exit 311, St. Johns County": 17.7,
+    "I-295 Exit 53, Duval County": 13.9,
+    "I-295 Exit 3, Duval County": 8.6
+  }
+}
