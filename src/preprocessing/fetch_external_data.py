@@ -1,6 +1,6 @@
 """Fetch the external datasets the station-siting analysis needs (draft.md, section 3).
 
-  osm_interstates.gpkg / .graphml   Florida motorway network (interstates, Turnpike,
+  osm_interstates.gpkg / .graphml   District 2 motorway network (interstates,
                                     expressways) from OpenStreetMap, for snapping
                                     incidents and computing drive times
   osm_candidate_sites.gpkg          interchanges, rest areas and service plazas from
@@ -33,7 +33,8 @@ import geopandas as gpd
 import pandas as pd
 import requests
 
-PLACE = "Florida, USA"
+# FDOT District 2 plus a margin (west, south, east, north), WGS84.
+BBOX = (-83.9, 29.0, -81.0, 31.0)
 FL_STATEFP = "12"
 TIGER_YEAR = 2023
 TIGER_COUNTIES = f"https://www2.census.gov/geo/tiger/TIGER{TIGER_YEAR}/COUNTY/tl_{TIGER_YEAR}_us_county.zip"
@@ -62,7 +63,7 @@ def _get(session, url, retries=3, **kw):
             time.sleep(2 ** (attempt + 1))
 
 
-def fetch_arcgis_layer(url, where="1=1", chunk=1000, session=None):
+def fetch_arcgis_layer(url, where="1=1", chunk=1000, session=None, bbox=None):
     """Download every feature of an ArcGIS FeatureServer layer as WGS84.
 
     Pages by object ID, which works whether or not the server supports
@@ -70,7 +71,9 @@ def fetch_arcgis_layer(url, where="1=1", chunk=1000, session=None):
     """
     session = session or requests.Session()
     ids = _get(session, f"{url}/query",
-               params={"where": where, "returnIdsOnly": "true", "f": "json"}).json()
+               params={"where": where, "returnIdsOnly": "true", "f": "json",
+                       **({"geometry": ",".join(map(str, bbox)), "geometryType": "esriGeometryEnvelope",
+                           "inSR": 4326, "spatialRel": "esriSpatialRelIntersects"} if bbox else {})}).json()
     if "error" in ids:
         raise RuntimeError(f"{url}: {ids['error']}")
     oids = sorted(ids.get("objectIds") or [])
@@ -97,28 +100,28 @@ def read_zip_url(url, session=None):
 def fetch_osm_interstates(outdir):
     import osmnx as ox
     ox.settings.requests_timeout = 600
-    G = ox.graph_from_place(PLACE, custom_filter=OSM_ROAD_FILTER, simplify=True, retain_all=True)
+    G = ox.graph_from_bbox(BBOX, custom_filter=OSM_ROAD_FILTER, simplify=True, retain_all=True)
     ox.save_graphml(G, outdir / "osm_interstates.graphml")
     ox.save_graph_geopackage(G, outdir / "osm_interstates.gpkg")
-    return G.number_of_edges(), "OpenStreetMap via Overpass API (osmnx), filter " + OSM_ROAD_FILTER
+    return G.number_of_edges(), "OpenStreetMap via Overpass API (osmnx), bbox " + str(BBOX) + ", filter " + OSM_ROAD_FILTER
 
 
 def fetch_osm_candidate_sites(outdir):
     import osmnx as ox
     ox.settings.requests_timeout = 600
-    sites = ox.features_from_place(PLACE, tags=OSM_SITE_TAGS).reset_index()
+    sites = ox.features_from_bbox(BBOX, tags=OSM_SITE_TAGS).reset_index()
     keep = [c for c in ["element", "id", "highway", "name", "ref", "operator", "amenity"] if c in sites]
     sites = sites[keep + ["geometry"]].copy()
     # Rest areas come back as polygons; a station site needs a point.
     sites["geometry"] = sites.geometry.to_crs(3086).centroid.to_crs(4326)
     sites = sites.astype({c: str for c in keep})
     sites.to_file(outdir / "osm_candidate_sites.gpkg", driver="GPKG")
-    return len(sites), f"OpenStreetMap via Overpass API (osmnx), tags {OSM_SITE_TAGS}"
+    return len(sites), f"OpenStreetMap via Overpass API (osmnx), bbox {BBOX}, tags {OSM_SITE_TAGS}"
 
 
 def fetch_aadt(url, name):
     def fetch(outdir):
-        gdf = fetch_arcgis_layer(url)
+        gdf = fetch_arcgis_layer(url, bbox=BBOX)
         gdf.to_file(outdir / f"{name}.gpkg", driver="GPKG")
         return len(gdf), url
     return fetch
@@ -139,7 +142,7 @@ def fetch_fl_roads(outdir):
 
 NOAA_HISTORY = "https://www.ncei.noaa.gov/pub/data/noaa/isd-history.csv"
 NOAA_ACCESS = "https://www.ncei.noaa.gov/access/services/data/v1"
-STUDY_BBOX = {"lat": (29.0, 31.0), "lon": (-83.9, -81.0)}   # FDOT District 2
+STUDY_BBOX = {"lat": (BBOX[1], BBOX[3]), "lon": (BBOX[0], BBOX[2])}
 PERIOD = ("2022-01-01", "2024-12-31")
 
 

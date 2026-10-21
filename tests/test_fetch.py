@@ -48,3 +48,13 @@ def test_parse_precip_mm():
     assert parse_precip_mm("01,0025,9,5") == (1, 2.5)
     assert parse_precip_mm("01,9999,9,9") == (1, None)
     assert parse_precip_mm(None) == (None, None)
+
+
+def test_fetch_arcgis_layer_sends_bbox():
+    server = FakeArcGIS()
+    seen = {}
+    get = server.get
+    server.get = lambda url, params, timeout: seen.update(params) or get(url, params, timeout)
+    fetch_arcgis_layer("https://example.com/FeatureServer/0", session=server, bbox=(-83.9, 29.0, -81.0, 31.0))
+    assert seen["geometry"] == "-83.9,29.0,-81.0,31.0"
+    assert seen["geometryType"] == "esriGeometryEnvelope" and seen["inSR"] == 4326
