@@ -8,7 +8,12 @@ Pascal Antwi¹, Thobias Sando²,
 ## 2. Methodology <a id="sec-2"></a>
 
 ### 2.1 Study area <a id="sec-2-1"></a>
-*Figures and tables: [Figure 1](#figure-1).*
+
+The study area is Florida Department of Transportation (FDOT) District 2, which manages the state highway system in 18 counties of Northeast and North Central Florida: Alachua, Baker, Bradford, Clay, Columbia, Dixie, Duval, Gilchrist, Hamilton, Lafayette, Levy, Madison, Nassau, Putnam, St. Johns, Suwannee, Taylor and Union ([Figure 1](#figure-1)a). The district combines the Jacksonville metropolitan area, centred on Duval County, with a second urban centre at Gainesville (Alachua County) and large rural areas to the west and south.
+
+The limited-access network comprises three interstate corridors and an urban beltway. I-95 follows the Atlantic coast through Nassau, Duval and St. Johns counties; I-10 runs west from Jacksonville through Baker, Columbia, Suwannee and Madison counties; and I-75 crosses Hamilton, Columbia and Alachua counties, meeting I-10 near Lake City. Around Jacksonville, I-295 forms a beltway, and several limited-access state roads, including SR-202 (J. Turner Butler Boulevard), SR-9B and SR-115 (Arlington Expressway), connect the beltway with the city centre and the beaches ([Figure 1](#figure-1)b). These facilities are patrolled by FDOT's Road Ranger freeway service patrol, which provides free roadside assistance and incident support as part of the state's traffic incident management programme.
+
+The incident records analysed in this study (Section 2.2) lie between 29.0° and 30.7° N and between 81.3° and 83.7° W, in 15 of the district's 18 counties; Gilchrist, Lafayette and Union counties, which contain no interstate highway, recorded none. The region has a humid subtropical climate with frequent warm-season convective storms, which is why precipitation is included as an explanatory variable (Section 2.6).
 
 ### 2.2 Data <a id="sec-2-2"></a>
 
