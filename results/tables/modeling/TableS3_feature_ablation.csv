@@ -1,0 +1,5 @@
+inputs,key,runs,Deviance,Deviance_sd,HitRate,PAI,diff_vs_dayahead,ci_low,ci_high
+"Base inputs only (no AADT, no precipitation)",lightgbm_noexternal,5,0.13255946,0.000112351096,23.591005,4.637992,-0.00010766073,-0.00012412088,-9.180179e-05
+Base inputs + AADT exposure,lightgbm_aadt,5,0.13264373,0.0001340161,23.583817,4.6365786,-2.328277e-05,-3.4043027e-05,-1.3169017e-05
+Base inputs + AADT exposure + previous-day precipitation (day-ahead model),lightgbm,5,0.13266286,5.58975e-05,23.58987,4.6377687,0.0,0.0,0.0
+As above + observed precipitation in the target window (perfect-forecast bound),lightgbm_precipwindow,5,0.1325306,7.473005e-05,23.626698,4.6450086,-0.00013682967,-0.00015508241,-0.00011922494
