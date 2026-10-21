@@ -155,9 +155,12 @@ class Network:
         s["lon"], s["lat"] = s.geometry.x, s.geometry.y
         return s.drop(columns=["geometry", "index_right"], errors="ignore")
 
-    def site_minutes(self, sites, regime, **speed):
-        """Minutes from each site to every node: min over the site's access nodes."""
+    def site_minutes(self, sites, regime, reverse=False, **speed):
+        """Minutes from each site to every node (reverse: from every node back to the site),
+        min over the site's access nodes."""
         g = self.graph(self.edge_minutes(regime, **speed))
+        if reverse:
+            g = g.T.tocsr()
         nodes = np.unique(np.concatenate(sites["access_nodes"].to_numpy()))
         d = dijkstra(g, directed=True, indices=nodes)
         row = pd.Index(nodes)

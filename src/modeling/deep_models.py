@@ -5,11 +5,14 @@ representation; a shared head combines it with day-ahead window features and pre
 log-rate for the 8 windows of the target day, offset by the historical mean (the network learns
 deviations from history). Loss: Poisson negative log-likelihood.
 
-Usage: python deep_models.py [lstm|gwn|transformer ...]
-Writes modeling/work/pred_<model>_<seed>.npy and modeling/work/dl_info.json
+Usage:
+  python deep_models.py [lstm gwn transformer] [--hidden 32 --lr 1e-3 --epochs 20]
+      trains five seeds -> data/interim/pred_<model>_<seed>.npy, dl_info.json
+  python deep_models.py --tune [lstm gwn transformer]
+      one seed per configuration in TUNING_GRID -> data/interim/dl_tuning.json (validation deviance)
 """
+import argparse
 import json
-import sys
 import time
 import warnings
 
@@ -189,7 +192,18 @@ def deviance(model, batcher, days):
     return tot / cnt, np.concatenate(preds)
 
 
-def train(name, seed, ds, batcher):
+# Tuning grid (the default configuration, hidden 32 and learning rate 1e-3, is the first entry).
+TUNING_GRID = [{"hidden": 32, "lr": 1e-3}, {"hidden": 64, "lr": 1e-3}, {"hidden": 32, "lr": 3e-4},
+               {"hidden": 64, "lr": 3e-4}]
+TUNING_EPOCHS = 30
+
+
+def configure(hidden, lr, epochs):
+    global C, LR, MAX_EPOCHS
+    C, LR, MAX_EPOCHS = hidden, lr, epochs
+
+
+def train(name, seed, ds, batcher, key=None, save=True):
     torch.manual_seed(seed)
     rng = np.random.default_rng(seed)
     model = build(name, ds)
@@ -220,18 +234,40 @@ def train(name, seed, ds, batcher):
     model.load_state_dict(best_state)
     eval_days = np.concatenate([ds.val_days, ds.test_days])
     _, pred = deviance(model, batcher, eval_days)
-    np.save(WORK / f"pred_{name}_{seed}.npy", pred.astype(np.float32))
+    if save:
+        np.save(WORK / f"pred_{key or name}_{seed}.npy", pred.astype(np.float32))
     n_params = sum(p.numel() for p in model.parameters())
-    return {"best_val_deviance": best, "epochs": len(log), "parameters": n_params, "log": log}
+    return {"best_val_deviance": best, "epochs": len(log), "parameters": n_params, "log": log,
+            "config": {"hidden": C, "lr": LR, "max_epochs": MAX_EPOCHS}}
 
 
 def main():
-    names = sys.argv[1:] or ["lstm", "gwn", "transformer"]
+    a = argparse.ArgumentParser()
+    a.add_argument("names", nargs="*", default=["lstm", "gwn", "transformer"])
+    a.add_argument("--tune", action="store_true")
+    a.add_argument("--hidden", type=int, default=C)
+    a.add_argument("--lr", type=float, default=LR)
+    a.add_argument("--epochs", type=int, default=MAX_EPOCHS)
+    args = a.parse_args()
     ds = Dataset()
     batcher = Batcher(ds)
+    if args.tune:
+        path = WORK / "dl_tuning.json"
+        tun = json.loads(path.read_text()) if path.exists() else {}
+        for name in args.names:
+            for cfg in TUNING_GRID:
+                tag = f"h{cfg['hidden']}_lr{cfg['lr']:g}"
+                if tag in tun.get(name, {}):
+                    continue
+                configure(cfg["hidden"], cfg["lr"], TUNING_EPOCHS)
+                r = train(name, SEEDS[0], ds, batcher, save=False)
+                tun.setdefault(name, {})[tag] = {k: r[k] for k in ("best_val_deviance", "epochs", "parameters", "config")}
+                path.write_text(json.dumps(tun, indent=2))
+        return
+    configure(args.hidden, args.lr, args.epochs)
     info_path = WORK / "dl_info.json"
     info = json.loads(info_path.read_text()) if info_path.exists() else {}
-    for name in names:
+    for name in args.names:
         for seed in SEEDS:
             if (WORK / f"pred_{name}_{seed}.npy").exists() and str(seed) in info.get(name, {}):
                 continue

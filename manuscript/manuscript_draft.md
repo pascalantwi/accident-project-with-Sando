@@ -29,6 +29,8 @@ Pascal Antwi¹, Thobias Sando²,
 
 ### 2.10 Evaluation and sensitivity analysis <a id="sec-2-10"></a>
 
+### 2.11 Simulation with busy units <a id="sec-2-11"></a>
+
 ## 3. Results <a id="sec-3"></a>
 
 ### 3.1 Incident characteristics <a id="sec-3-1"></a>
@@ -58,8 +60,11 @@ Pascal Antwi¹, Thobias Sando²,
 ### 3.9 Station locations and coverage <a id="sec-3-9"></a>
 *Figures and tables: [Figure 8](#figure-8); [Table 4](#table-4); [Figure 9](#figure-9); [Table 5](#table-5).*
 
-### 3.10 Sensitivity analysis <a id="sec-3-10"></a>
-*Figures and tables: [Figure S6](#figure-s6).*
+### 3.10 Sensitivity analysis and temporal validation <a id="sec-3-10"></a>
+*Figures and tables: [Figure S6](#figure-s6); [Table S4](#table-s4).*
+
+### 3.11 Fleet size with busy units <a id="sec-3-11"></a>
+*Figures and tables: [Table 6](#table-6); [Figure 10](#figure-10).*
 
 ## 4. Discussion <a id="sec-4"></a>
 
@@ -191,6 +196,16 @@ Pascal Antwi¹, Thobias Sando²,
 
 **Figure 9.** Recommended static station locations (10 stations, 15-minute standard), labelled S1–S10, and the 307 candidate sites (interchanges, rest areas and service plazas). Blue cells: at least half of the cell's 2024 incidents within 15 minutes of a station at off-peak speed. (a) FDOT District 2; (b) Jacksonville.
 
+*Cited in [Section 3.9](#sec-3-9).*
+
+<a id="figure-10"></a>
+
+![Figure 10](../results/figures/Figure10_simulation.png)
+
+**Figure 10.** Simulated share of 2024 incidents reached within 15 minutes by fleet size, for layouts of 10, 15 and 20 stations, with equal units per station (solid) or units allocated in proportion to 2022–2023 demand (dashed). Dotted lines: coverage when units are always free.
+
+*Cited in [Section 3.11](#sec-3-11).*
+
 
 ## Appendix B. Tables
 
@@ -269,6 +284,33 @@ Pascal Antwi¹, Thobias Sando²,
 | S10 | I-10 at US-90 (Suwannee County, MM 274) | 30.3376 | -83.1080 | 2,792 | 4.7 | 66.7 |
 
 *Note:* Coordinates are OpenStreetMap site locations (WGS84). Nearest incident landmark: name of the closest 1 km road cell, from the incident location descriptions.
+
+
+<a id="table-6"></a>**Table 6.** Discrete-event simulation of 2024 with busy units: response to the 59,981 incidents of 2024 by layout, fleet size and unit allocation.
+
+| Case | Stations | Units | Unit allocation | Reached ≤ 10 min (%) | ≤ 15 min (%) | ≤ 20 min (%) | ≤ 15 min, units always free (%) | Mean response (min) | 90th percentile (min) | Delayed by busy units (%) | Utilisation (%) |
+| --- | ---: | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Base | 10 | 10 | Equal | 0.4 | 0.6 | 0.7 | 80.7 | overloaded | overloaded | 99.4 | 108.0 |
+| Base | 10 | 20 | Equal | 34.8 | 52.4 | 63.3 | 80.7 | 27.0 | 59.8 | 43.0 | 39.2 |
+| Base | 10 | 20 | Proportional | 38.8 | 57.4 | 67.7 | 80.7 | 24.9 | 54.2 | 37.4 | 38.2 |
+| Base | 10 | 30 | Equal | 49.0 | 71.6 | 82.3 | 80.7 | 14.3 | 30.6 | 16.8 | 23.8 |
+| Base | 10 | 30 | Proportional | 52.2 | 75.1 | 85.0 | 80.7 | 13.6 | 26.3 | 11.3 | 23.5 |
+| Base | 15 | 15 | Equal | 16.2 | 25.1 | 31.5 | 88.7 | 91.5 | 232.4 | 78.0 | 62.5 |
+| Base | 15 | 30 | Equal | 51.3 | 72.9 | 83.1 | 88.7 | 13.5 | 26.6 | 26.7 | 23.0 |
+| Base | 15 | 30 | Proportional | 57.7 | 79.2 | 88.4 | 88.7 | 11.6 | 21.4 | 17.2 | 22.4 |
+| Base | 15 | 45 | Equal | 61.9 | 84.5 | 93.0 | 88.7 | 9.9 | 17.5 | 9.0 | 14.5 |
+| Base | 15 | 45 | Proportional | 64.7 | 86.7 | 94.3 | 88.7 | 9.5 | 16.4 | 4.2 | 14.4 |
+| Base | 20 | 20 | Equal | 33.3 | 47.6 | 56.7 | 94.2 | 34.9 | 88.3 | 61.9 | 40.8 |
+| Base | 20 | 40 | Equal | 66.5 | 85.1 | 92.3 | 94.2 | 9.5 | 17.9 | 18.5 | 16.1 |
+| Base | 20 | 40 | Proportional | 71.8 | 89.5 | 95.1 | 94.2 | 8.6 | 15.3 | 10.1 | 15.8 |
+| Base | 20 | 60 | Equal | 74.4 | 92.0 | 96.9 | 94.2 | 7.9 | 14.2 | 5.9 | 10.4 |
+| Base | 20 | 60 | Proportional | 76.4 | 93.2 | 97.1 | 94.2 | 7.8 | 13.5 | 2.1 | 10.4 |
+| On-scene time halved | 10 | 20 | Proportional | 47.3 | 68.6 | 79.1 | 80.7 | 15.7 | 34.8 | 22.7 | 26.5 |
+| AVL-created incidents excluded | 10 | 20 | Proportional | 48.4 | 69.8 | 79.7 | 84.4 | 17.0 | 34.9 | 22.5 | 23.1 |
+
+*Note:* Each incident is assigned to the unit that can reach it first; a unit is busy for travel, on-scene time (logged event duration; type median where flagged) and return to its station. Utilisation above 100%: demand exceeds capacity and the queue grows through the year. Sensitivity rows: 10 stations, 20 units, proportional allocation.
+
+*Cited in [Section 3.11](#sec-3-11).*
 
 
 ## Appendix C. Supplementary material
@@ -373,3 +415,12 @@ Pascal Antwi¹, Thobias Sando²,
 *Note:* Differences: day-level bootstrap (2,000 resamples) of mean daily deviance, seed-averaged predictions.
 
 *Cited in [Section 3.8](#sec-3-8).*
+
+
+<a id="table-s4"></a>**Table S4.** Temporal validation of the static layout (10 stations, 15-minute standard): sites selected on one period and evaluated on the following year.
+
+[pending: final siting run]
+
+*Note:* The layout optimised on the evaluation year uses that year's incidents and is shown for reference.
+
+*Cited in [Section 3.10](#sec-3-10).*

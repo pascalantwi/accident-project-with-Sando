@@ -130,15 +130,14 @@ def edge_demand(inc, edge_index, years):
     return out
 
 
-def main():
+def setup():
+    """Incidents snapped to the directed network, candidate sites with names (shared with
+    simulation.py)."""
     ds = Dataset()
-    p = np.load(WORK / "panel.npz", allow_pickle=True)
     cells = pd.read_csv(WORK / "cells.csv")
-    n = ds.n_cells
     inc = pd.read_parquet(WORK / "incidents.parquet")
     inc["win_of_day"] = inc["window"] % 8
     inc["regime"] = [regime(ds.weekend[d], w) for d, w in zip(inc["day"], inc["win_of_day"])]
-
     net = Network(inc["lat"].mean())
     edge, frac, dist, matched = net.snap(inc["lon"].to_numpy(), inc["lat"].to_numpy(), inc["direction"].to_numpy())
     inc["edge"], inc["frac"], inc["snap_km"] = edge, frac, np.maximum(dist - SNAP_KM, 0)  # access beyond snap tolerance
@@ -148,6 +147,17 @@ def main():
     _, near_cell = cKDTree(cxy).query(np.c_[sites["lon"] * np.cos(np.radians(30.2)), sites["lat"]])
     sites["landmark"] = cnames["name"].reindex(cells["cell"].to_numpy()[near_cell]).str.replace(r" \(.*\)$", "", regex=True).to_numpy()
     sites["site_name"] = [site_name(r, r["landmark"]) for _, r in sites.iterrows()]
+    return ds, cells, inc, net, sites, dist, matched
+
+
+def year_of(inc):
+    return inc["created_at"].dt.tz_convert("America/New_York").dt.year
+
+
+def main():
+    ds, cells, inc, net, sites, dist, matched = setup()
+    p = np.load(WORK / "panel.npz", allow_pickle=True)
+    n = ds.n_cells
     S = len(sites)
 
     train = inc[inc["day"] < ds.val_end]
@@ -223,8 +233,54 @@ def main():
         dyn_times[key] = tsum / max(tcount, 1)
         print(f"dynamic {key} done", flush=True)
 
+    # Comparison layouts without optimisation (p = 10): the candidate site nearest each of the
+    # busiest 2022-2023 cells, and random sites (mean of 200 draws).
+    busy = train.groupby("cell").size().sort_values(ascending=False).index
+    cxy = np.c_[cells["lon"] * np.cos(np.radians(30.2)), cells["lat"]]
+    _, near_site = cKDTree(np.c_[sites["lon"] * np.cos(np.radians(30.2)), sites["lat"]]).query(cxy[busy])
+    naive = np.array(list(dict.fromkeys(near_site))[:P_TABLE])
+    rng = np.random.default_rng(0)
+    rand = [T_inc[rng.choice(S, P_TABLE, replace=False)].min(0) for _ in range(200)]
+    comparison = {}
+    for key, t in [("busiest", T_inc[naive].min(0)), ("random", None)]:
+        if key == "random":
+            comparison[key] = {**{f"covered_{T}min_pct": float(np.mean([(r <= T).mean() * 100 for r in rand]))
+                                  for T in T_LIST},
+                               "mean_response_min": float(np.mean([r.mean() for r in rand]))}
+        else:
+            comparison[key] = {**{f"covered_{T}min_pct": float((t <= T).mean() * 100) for T in T_LIST},
+                               "mean_response_min": float(t.mean())}
+    results["comparison_layouts"] = comparison
+    results["comparison_busiest_sites"] = naive.tolist()
+
+    # Temporal validation of the static layout (p = 10, T = 15): choose sites on one period,
+    # evaluate on the next year; in-sample optimum on the evaluation year as the upper bound.
+    inc_year = year_of(inc)
+    tv = []
+    for train_years, test_year in [((2022,), 2023), ((2023,), 2024), ((2022, 2023), 2024)]:
+        tr = inc[inc_year.isin(train_years)]
+        te = inc[inc_year == test_year].reset_index(drop=True)
+        tr_edges = pd.Index(np.unique(tr["edge"]))
+        te_edges = pd.Index(np.unique(te["edge"]))
+        tm_tr = Times(net, sites, te, tr_edges.to_numpy())
+        tm_te = Times(net, sites, te, te_edges.to_numpy())
+        st_tr, _ = solve_mclp(edge_demand(tr, tr_edges, len(train_years)), {r: tm_tr.edge[r] <= 15 for r in REGIMES}, P_TABLE)
+        st_te, _ = solve_mclp(edge_demand(te, te_edges, 1), {r: tm_te.edge[r] <= 15 for r in REGIMES}, P_TABLE)
+        ti = tm_tr.incident(te["regime"].to_numpy())
+        tv.append({"selected_on": "–".join(map(str, train_years)), "evaluated_on": test_year,
+                   "covered_15min_pct": float((ti[st_tr].min(0) <= 15).mean() * 100),
+                   "layout_optimised_on_evaluation_year_pct": float((ti[st_te].min(0) <= 15).mean() * 100),
+                   "sites_shared_with_in_sample": len(set(st_tr) & set(st_te)),
+                   "sites_shared_with_recommended": len(set(st_tr) & set(static_layouts[(15, P_TABLE)]))})
+    tv = pd.DataFrame(tv)
+    tv.to_csv(TABLES / "TableS4_temporal_validation.csv", index=False)
+    print(tv.round(2).to_string(), flush=True)
+
     # Table 4 (p = 10).
-    rows = [{"layout": "Current Road Ranger stations", "stations": P_TABLE}]
+    rows = [{"layout": "Current Road Ranger stations", "stations": P_TABLE},
+            {"layout": "Sites nearest the busiest cells (no optimisation)", "stations": P_TABLE,
+             **comparison["busiest"]},
+            {"layout": "Random candidate sites (mean of 200 draws)", "stations": P_TABLE, **comparison["random"]}]
     t_static = T_inc[static_layouts[(15, P_TABLE)]].min(0)
     srow = {"layout": "Static stations, 2022–2023 demand (MCLP)", "stations": P_TABLE}
     for T in T_LIST:

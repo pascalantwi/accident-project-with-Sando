@@ -1,0 +1,11 @@
+{
+  "incidents": 59981,
+  "onscene_imputed": 1192,
+  "onscene_median_min_by_type": {
+    "Abandoned Vehicle": 4.5,
+    "Crash": 57.9,
+    "Debris On Roadway": 12.5,
+    "Disabled Vehicle": 11.7
+  },
+  "onscene_mean_min": 33.62882412764042
+}
