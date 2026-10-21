@@ -9,7 +9,7 @@ import numpy as np  # noqa: E402
 INK, INK_2, GRID = "#0b0b0b", "#52514e", "#e4e3df"
 SERIES = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#6250d6", "#e34948"]
 DISTRICT = {"lon": (-83.8, -81.2), "lat": (29.4, 30.8)}
-JAX = {"lon": (-81.80, -81.42), "lat": (30.10, 30.46)}
+JAX = {"lon": (-81.80, -81.42), "lat": (30.10, 30.50)}
 
 plt.rcParams.update({
     "font.size": 9, "axes.titlesize": 9, "axes.titleweight": "bold", "axes.titlelocation": "left",

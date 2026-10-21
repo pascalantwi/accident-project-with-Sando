@@ -9,10 +9,12 @@ import json
 import numpy as np
 import pandas as pd
 from matplotlib.lines import Line2D
+from scipy.sparse.csgraph import connected_components
 from scipy.spatial import cKDTree
 from scipy.stats import norm
 
 from common import FIGURES, TABLES, TZ, WORK
+from naming import cell_names
 from plots import INK_2, cell_marker_size, plt, two_panel_map
 
 BAND_KM = 2.0  # neighbours within 2 km (Gi* includes the cell itself)
@@ -106,6 +108,30 @@ def main():
         "robustness_crash_only": agreement(inc[inc["is_crash"]]),
         "duval_share_of_hot_pct": round(cells[hot]["location"].str.startswith("Duval").mean() * 100, 1),
     }
+    names = cell_names()
+    cells["name"] = names["name"].reindex(cells["cell"]).to_numpy()
+    cells["county"] = names["county"].reindex(cells["cell"]).to_numpy()
+    crashes = np.bincount(inc.loc[inc["is_crash"], "cell"], minlength=n) / len(years)
+
+    # Hotspot clusters: contiguous hot cells (8-neighbourhood), named after their busiest cell.
+    hot_idx = np.flatnonzero(hot)
+    sub = tree.sparse_distance_matrix(tree, 1.5, output_type="coo_matrix").tocsr()[hot_idx][:, hot_idx]
+    _, lab = connected_components(sub, directed=False)
+    rows = []
+    for k in np.unique(lab):
+        members = hot_idx[lab == k]
+        top = members[np.argmax(total[members])]
+        rows.append({"name": cells.loc[top, "name"], "county": cells.loc[top, "county"],
+                     "routes": ", ".join(sorted(set(cells.loc[members, "route"]))),
+                     "cells": len(members), "incidents_per_year": round(total[members].sum(), 1),
+                     "crash_share_pct": round(crashes[members].sum() / total[members].sum() * 100, 1),
+                     "cells_hot_all_years": int((cells.loc[members, "years_hot"] == len(years)).sum()),
+                     "max_gi_z": round(z[members].max(), 2),
+                     "lat": cells.loc[members, "lat"].mean(), "lon": cells.loc[members, "lon"].mean()})
+    clusters = pd.DataFrame(rows).sort_values("incidents_per_year", ascending=False).reset_index(drop=True)
+    clusters.insert(0, "id", [f"H{i + 1}" for i in range(len(clusters))])
+    clusters.to_csv(TABLES / "Table3_hotspot_clusters.csv", index=False)
+    summary["clusters"] = len(clusters)
     cells.sort_values("gi_z", ascending=False).to_csv(TABLES / "hotspot_cells.csv", index=False)
     (TABLES / "hotspot_summary.json").write_text(json.dumps(summary, indent=2, default=str))
     print(json.dumps(summary, indent=2, default=str))
@@ -122,8 +148,13 @@ def main():
                        c=colors[c], linewidths=0, zorder=2 if c == "Not significant" else 3)
 
     fig, (ax1, ax2) = two_panel_map(draw)
-    handles = [Line2D([], [], marker="s", ls="", color=col, markersize=6) for _, col in CLASSES]
-    fig.legend(handles, [c for c, _ in CLASSES], ncol=4, loc="lower center", bbox_to_anchor=(0.5, -0.06),
+    for _, r in clusters.iterrows():
+        ax2.annotate(r["id"], (r["lon"], r["lat"]), xytext=(5, 4), textcoords="offset points", fontsize=7,
+                     fontweight="bold", color="#0b0b0b",
+                     bbox={"boxstyle": "round,pad=0.15", "fc": "white", "ec": "none", "alpha": 0.8})
+    present = [(c, col) for c, col in CLASSES if (cells["class"] == c).any()]
+    handles = [Line2D([], [], marker="s", ls="", color=col, markersize=6) for _, col in present]
+    fig.legend(handles, [c for c, _ in present], ncol=4, loc="lower center", bbox_to_anchor=(0.5, -0.06),
                handletextpad=0.3, columnspacing=1.0)
     fig.savefig(FIGURES / "Figure6_hotspots.png")
     plt.close(fig)

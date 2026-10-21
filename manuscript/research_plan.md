@@ -251,12 +251,16 @@ Literature
 
 Analysis
 - [x] Descriptive statistics (Tables 1–2, Figures 1–4, S1–S4)
-- [ ] Network hotspots: NKDE, Gi*, rates, emerging hotspots (Figure 5, Figure S5, Table 3)
-- [ ] Location models: MCLP and p-median, current-layout baseline (Figures 6–7, Table 4)
-- [ ] Hold-out validation and sensitivity analysis (Figure S6)
+- [x] Hotspots on 1 km road cells: Gi* with FDR, yearly persistence, robustness (Figure 6, Figure S5, Table 3)
+- [ ] Hotspots on the road network: network KDE and AADT-based rates (needs OSM network and AADT)
+- [x] Day-ahead forecasting: baselines, LightGBM, LSTM, Graph WaveNet, ST-Transformer (Table 4, Figure 7)
+- [x] Station location: static MCLP and day-ahead staging, named stations (Figures 8–9, Tables 5–6)
+- [ ] Current Road Ranger layout as baseline (needs FDOT station locations)
+- [x] Hold-out validation on 2024 and sensitivity analysis (Figure S6)
+- [ ] Re-run with NOAA precipitation and AADT inputs once downloaded
 
 Writing
-- [ ] Methods and data sections first (they are fixed by the work)
+- [x] Methods and results drafted (manuscript Sections 4–6)
 - [ ] Results, then discussion, then introduction and abstract last
 - [ ] Format to the target journal, data/code availability statement
 - [ ] Internal review by co-author (Sando), then submit

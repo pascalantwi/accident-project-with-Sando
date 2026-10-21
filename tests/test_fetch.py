@@ -41,3 +41,10 @@ def test_fetch_arcgis_layer_pages_by_object_id():
     assert server.requests == 3
     assert len(gdf) == 2500 and gdf["OBJECTID"].is_unique
     assert gdf.crs.to_epsg() == 4326 and gdf["AADT"].max() == 25000
+
+
+def test_parse_precip_mm():
+    from fetch_external_data import parse_precip_mm
+    assert parse_precip_mm("01,0025,9,5") == (1, 2.5)
+    assert parse_precip_mm("01,9999,9,9") == (1, None)
+    assert parse_precip_mm(None) == (None, None)

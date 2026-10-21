@@ -5,7 +5,7 @@
 Pascal Antwi¹, [Co-author] Sando²
 ¹ [Affiliation] · ² [Affiliation] · Corresponding author: [name, email]
 
-*Outline draft, 21 October 2026. Sections are bullet outlines to be written up. [Section 4 (Exploratory data analysis)](#sec-4) is drafted in full; modelling methods ([Section 5](#sec-5)) and results ([Section 6](#sec-6)) are planned. All figures and tables are in the appendices: [Appendix A](#appendix-a-figures) (figures), [Appendix B](#appendix-b-tables) (tables), [Appendix C](#appendix-c-supplementary-material) (supplementary).*
+*Outline draft, 21 October 2026. Introduction, literature review, discussion and conclusion are bullet outlines to be written up. The exploratory analysis ([Section 4](#sec-4)), modelling methods ([Section 5](#sec-5)) and modelling results ([Section 6](#sec-6)) are drafted; results are reported without interpretation. Items still waiting on data are marked [pending]. All figures and tables are in the appendices: [Appendix A](#appendix-a-figures) (figures), [Appendix B](#appendix-b-tables) (tables), [Appendix C](#appendix-c-supplementary-material) (supplementary).*
 
 **Terminology.** The data are traffic management events, not Road Ranger dispatch records. "Incidents" means events of the four types Road Rangers serve (disabled vehicle, crash, debris on roadway, abandoned vehicle); whether a Road Ranger responded to a given incident is not recorded.
 
@@ -18,7 +18,7 @@ Pascal Antwi¹, [Co-author] Sando²
 - **Data:** 9.2 million traffic management records (2022–2024, FDOT District 2) reconstructed into 227,196 events; 173,198 incidents.
 - **Methods:** network hotspot detection; spatio-temporal graph neural network (GNN) forecasting against statistical and machine-learning baselines; maximal covering and p-median models fed with predicted demand; evaluation on 2024.
 - **EDA findings:** 90.3% of incidents on five corridors; half in 14.8% of occupied 1 km cells; weekday 15:00–17:59 peak; crash events open about four times longer than other types.
-- **Modelling results:** [to do] forecast accuracy vs baselines; recommended stations; coverage gain over the current layout.
+- **Modelling results:** 35 significant hot cells in eight clusters, all in Duval County; LightGBM and a Poisson log-linear model most accurate, deep models 0.45–0.69% higher deviance; 10 optimised stations cover 90.8% of 2024 incidents within 15 minutes (day-ahead staging 91.5–91.7%; oracle 99.1%); [pending] comparison with current stations.
 - **Keywords:** freeway service patrol; traffic incident management; graph neural network; spatio-temporal forecasting; maximal covering location problem; Florida.
 
 ## 1. Introduction (outline)
@@ -93,69 +93,123 @@ The median event duration was 18.9 minutes (IQR 5.7–45.6) ([Table 2](#table-2)
 
 ### 4.5 Data quality and detection <a id="sec-4-5"></a>
 
-Half of all incidents (49.8%) were created by the account `avlrrsubsystem`, which appears to be the Road Ranger automatic vehicle location (AVL) subsystem [to confirm with FDOT] ([Table S1](#table-s1)). Its share ranged from 4.9% of crashes to 86.8% of abandoned vehicles ([Table 2](#table-2)), and from 35% on I-95 to 73% on I-75. Severity was recorded as minor for 99.9% of incidents, pavement as dry for 98.8% and weather as clear for 98.3%; mile markers were missing for 53.0% ([Table S1](#table-s1)).
+Half of all incidents (49.8%) were created by the account `avlrrsubsystem`, which appears to be the Road Ranger automatic vehicle location (AVL) subsystem [to confirm with FDOT] ([Table S1](#table-s1)). Its share ranged from 4.9% of crashes to 86.8% of abandoned vehicles ([Table 2](#table-2)), and from 35% on I-95 to 73% on I-75. Severity was recorded as minor for 99.9% of incidents, pavement as dry for 98.8% and weather as clear for 98.3%; mile markers were missing for 53.0% ([Table S1](#table-s1)). Recorded adverse conditions were concentrated in crash records: 87.3% of incidents recorded in rain and 84.5% of those recorded on wet pavement were crashes, against 25.5% of all incidents. Lighting computed from solar position classified 74.9% of incidents as daylight, 3.4% as twilight and 21.7% as dark; the recorded lighting code 16 accounted for 94.7% of daylight and 81.5% of dark incidents. In total, 3,117 incidents (1.8%) had another incident on the same route and direction within 0.5 km and 15 minutes (near-duplicates; [Table S1](#table-s1)); they were retained and tested in sensitivity analyses.
 
-**Interpretation.** If confirmed as patrol-generated, the AVL share in [Table 2](#table-2) means many non-crash incidents are discovered by patrols themselves, so recorded demand may partly mirror existing patrol coverage (detection bias); crashes, rarely AVL-created, are less exposed. Models will therefore be re-run without these records ([Section 5.6](#sec-5-6)). The near-constant severity and weather fields in [Table S1](#table-s1) are dropped; weather enters the models from NOAA instead ([Section 3.3](#sec-3-3)).
+**Interpretation.** If confirmed as patrol-generated, the AVL share in [Table 2](#table-2) means many non-crash incidents are discovered by patrols themselves, so recorded demand may partly mirror existing patrol coverage (detection bias); crashes, rarely AVL-created, are less exposed. Hotspot and station analyses were therefore repeated without these records ([Section 5.6](#sec-5-6)). The recorded severity, weather and lighting fields in [Table S1](#table-s1) are not used as model inputs; darkness is derived from solar position, and NOAA weather is to be added ([Section 3.3](#sec-3-3)).
 
-## 5. Methodology: modelling (outline) <a id="sec-5"></a>
+## 5. Methodology: modelling <a id="sec-5"></a>
 
 ### 5.1 Framework <a id="sec-5-1"></a>
-- Predict-then-optimise pipeline → [Figure 5](#figure-5): build a segment graph, detect hotspots, forecast demand, optimise stations, evaluate on 2024.
+- The analysis follows the predict-then-optimise pipeline in [Figure 5](#figure-5). The OpenStreetMap network, FDOT AADT and NOAA weather could not yet be obtained, so the implementation uses road cells derived from the incident data. Inputs still to be added are marked [pending].
 
 ### 5.2 Spatial and temporal units <a id="sec-5-2"></a>
-- Nodes: directional 0.5-mile segments of the limited-access network; incidents snapped to the nearest segment (flag snaps > 200 m).
-- Edges: network connectivity (upstream/downstream, interchange links), weighted by travel time.
-- Time: 3-hour windows (8 per day, 8,768 over three years); target *yₛ,ₜ* = incidents on segment *s* in window *t* (total, and crash vs non-crash).
-- Rationale: under 0.01 incidents per segment-hour; 3-hour windows reduce zero inflation.
+- **Road cells:** 983 cells of 1 km × 1 km containing at least one incident in 2022–2024; incident locations trace the limited-access network ([Figure 1](#figure-1)). [pending: replace with directional 0.5-mile OpenStreetMap segments.]
+- **Model graph:** each cell linked to its occupied eight neighbours (1,583 links).
+- **Travel graph:** cells linked when centroids are ≤ 3 km apart; the largest connected component contains 945 cells and 99.8% of incidents.
+- **Time:** 8,768 three-hour windows; mean 0.020 incidents per cell-window; 98.1% of cell-windows have no incident.
 
 ### 5.3 Hotspot detection <a id="sec-5-3"></a>
-- Network KDE (Okabe et al., 2009) for continuous intensity.
-- Gi* on segment counts and on rates per million vehicle-miles (AADT), with false discovery rate correction (Benjamini and Hochberg, 1995); year-by-year persistence.
+- Getis-Ord Gi* (Getis and Ord, 1992) on mean annual incidents per cell, with binary weights for cells within 2 km (cell included); two-sided p-values adjusted for the false discovery rate (Benjamini and Hochberg, 1995); classes at q < 0.01, 0.05 and 0.10; "hot" denotes q < 0.05.
+- Persistence: Gi* recomputed for each calendar year; number of years a cell is hot.
+- Robustness: Gi* recomputed excluding AVL-created incidents, excluding near-duplicates, and for crashes only; agreement measured as the share of baseline hot cells retained and the Jaccard index.
+- [pending: network kernel density estimation (Okabe et al., 2009) and AADT-based rates.]
 
-### 5.4 Demand forecasting with deep learning <a id="sec-5-4"></a>
-- **Task:** given the previous *L* windows and context, predict expected counts *λₛ,ₜ₊₁…ₜ₊ₕ* for all segments (day ahead, *H* = 8).
-- **Inputs** → [Table S2](#table-s2): lagged counts by type; calendar (window, weekday, holiday, month); static segment attributes (AADT, interchange, bridge, urban/rural, speed limit); NOAA precipitation.
-- **Deep learning model:** spatio-temporal GNN (Graph WaveNet or STGCN) with a Poisson or zero-inflated Poisson loss for sparse counts.
-- **Baselines:** historical average (segment × window), negative binomial regression, LightGBM with a Poisson objective on the same inputs.
-- **Ablations:** no graph (LSTM per segment, shared weights); no weather; no AVL-created incidents.
-- **Training:** 2022 – Sep 2023 train; Oct–Dec 2023 validation (early stopping, hyperparameter search); 2024 test; five random seeds.
-- **Metrics:** MAE, RMSE, Poisson deviance; hit rate and predictive accuracy index (PAI; Chainey et al., 2008) for the top-*k*% segments.
-- **Interpretation of models:** SHAP for LightGBM (Lundberg and Lee, 2017); input ablation for the GNN.
+### 5.4 Demand forecasting <a id="sec-5-4"></a>
+- **Task:** day-ahead. At the start of day *d*, predict incidents in each of the eight windows of day *d* for all 983 cells, using data up to the end of day *d* − 1.
+- **Split:** training 29 January 2022 – 30 September 2023 (610 days; the first 28 days of 2022 serve as history), validation 1 October – 31 December 2023 (92 days), test 1 January – 31 December 2024 (366 days).
+- **Inputs** ([Table S2](#table-s2)): historical mean per cell, window and day type (weekday vs weekend or federal holiday; training days only); counts in the same window 1 and 7 days earlier; cell totals over the previous 1, 7 and 28 days; neighbouring cells' 7-day total; district total on the previous day; window, weekday, month and holiday indicators; share of the window in darkness (solar position); cell coordinates. [pending: NOAA precipitation; AADT.]
+- **Baselines:** (i) historical average; (ii) Poisson log-linear model with cell, window × day type and month main effects, fitted by iterative proportional fitting (equivalent to Poisson maximum likelihood); (iii) LightGBM (Ke et al., 2017) with a Poisson objective and early stopping on the validation set.
+- **Deep learning models.** All three share a prediction head that combines a learned cell representation with the window-level inputs and outputs a log-rate offset by the logarithm of the historical mean; the loss is the Poisson negative log-likelihood.
+    - *LSTM* (no graph; ablation): one LSTM layer per cell over the last 16 windows.
+    - *Graph WaveNet* (Wu et al., 2019): four gated dilated temporal convolution layers (dilations 1, 2, 4, 8) with diffusion graph convolution over the cell graph (one- and two-step transitions) and an adaptive adjacency learned from cell embeddings.
+    - *Spatio-temporal Transformer:* temporal self-attention over the last 16 windows of each cell, followed by spatial self-attention across all 983 cells.
+- **Training:** Adam (learning rate 0.001), batches of 8 days, at most 20 epochs with early stopping on validation deviance (patience 3); hyperparameters in [Table S2](#table-s2).
+- **Replication:** five random seeds for LightGBM and each deep model; results reported as mean ± standard deviation.
+- **Metrics (2024):** MAE, RMSE and mean Poisson deviance over cell-windows; daily hit rate (share of the day's incidents in the 5% of cells with the highest predicted daily demand) and predictive accuracy index (PAI = hit rate ÷ share of cells; Chainey et al., 2008).
+- **Comparison:** day-level bootstrap (2,000 resamples) of the mean daily deviance difference from LightGBM, using seed-averaged predictions.
 
 ### 5.5 Station location optimisation <a id="sec-5-5"></a>
-- Demand *aᵢᵇ*: predicted incidents per year on segment *i* in time band *b* (AM peak, midday, PM peak, night, weekend).
-- Maximal covering location problem (Church and ReVelle, 1974):
+- **Travel time:** shortest paths on the travel graph; edge length = centroid distance × circuity factor 1.2; speed 40 mph in weekday peaks (06:00–08:59 and 15:00–17:59) and 60 mph otherwise. Travel direction and median crossings are not modelled.
+- **Candidate sites and demand points:** all 983 cells, including cells on limited-access state roads such as SR-202/Butler Boulevard; cells are named after their most frequent incident location description (route, landmark, county, mile marker).
+- **Static stations:** maximal covering location problem (Church and ReVelle, 1974) over the two speed regimes:
 
 $$
-\max \sum_{b} \sum_{i \in I} a_i^b y_i^b \quad \text{s.t.} \quad \sum_{j \in N_i^b} x_j \ge y_i^b \;\; \forall i, b, \qquad \sum_{j \in J} x_j = p, \qquad x_j, y_i^b \in \{0, 1\},
+\max \sum_{r} \sum_{i \in I} a_i^r y_i^r \quad \text{s.t.} \quad \sum_{j \in N_i^r} x_j \ge y_i^r \;\; \forall i, r, \qquad \sum_{j \in J} x_j = p, \qquad x_j \in \{0, 1\},\; 0 \le y_i^r \le 1,
 $$
 
-  where *Nᵢᵇ* is the set of candidate sites within response time *T* of segment *i* under band-*b* travel speeds.
-- Variants: static stations (above); band-specific staging points; p-median (Hakimi, 1964) for mean response time.
-- Solved as a mixed-integer program (PuLP/CBC); travel times from network shortest paths.
+  where *aᵢʳ* is the 2022–2023 annual incident count in cell *i* under speed regime *r* (peak, off-peak) and *Nᵢʳ* is the set of cells within *T* minutes of *i*. Solved exactly as a mixed-integer program (HiGHS, via SciPy) for *p* = 1–20 and *T* = 10, 15 and 20 minutes.
+- **Day-ahead staging:** for each 2024 day and four bands (night 18:00–05:59, AM peak 06:00–08:59, midday 09:00–14:59, PM peak 15:00–17:59), *p* staging cells chosen by greedy maximal covering of the forecast demand in that band; an oracle using the actual incidents gives the upper bound.
+- [pending: current Road Ranger station locations for the baseline comparison.]
 
-### 5.6 Evaluation design <a id="sec-5-6"></a>
-- **Forecast quality:** metrics in [Section 5.4](#sec-5-4) on 2024.
-- **Decision quality:** share of actual 2024 incidents covered within *T* = 10, 15, 20 minutes, and mean response time, for layouts built from (i) current stations, (ii) historical-average demand, (iii) LightGBM demand, (iv) GNN demand.
-- **Sensitivity:** segment length, window length, *p*, *T*, demand weights (count, crash-only, duration-weighted), exclusion of AVL-created incidents.
+### 5.6 Evaluation <a id="sec-5-6"></a>
+- **Decision metrics** on the 59,981 incidents of 2024: share within *T* minutes of the nearest station or staged unit; mean travel time from the nearest station.
+- **Sensitivity** (*p* = 10, *T* = 15): peak speed 30 or 50 mph; off-peak speed 50 or 70 mph; circuity 1.1 or 1.4; demand excluding AVL-created incidents; excluding near-duplicates; crash-only demand. Reported as coverage and the number of base-case stations retained.
 
-## 6. Modelling results (outline, to do) <a id="sec-6"></a>
+## 6. Modelling results <a id="sec-6"></a>
 
-### 6.1 Network hotspots <a id="sec-6-1"></a>
-- Method: [Section 5.3](#sec-5-3). Significant hot segments on counts vs rates → [Figure 6](#figure-6); persistence across years → [Figure S5](#figure-s5).
-- Agreement with the EDA clusters ([Section 4.3](#sec-4-3)).
+### 6.1 Hotspots <a id="sec-6-1"></a>
+
+Of the 983 road cells, 35 (3.6%) were significant hot spots at q < 0.05, 30 of them at q < 0.01; a further 10 cells were significant at q < 0.10, and no cell was a significant cold spot ([Figure 6](#figure-6); method in [Section 5.3](#sec-5-3)). The 35 hot cells contained 13.1% of incidents, all lay in Duval County, and formed eight clusters ([Table 3](#table-3)). The two largest clusters contained 25 of the 35 hot cells:
+
+- **H1**, I-95 at the ramp to I-10: 14 cells; 3,290 incidents per year; 40.8% crashes.
+- **H2**, I-295 W at the Buckman Bridge: 11 cells; 2,382 incidents per year; 17.1% crashes.
+
+Crash shares across clusters ranged from 17.1% (H2) to 55.3% (H7, I-295 E at St Johns Bluff Road). Thirty-one of the 35 hot cells (88.6%) were hot in each of 2022, 2023 and 2024 ([Figure S5](#figure-s5)). Re-running the analysis on subsets of the data gave:
+
+| Data used | Hot cells | Baseline hot cells retained (%) | Jaccard index |
+| --- | ---: | ---: | ---: |
+| All incidents (baseline) | 35 | 100.0 | 1.00 |
+| Excluding AVL-created incidents | 68 | 97.1 | 0.49 |
+| Excluding near-duplicates | 35 | 100.0 | 1.00 |
+| Crashes only | 80 | 65.7 | 0.25 |
 
 ### 6.2 Forecasting performance <a id="sec-6-2"></a>
-- GNN vs baselines → [Table 3](#table-3).
-- Error by time band and segment type; predicted vs observed 2024 hotspots → [Figure 7](#figure-7).
-- Does the graph help? (ablation rows in [Table 3](#table-3)).
+
+On the 2024 test year, LightGBM had the lowest mean Poisson deviance (13.256 ± 0.011 × 10⁻²), followed by the Poisson log-linear model (13.259 × 10⁻²) ([Table 4](#table-4)). Their difference was not significant (bootstrap mean difference 0.006 × 10⁻²; 95% CI −0.018 to 0.031).
+
+The three deep models had higher deviance than LightGBM, and all bootstrap intervals excluded zero (mean differences, 95% CIs, × 10⁻²):
+
+| Model | Deviance vs LightGBM | Mean difference | 95% CI |
+| --- | ---: | ---: | --- |
+| Graph WaveNet | +0.45% | +0.059 | 0.051 to 0.069 |
+| LSTM (no graph) | +0.51% | +0.064 | 0.056 to 0.075 |
+| ST-Transformer | +0.69% | +0.089 | 0.079 to 0.101 |
+| Historical average | +9.2% | +1.218 | 1.118 to 1.318 |
+
+The daily hit rate for the top 5% of cells was 23.59% for LightGBM (PAI 4.64), 23.50% for Graph WaveNet (4.62), 23.47% for the LSTM (4.61), 23.34% for the ST-Transformer (4.59), 23.26% for the historical average (4.57) and 22.85% for the Poisson log-linear model (4.49) ([Table 4](#table-4)). The Poisson log-linear model had the lowest MAE (3.781 × 10⁻²) and LightGBM the lowest RMSE (15.043 × 10⁻²).
+
+By time window, the deep models' deviance exceeded LightGBM's in all eight windows, by 0.25% to 1.12%, with the largest differences between 03:00 and 05:59 ([Figure 7](#figure-7)a). For Graph WaveNet, the correlation between observed and predicted 2024 incidents per cell was 0.970 on a log scale ([Figure 7](#figure-7)b). Deep-model training stopped after 4–19 epochs ([Table S2](#table-s2)). In LightGBM, the historical mean accounted for 80.6% of the total split gain and the 28-day count for 12.3%.
 
 ### 6.3 Station locations and coverage <a id="sec-6-3"></a>
-- Coverage vs number of stations, by demand source → [Figure 8](#figure-8).
-- Recommended vs current stations → [Figure 9](#figure-9); layout comparison → [Table 4](#table-4).
+
+Static layouts optimised on 2022–2023 demand covered the following shares of 2024 incidents ([Figure 8](#figure-8)):
+
+| Response time | 1 station | 5 | 10 | 15 | 20 | Stations for ≥ 90% |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| 10 min | 22.0% | 55.5% | 75.5% | 87.5% | 94.8% | 17 |
+| 15 min | 36.7% | 71.4% | 90.8% | 98.0% | 99.8% | 10 |
+| 20 min | 46.7% | 80.6% | 97.3% | 99.8% | 99.9% | 8 |
+
+With 10 stations or units ([Table 5](#table-5)):
+
+- **Within 15 minutes:** day-ahead staging covered 91.5–91.7% of 2024 incidents, whichever forecast was used, against 90.8% for the static layout and 99.1% for the oracle.
+- **Within 10 minutes:** 77.2–77.3% for staging, against 75.5% static and 93.9% oracle.
+- **Mean travel time from the nearest station or unit:** 8.6 minutes static, 9.4–9.5 minutes staging, 9.1 minutes oracle.
+- **Unreachable:** 0.2% of 2024 incidents lay in cells not connected to any static station.
+
+The recommended static layout (10 stations, 15-minute standard) places three stations in Duval County (S1–S3), two in Alachua (S5, S6), and one each in Columbia (S4), St. Johns (S7), Baker (S8), Hamilton (S9) and Suwannee (S10) ([Figure 9](#figure-9); [Table 6](#table-6)). S1 (SR-202/Butler Boulevard at the ramp from Southside Boulevard) and S2 (SR-21/Blanding Boulevard at Wilson Boulevard) were the nearest station for 24.0% and 18.8% of 2024 incidents, respectively. The share of each station's incidents reached within 15 minutes ranged from 66.7% (S10) to 97.7% (S1). [pending: comparison with current Road Ranger stations.]
 
 ### 6.4 Sensitivity <a id="sec-6-4"></a>
-- Robustness to units, *p*, *T*, weights and AVL exclusion → [Figure S6](#figure-s6).
+
+With 10 stations and a 15-minute standard, coverage of 2024 incidents ranged from 84.6% (circuity 1.4) to 94.5% (peak speed 50 mph), against 90.8% in the base case ([Figure S6](#figure-s6)):
+
+- **Speeds:** 85.0% at a peak speed of 30 mph; 87.4% and 92.8% at off-peak speeds of 50 and 70 mph.
+- **Circuity:** 93.7% at 1.1.
+- **Station locations under speed and circuity changes:** between 0 and 3 of the 10 base-case stations were retained.
+- **Demand definitions:**
+    - excluding AVL-created incidents: 89.3%, with 6 of 10 stations retained;
+    - excluding near-duplicates: an identical layout (90.8%; 10 of 10);
+    - crash-only demand: 86.0%, with 2 of 10 retained.
 
 ## 7. Discussion (outline)
 
@@ -165,7 +219,7 @@ $$
 - [to do] What the recommended layout changes and gains.
 
 ### 7.2 When does deep learning pay off?
-- Accuracy gain over LightGBM vs added complexity; whether accuracy gains translate into coverage gains ([Table 3](#table-3) vs [Table 4](#table-4)).
+- Accuracy gain over LightGBM vs added complexity; whether accuracy gains translate into coverage gains ([Table 4](#table-4) vs [Table 5](#table-5)).
 
 ### 7.3 Limitations
 - One district; detection bias ([Section 4.5](#sec-4-5)); log-based duration ([Section 4.4](#sec-4-4)); modelled, not observed, response times; incidents are not confirmed Road Ranger responses.
@@ -235,13 +289,29 @@ $$
 
 ![Figure 5](../results/figures/Figure5_framework.png)
 
-<a id="figure-6"></a>**Figure 6.** [to do] Network hotspots: (a) network KDE; (b) Gi* hot and cold segments on counts; (c) on AADT-based rates. *Referenced in [Section 6.1](#sec-6-1).*
+<a id="figure-6"></a>**Figure 6.** Getis-Ord Gi* hotspots of incidents on 1 km road cells, 2022–2024 (binary weights within 2 km; Benjamini–Hochberg q-values). (a) FDOT District 2; (b) Jacksonville, with hotspot cluster IDs H1–H8 ([Table 3](#table-3)). No cell was a significant cold spot.
 
-<a id="figure-7"></a>**Figure 7.** [to do] Forecast performance: (a) error by time band for each model; (b) predicted vs observed 2024 incidents by segment. *Referenced in [Section 6.2](#sec-6-2).*
+*Referenced in [Section 6.1](#sec-6-1).*
 
-<a id="figure-8"></a>**Figure 8.** [to do] Share of 2024 incidents covered within 10, 15 and 20 minutes against number of stations, by demand source. *Referenced in [Section 6.3](#sec-6-3).*
+![Figure 6](../results/figures/Figure6_hotspots.png)
 
-<a id="figure-9"></a>**Figure 9.** [to do] Recommended and current Road Ranger station locations with coverage areas. *Referenced in [Section 6.3](#sec-6-3).*
+<a id="figure-7"></a>**Figure 7.** Day-ahead forecast performance on 2024. (a) Mean Poisson deviance of each deep model relative to LightGBM, by three-hour window (seed-averaged predictions). (b) Observed vs predicted 2024 incidents per cell for Graph WaveNet, the best deep model (log scales; dashed line: equality).
+
+*Referenced in [Section 6.2](#sec-6-2).*
+
+![Figure 7](../results/figures/Figure7_forecast_performance.png)
+
+<a id="figure-8"></a>**Figure 8.** Share of 2024 incidents within 10, 15 and 20 minutes of the nearest station or staged unit, by number of stations or units: static maximal-covering layouts from 2022–2023 demand; day-ahead staging from the five forecasts (historical average, LightGBM, LSTM, Graph WaveNet, ST-Transformer), shown as the mean line with a band for the range across forecasts (narrower than the line); and the oracle upper bound.
+
+*Referenced in [Section 6.3](#sec-6-3).*
+
+![Figure 8](../results/figures/Figure8_coverage.png)
+
+<a id="figure-9"></a>**Figure 9.** Recommended static station locations (10 stations, 15-minute standard, 2022–2023 demand), labelled S1–S10 as in [Table 6](#table-6). Blue cells are within 15 minutes of a station at off-peak speed. (a) FDOT District 2; (b) Jacksonville.
+
+*Referenced in [Section 6.3](#sec-6-3).*
+
+![Figure 9](../results/figures/Figure9_stations.png)
 
 ## Appendix B. Tables
 
@@ -272,28 +342,73 @@ $$
 
 *Note:* Duration excludes 5,189 flagged events ([Table 1](#table-1)). AVL-created: event created by the `avlrrsubsystem` account. IQR: interquartile range.
 
-<a id="table-3"></a>**Table 3.** [to do] Forecast performance on 2024 incidents (mean ± s.d. over five seeds).
+<a id="table-3"></a>**Table 3.** Incident hotspot clusters: contiguous Gi* hot cells (q < 0.05), named after their busiest cell, 2022–2024.
+
+*Referenced in [Section 6.1](#sec-6-1).*
+
+| ID | Hotspot location | Routes | Size (1 km cells) | Incidents per year | Crash share (%) | Cells hot in all 3 years | Max Gi* z |
+| --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
+| H1 | I-95 at ramp to I-10 (Duval County) | Acosta Bridge, I-10, I-95 | 14 | 3,290 | 40.8 | 13 of 14 | 7.77 |
+| H2 | I-295 W at Buckman Bridge (Duval County) | I-295 W | 11 | 2,382 | 17.1 | 11 of 11 | 6.96 |
+| H3 | I-295 W at I-95S/I-295 E (Duval County, MM 1) | I-295 W | 3 | 554 | 23.6 | 2 of 3 | 4.25 |
+| H4 | I-295 E at Dames Point Bridge (Duval County) | I-295 E | 3 | 409 | 17.2 | 2 of 3 | 3.69 |
+| H5 | I-295 W at ramp to Normandy Blvd/SR-228 (Duval County, MM 18) | I-295 W | 1 | 287 | 32.6 | 0 of 1 | 3.37 |
+| H6 | I-295 W at I-10 (Duval County, MM 20) | I-295 W | 1 | 256 | 38.3 | 1 of 1 | 3.76 |
+| H7 | I-295 E at St Johns Bluff Rd/UNF (Duval County) | I-295 E | 1 | 203 | 55.3 | 1 of 1 | 4.15 |
+| H8 | I-295 E at ramp to Butler Blvd EB ramp (Duval County, MM 54) | I-295 E | 1 | 185 | 37.0 | 1 of 1 | 3.26 |
+
+*Note:* Incidents per year are summed over the cluster's cells. Hot in all 3 years: Gi* q < 0.05 in each of 2022, 2023 and 2024.
+
+<a id="table-4"></a>**Table 4.** Day-ahead forecast performance on 2024 (366 days × 8 windows × 983 cells); mean ± s.d. over five seeds where applicable.
 
 *Referenced in [Section 6.2](#sec-6-2), [Section 7.2](#72-when-does-deep-learning-pay-off).*
 
-| Model | MAE | RMSE | Poisson deviance | Hit rate, top 5% segments | PAI |
-| --- | --- | --- | --- | --- | --- |
-| Historical average | | | | | |
-| Negative binomial | | | | | |
-| LightGBM | | | | | |
-| LSTM (no graph; ablation) | | | | | |
-| Spatio-temporal GNN | | | | | |
+| Model | Runs | MAE (×10⁻²) | RMSE (×10⁻²) | Poisson deviance (×10⁻²) | Hit rate, top 5% cells (%) | PAI |
+| --- | ---: | --- | --- | --- | --- | --- |
+| Historical average | 1 | 3.796 | 15.068 | 14.471 | 23.26 | 4.57 |
+| Poisson log-linear | 1 | 3.781 | 15.054 | 13.259 | 22.85 | 4.49 |
+| LightGBM | 5 | 3.803 ± 0.002 | 15.043 ± 0.001 | 13.256 ± 0.011 | 23.59 ± 0.05 | 4.64 ± 0.01 |
+| LSTM (no graph) | 5 | 3.825 ± 0.030 | 15.053 ± 0.005 | 13.324 ± 0.021 | 23.47 ± 0.07 | 4.61 ± 0.01 |
+| Graph WaveNet | 5 | 3.814 ± 0.024 | 15.050 ± 0.002 | 13.316 ± 0.010 | 23.50 ± 0.02 | 4.62 ± 0.00 |
+| ST-Transformer | 5 | 3.894 ± 0.038 | 15.060 ± 0.005 | 13.348 ± 0.019 | 23.34 ± 0.07 | 4.59 ± 0.01 |
 
-<a id="table-4"></a>**Table 4.** [to do] Station layouts evaluated on actual 2024 incidents.
+*Note:* PAI: predictive accuracy index (hit rate ÷ share of cells). Lower MAE, RMSE and deviance are better; higher hit rate and PAI are better.
+
+<a id="table-5"></a>**Table 5.** Station layouts with 10 stations or units, evaluated on the 59,981 incidents of 2024.
 
 *Referenced in [Section 6.3](#sec-6-3), [Section 7.2](#72-when-does-deep-learning-pay-off).*
 
-| Layout (demand source) | Stations | Covered ≤ 10 min (%) | ≤ 15 min (%) | ≤ 20 min (%) | Mean response time (min) |
-| --- | --- | --- | --- | --- | --- |
-| Current stations | | | | | |
-| Historical average | | | | | |
-| LightGBM | | | | | |
-| Spatio-temporal GNN | | | | | |
+| Layout (demand source) | Stations | Covered ≤ 10 min (%) | ≤ 15 min (%) | ≤ 20 min (%) | Mean travel time (min) |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Current Road Ranger stations | 10 | [pending] | [pending] | [pending] | [pending] |
+| Static stations, 2022–2023 demand (MCLP) | 10 | 75.5 | 90.8 | 97.3 | 8.6 |
+| Day-ahead staging, historical average | 10 | 77.3 | 91.6 | 97.0 | 9.5 |
+| Day-ahead staging, LightGBM | 10 | 77.3 | 91.7 | 97.0 | 9.4 |
+| Day-ahead staging, LSTM | 10 | 77.3 | 91.6 | 97.0 | 9.4 |
+| Day-ahead staging, Graph WaveNet | 10 | 77.2 | 91.5 | 97.0 | 9.4 |
+| Day-ahead staging, ST-Transformer | 10 | 77.2 | 91.6 | 97.0 | 9.4 |
+| Day-ahead staging, oracle (upper bound) | 10 | 93.9 | 99.1 | 99.9 | 9.1 |
+
+*Note:* Static layouts are solved separately for each response-time standard; their mean travel time refers to the 15-minute layout. Staging: units repositioned for each day and time band using the forecast; oracle uses the actual incidents.
+
+<a id="table-6"></a>**Table 6.** Recommended station locations (10 stations, 15-minute standard, 2022–2023 demand), ordered by the number of 2024 incidents for which each is the nearest station.
+
+*Referenced in [Section 6.3](#sec-6-3).*
+
+| ID | Station location | Latitude | Longitude | 2024 incidents nearest to station | Share of 2024 incidents (%) | Of these, reached within 15 min (%) |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| S1 | SR-202 / Butler Blvd at ramp from Southside Blvd SB (Duval County) | 30.2498 | -81.5561 | 14,394 | 24.0 | 97.7 |
+| S2 | SR-21 / Blanding Blvd at Wilson Blvd (Duval County) | 30.2707 | -81.7360 | 11,285 | 18.8 | 96.6 |
+| S3 | I-95 at ramp to I-295 W (Duval County) | 30.4639 | -81.6482 | 6,506 | 10.8 | 89.0 |
+| S4 | I-10 near MM 299 (Columbia County) | 30.2545 | -82.7169 | 6,380 | 10.6 | 87.5 |
+| S5 | I-75 at SR-121 (Alachua County, MM 381) | 29.5983 | -82.3710 | 5,115 | 8.5 | 95.1 |
+| S6 | I-75 near MM 407 (Alachua County) | 29.9156 | -82.5541 | 4,551 | 7.6 | 90.4 |
+| S7 | I-95 at SR-16 (St. Johns County, MM 317) | 29.9133 | -81.4108 | 3,155 | 5.3 | 76.0 |
+| S8 | I-10 at ramp from SR-228 (Baker County) | 30.2626 | -82.1076 | 2,926 | 4.9 | 74.5 |
+| S9 | I-75 near MM 457 (Hamilton County) | 30.4915 | -83.0236 | 2,877 | 4.8 | 93.5 |
+| S10 | I-10 at US-90 (Suwannee County, MM 274) | 30.3376 | -83.1080 | 2,792 | 4.7 | 66.7 |
+
+*Note:* Location names give the route, the most frequent landmark in the cell's incident descriptions, the county and the median mile marker. Coordinates are cell centroids (WGS84).
 
 ## Appendix C. Supplementary material
 
@@ -321,9 +436,17 @@ $$
 
 ![Figure S4](../results/figures/FigureS4_routes_by_type.png)
 
-<a id="figure-s5"></a>**Figure S5.** [to do] Hotspot persistence by year (emerging hotspot categories). *Referenced in [Section 6.1](#sec-6-1).*
+<a id="figure-s5"></a>**Figure S5.** Number of years (2022, 2023, 2024) in which each cell was a Gi* hot spot (q < 0.05).
 
-<a id="figure-s6"></a>**Figure S6.** [to do] Sensitivity of forecasts and station solutions to segment length, window length, number of stations, response-time standard, demand weights and exclusion of AVL-created incidents. *Referenced in [Section 6.4](#sec-6-4).*
+*Referenced in [Section 6.1](#sec-6-1).*
+
+![Figure S5](../results/figures/FigureS5_hotspot_persistence.png)
+
+<a id="figure-s6"></a>**Figure S6.** Sensitivity of the static layout (10 stations, 15-minute standard): share of 2024 incidents covered within 15 minutes and number of base-case stations retained under alternative speeds, circuity factors and demand definitions.
+
+*Referenced in [Section 6.4](#sec-6-4).*
+
+![Figure S6](../results/figures/FigureS6_sensitivity.png)
 
 <a id="table-s1"></a>**Table S1.** Completeness and variability of candidate explanatory variables (incidents, n = 173,198).
 
@@ -339,18 +462,30 @@ $$
 | Created by the `avlrrsubsystem` account | 49.8 |
 | Duration > 24 h (flagged) | 2.3 |
 | Duration < 1 min (flagged) | 0.7 |
+| Dark at time of incident (solar elevation below −6°) | 21.7 |
+| Near-duplicate (same route and direction, ≤ 0.5 km, ≤ 15 min) | 1.8 |
 
-<a id="table-s2"></a>**Table S2.** Model inputs. [to do: add the final hyperparameters for each model after tuning.]
+<a id="table-s2"></a>**Table S2.** Model inputs and hyperparameters.
 
-*Referenced in [Section 5.4](#sec-5-4).*
+*Referenced in [Section 5.4](#sec-5-4), [Section 6.2](#sec-6-2).*
 
 | Input | Description | Source |
 | --- | --- | --- |
-| Lagged counts | Incidents per segment in the previous *L* windows, by type | Incident data |
-| Time window | One of eight 3-hour windows | Derived |
-| Day of week, holiday, month | Calendar indicators | Derived; federal/state calendar |
-| AADT | Annual average daily traffic on the segment | FDOT |
-| Segment type | Interchange, bridge, urban/rural | OpenStreetMap |
-| Speed limit | Posted speed | OpenStreetMap |
-| Precipitation | Hourly precipitation at the nearest station | NOAA |
-| Graph adjacency | Travel-time-weighted connections between segments (GNN only) | OpenStreetMap |
+| Historical mean | Mean incidents per cell, window and day type over training days | Incident data |
+| Lagged counts | Same window 1 and 7 days earlier; cell totals over the previous 1, 7 and 28 days | Incident data |
+| Neighbourhood count | Total over the previous 7 days in the cell's eight neighbours | Incident data |
+| District count | All incidents on the previous day | Incident data |
+| Calendar | Window of day, weekday, month, federal holiday | Derived; US federal holiday calendar |
+| Darkness | Share of the window with the sun below the horizon | Solar position (NOAA equations) |
+| Location | Cell centroid latitude and longitude | Derived |
+| Sequence (deep models) | Last 16 windows: log counts, time of day (sine, cosine), weekend flag | Incident data |
+| Graph (Graph WaveNet) | Eight-neighbour cell adjacency (1- and 2-step random walk) plus learned adaptive adjacency | Derived |
+| [pending] Precipitation, AADT | Hourly precipitation; traffic volume | NOAA; FDOT |
+
+| Model | Hyperparameters | Trainable parameters | Epochs or rounds (5 seeds) |
+| --- | --- | ---: | --- |
+| LightGBM | Poisson objective; learning rate 0.05; 63 leaves; ≥ 500 rows per leaf; feature and bagging fraction 0.8; L2 1.0; early stopping 100 rounds | — | 114–125 rounds |
+| LSTM | 1 layer, 32 hidden units; cell embedding 32; head 64 units | 40,353 | 4–19 epochs |
+| Graph WaveNet | 32 channels; 4 layers, kernel 2, dilations 1, 2, 4, 8; diffusion order 2; adaptive adjacency embedding 10; head 64 units | 61,485 | 7–15 epochs |
+| ST-Transformer | Model width 32, 4 heads, feed-forward 64, dropout 0.1; 1 temporal + 1 spatial attention layer; head 64 units | 53,249 | 4–11 epochs |
+| All deep models | Adam, learning rate 0.001, weight decay 1e-5; batch 8 days; gradient clipping 1.0; ≤ 20 epochs; early stopping patience 3 on validation deviance | | |

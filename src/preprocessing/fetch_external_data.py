@@ -9,6 +9,9 @@
   aadt_historical.gpkg              FDOT AADT, last five years (match the incident years)
   fl_counties.gpkg                  Florida county boundaries (US Census TIGER)
   fl_primary_secondary_roads.gpkg   Florida primary and secondary roads (US Census TIGER)
+  noaa_stations.csv, noaa_hourly_precip.csv
+                                    NOAA Integrated Surface Database stations in the study area
+                                    and their hourly precipitation, 2022-2024
   sources.json                      URL, fetch time and feature count per dataset
 
 Current Road Ranger stations and patrol beats are not published as open data;
@@ -27,6 +30,7 @@ import tempfile
 import time
 
 import geopandas as gpd
+import pandas as pd
 import requests
 
 PLACE = "Florida, USA"
@@ -133,6 +137,56 @@ def fetch_fl_roads(outdir):
     return len(gdf), TIGER_ROADS
 
 
+NOAA_HISTORY = "https://www.ncei.noaa.gov/pub/data/noaa/isd-history.csv"
+NOAA_ACCESS = "https://www.ncei.noaa.gov/access/services/data/v1"
+STUDY_BBOX = {"lat": (29.0, 31.0), "lon": (-83.9, -81.0)}   # FDOT District 2
+PERIOD = ("2022-01-01", "2024-12-31")
+
+
+def parse_precip_mm(aa1):
+    """NOAA ISD AA1 field 'period_hours,depth_mm_x10,condition,quality' -> (hours, mm).
+    Depth 9999 is missing."""
+    try:
+        hours, depth = aa1.split(",")[:2]
+        depth = int(depth)
+        return int(hours), (None if depth == 9999 else depth / 10)
+    except (AttributeError, ValueError):
+        return None, None
+
+
+def fetch_noaa_weather(outdir):
+    session = requests.Session()
+    with tempfile.NamedTemporaryFile(suffix=".csv") as f:
+        f.write(_get(session, NOAA_HISTORY).content)
+        f.flush()
+        st = pd.read_csv(f.name, dtype=str)
+    st["LAT"], st["LON"] = pd.to_numeric(st["LAT"], errors="coerce"), pd.to_numeric(st["LON"], errors="coerce")
+    st = st[st["LAT"].between(*STUDY_BBOX["lat"]) & st["LON"].between(*STUDY_BBOX["lon"])
+            & (st["BEGIN"] <= PERIOD[0].replace("-", "")) & (st["END"] >= PERIOD[1].replace("-", ""))
+            & (st["WBAN"] != "99999")].copy()
+    st["station"] = st["USAF"] + st["WBAN"]
+    st.to_csv(outdir / "noaa_stations.csv", index=False)
+    rows = []
+    for sid in st["station"]:
+        r = _get(session, NOAA_ACCESS, params={"dataset": "global-hourly", "stations": sid,
+                                               "startDate": PERIOD[0], "endDate": PERIOD[1] + "T23:59:59",
+                                               "format": "csv", "dataTypes": "AA1"})
+        with tempfile.NamedTemporaryFile(suffix=".csv") as f:
+            f.write(r.content)
+            f.flush()
+            d = pd.read_csv(f.name, dtype=str, usecols=lambda c: c in {"STATION", "DATE", "AA1"})
+        if "AA1" not in d:
+            continue
+        parsed = d["AA1"].map(parse_precip_mm)
+        d["period_hours"] = [h for h, _ in parsed]
+        d["precip_mm"] = [m for _, m in parsed]
+        rows.append(d.dropna(subset=["precip_mm"])[["STATION", "DATE", "period_hours", "precip_mm"]])
+        print(f"  {sid}: {len(rows[-1]):,} precipitation reports", flush=True)
+    out = pd.concat(rows) if rows else pd.DataFrame()
+    out.to_csv(outdir / "noaa_hourly_precip.csv", index=False)
+    return len(out), f"{NOAA_ACCESS} (global-hourly, AA1), stations from {NOAA_HISTORY}"
+
+
 DATASETS = {
     "osm_interstates": fetch_osm_interstates,
     "osm_candidate_sites": fetch_osm_candidate_sites,
@@ -140,6 +194,7 @@ DATASETS = {
     "aadt_historical": fetch_aadt(AADT_HISTORICAL, "aadt_historical"),
     "fl_counties": fetch_fl_counties,
     "fl_primary_secondary_roads": fetch_fl_roads,
+    "noaa_weather": fetch_noaa_weather,
 }
 
 

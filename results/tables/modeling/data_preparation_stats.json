@@ -1,0 +1,76 @@
+{
+  "incidents": 173198,
+  "cells": 983,
+  "windows": 8768,
+  "near_duplicates": 3117,
+  "near_duplicate_pct": 1.8,
+  "near_duplicates_by_type": {
+    "Disabled Vehicle": 1912,
+    "Crash": 771,
+    "Debris On Roadway": 251,
+    "Abandoned Vehicle": 183
+  },
+  "light_share_pct": {
+    "day": 74.9,
+    "dark": 21.7,
+    "twilight": 3.4
+  },
+  "light_by_type_pct": {
+    "Abandoned Vehicle": {
+      "dark": 19.7,
+      "day": 77.2,
+      "twilight": 3.1
+    },
+    "Crash": {
+      "dark": 25.7,
+      "day": 70.3,
+      "twilight": 4.1
+    },
+    "Debris On Roadway": {
+      "dark": 12.7,
+      "day": 84.5,
+      "twilight": 2.8
+    },
+    "Disabled Vehicle": {
+      "dark": 21.7,
+      "day": 75.1,
+      "twilight": 3.2
+    }
+  },
+  "recorded_lighting_code_by_light_pct": {
+    "11.0": {
+      "dark": 0.1,
+      "day": 4.4,
+      "twilight": 1.1
+    },
+    "12.0": {
+      "dark": 0.2,
+      "day": 0.7,
+      "twilight": 3.3
+    },
+    "13.0": {
+      "dark": 0.2,
+      "day": 0.1,
+      "twilight": 1.3
+    },
+    "14.0": {
+      "dark": 9.9,
+      "day": 0.1,
+      "twilight": 2.4
+    },
+    "15.0": {
+      "dark": 8.1,
+      "day": 0.0,
+      "twilight": 2.0
+    },
+    "16.0": {
+      "dark": 81.5,
+      "day": 94.7,
+      "twilight": 90.0
+    }
+  },
+  "adjacency_edges": 3166,
+  "travel_graph_components": 25,
+  "mean_count_per_cell_window": 0.020095037164645693,
+  "zero_share_pct": 98.13
+}

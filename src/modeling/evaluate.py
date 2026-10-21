@@ -59,7 +59,7 @@ def main():
         ens[key] = np.mean(preds, 0)[test]
         daily[key] = metrics(ens[key], y)
     tab = pd.DataFrame(rows)
-    tab.to_csv(TABLES / "Table3_forecast_performance.csv", index=False)
+    tab.to_csv(TABLES / "Table4_forecast_performance.csv", index=False)
 
     # Bootstrap over test days: deviance difference vs LightGBM (seed-averaged predictions).
     rng = np.random.default_rng(0)
@@ -76,22 +76,31 @@ def main():
     print(json.dumps(boot, indent=2))
 
     # Figure 7.
-    keys = [k for k in ["ha", "lightgbm", "gwn", "transformer"] if k in ens]
     labels = dict(MODELS)
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(7.2, 3.1), gridspec_kw={"width_ratios": [1.3, 1]})
-    for i, k in enumerate(keys):
+
+    def dev_by_window(k):
         mu = np.maximum(ens[k], 1e-9)
-        dev = 2 * (np.where(y > 0, y * np.log(np.where(y > 0, y, 1) / mu), 0) - (y - mu))
-        ax1.plot(np.arange(8), dev.mean((0, 2)), marker="o", ms=4, lw=1.6, color=SERIES[i], label=labels[k])
-    ax1.set_xticks(range(8), [f"{3 * w:02d}–{3 * w + 3:02d}" for w in range(8)], rotation=0, fontsize=6.8)
+        return (2 * (np.where(y > 0, y * np.log(np.where(y > 0, y, 1) / mu), 0) - (y - mu))).mean((0, 2))
+
+    ref = dev_by_window("lightgbm")
+    ax1.axhline(0, color=INK, lw=0.8)
+    ax1.text(-0.2, 0.03, "LightGBM (reference)", va="bottom", fontsize=6.8, color=INK)
+    for i, k in enumerate([k for k in ["lstm", "gwn", "transformer"] if k in ens]):
+        ax1.plot(np.arange(8), (dev_by_window(k) / ref - 1) * 100, marker="o", ms=4, lw=1.6,
+                 color=SERIES[i], label=labels[k])
+    ax1.set_xticks(range(8), [f"{3 * w:02d}–{3 * w + 3:02d}" for w in range(8)], fontsize=6.8)
+    ax1.set_xlim(-0.3, 7.3)
     ax1.set_xlabel("Time window (h)")
-    ax1.set_ylabel("Mean Poisson deviance")
+    ax1.set_ylabel("Deviance relative to LightGBM (%)")
     ax1.yaxis.grid(True)
     ax1.set_axisbelow(True)
-    ax1.legend(loc="upper left", fontsize=7)
-    ax1.set_title("(a) Error by time window", loc="left")
+    top = max(l.get_ydata().max() for l in ax1.get_lines()[1:])
+    ax1.set_ylim(-0.08, top * 1.45)
+    ax1.legend(loc="upper center", ncol=3, fontsize=6.8, handlelength=1.4, columnspacing=0.9)
+    ax1.set_title("(a) Deep models vs LightGBM", loc="left")
 
-    best = min((k for k in ens if k not in ("ha", "loglinear")), key=lambda k: daily[k]["Deviance"])
+    best = min((k for k in ens if k in ("lstm", "gwn", "transformer")), key=lambda k: daily[k]["Deviance"])
     obs, pr = y.sum((0, 1)), ens[best].sum((0, 1))
     ax2.scatter(obs + 1, pr + 1, s=6, color=SERIES[0], alpha=0.6, linewidths=0)
     lim = [1, max(obs.max(), pr.max()) * 1.3]

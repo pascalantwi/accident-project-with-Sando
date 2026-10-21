@@ -11,6 +11,7 @@ Writes modeling/work/pred_<model>_<seed>.npy and modeling/work/dl_info.json
 import json
 import sys
 import time
+import warnings
 
 import numpy as np
 import torch
@@ -22,10 +23,11 @@ from features import Dataset
 SEQ = 16           # input windows (2 days)
 C = 32             # hidden channels
 BATCH = 8          # days per batch
-MAX_EPOCHS = 30
-PATIENCE = 4
+MAX_EPOCHS = 20
+PATIENCE = 3
 LR = 1e-3
 torch.set_num_threads(4)
+warnings.filterwarnings("ignore", message=".*[Ss]parse.*")
 
 
 # ----------------------------------------------------------------------------- data
@@ -133,7 +135,7 @@ class GraphWaveNet(nn.Module):
 class STTransformer(nn.Module):
     """Temporal self-attention within each cell, then spatial self-attention across all cells."""
 
-    def __init__(self, n, heads=4, layers=2):
+    def __init__(self, n, heads=4, layers=1):
         super().__init__()
         self.inp = nn.Linear(4, C)
         self.pos = nn.Parameter(torch.randn(SEQ, C) * 0.1)
@@ -227,6 +229,8 @@ def main():
     info = json.loads(info_path.read_text()) if info_path.exists() else {}
     for name in names:
         for seed in SEEDS:
+            if (WORK / f"pred_{name}_{seed}.npy").exists() and str(seed) in info.get(name, {}):
+                continue
             info.setdefault(name, {})[str(seed)] = train(name, seed, ds, batcher)
             info_path.write_text(json.dumps(info, indent=2))
 

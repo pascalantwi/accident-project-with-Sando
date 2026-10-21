@@ -6,7 +6,7 @@ Static layout: maximal covering location problem (exact MILP, HiGHS) with 2022-2
 Dynamic staging: for every 2024 day and time band, greedy maximal covering on each model's
 day-ahead forecast; the oracle uses the actual incidents (upper bound).
 
-Outputs: tables/Table4_layouts.csv, tables/siting_results.json, figures/Figure8_coverage.png,
+Outputs: tables/Table5_layouts.csv, tables/siting_results.json, figures/Figure8_coverage.png,
 figures/Figure9_stations.png, figures/FigureS6_sensitivity.png
 """
 import json
@@ -20,6 +20,7 @@ from scipy.sparse.csgraph import dijkstra
 from common import (BANDS, CIRCUITY, FIGURES, KM_PER_MILE, PEAK_WINDOWS, SPEED_MPH, TABLES, WORK)
 from evaluate import load
 from features import Dataset
+from naming import cell_names
 from plots import INK, INK_2, SERIES, cell_marker_size, plt, two_panel_map
 
 T_LIST = [10, 15, 20]
@@ -156,7 +157,7 @@ def main():
     # Table 4 (p = 10).
     rows = [{"layout": "Current Road Ranger stations", "stations": P_TABLE}]
     t_static = nearest_time(static_layouts[(15, P_TABLE)], test_inc, times)
-    srow = summarize(t_static, "Static, 2022–2023 demand (MCLP, T = 15 min)")
+    srow = summarize(t_static, "Static stations, 2022–2023 demand (MCLP)")
     for T in T_LIST:
         srow[f"covered_{T}min_pct"] = results["static"][f"{T}_{P_TABLE}"]
     rows.append({**srow, "stations": P_TABLE})
@@ -170,7 +171,7 @@ def main():
         r["mean_response_min"] = dyn_times[key]
         rows.append(r)
     tab = pd.DataFrame(rows)
-    tab.to_csv(TABLES / "Table4_layouts.csv", index=False)
+    tab.to_csv(TABLES / "Table5_layouts.csv", index=False)
     print(tab.round(2).to_string())
 
     # Sensitivity of the static layout (p = 10, T = 15).
@@ -208,38 +209,28 @@ def main():
     test_inc["nearest"] = st[np.argmin(np.where(test_inc["regime"].to_numpy()[None, :] == "peak",
                                                 times["peak"][st][:, test_inc["cell"]],
                                                 times["offpeak"][st][:, test_inc["cell"]]), axis=0)]
-    stations = cells.loc[st, ["cell", "lat", "lon", "route", "location"]].copy()
+    cnames = cell_names()
+    stations = cells.loc[st, ["cell", "lat", "lon"]].copy()
+    stations["name"] = cnames["name"].reindex(st).to_numpy()
+    stations["county"] = cnames["county"].reindex(st).to_numpy()
+    stations["route"] = cnames["route"].reindex(st).to_numpy()
     stations["incidents_2024_nearest"] = test_inc.groupby("nearest").size().reindex(st).fillna(0).astype(int).values
-    stations.to_csv(TABLES / "recommended_stations_p10_T15.csv", index=False)
+    stations["share_of_2024_pct"] = (stations["incidents_2024_nearest"] / len(test_inc) * 100).round(1)
+    near = test_inc.assign(t=tt)
+    stations["covered_15min_pct_of_served"] = [
+        round((near.loc[near["nearest"] == c, "t"] <= 15).mean() * 100, 1) for c in st]
+    stations = stations.sort_values("incidents_2024_nearest", ascending=False).reset_index(drop=True)
+    stations.insert(0, "id", [f"S{i + 1}" for i in range(len(stations))])
+    stations.to_csv(TABLES / "Table6_recommended_stations.csv", index=False)
     results["static_station_cells"] = st.tolist()
     results["dynamic_mean_response_p10_T15"] = dyn_times
     results["test_incidents"] = len(test_inc)
     results["static_unreachable_pct"] = float((~np.isfinite(tt)).mean() * 100)
     (TABLES / "siting_results.json").write_text(json.dumps(results, indent=1))
 
-    # Figure 8: coverage vs number of stations.
-    fig, axes = plt.subplots(1, 3, figsize=(7.2, 2.7), sharey=True)
-    lines = [("Static (MCLP, 2022–2023 demand)", lambda T, pp: results["static"][f"{T}_{pp}"], SERIES[3], "-")]
-    for key, col in [("lightgbm", SERIES[1]), ("gwn", SERIES[0]), ("transformer", SERIES[2])]:
-        if key in results["dynamic"]:
-            lines.append((names[key].replace("Day-ahead staging, ", "Staging, "),
-                          lambda T, pp, k=key: results["dynamic"][k][f"{T}_{pp}"], col, "-"))
-    lines.append(("Staging, oracle", lambda T, pp: results["dynamic"]["oracle"][f"{T}_{pp}"], INK_2, "--"))
-    ps = np.arange(1, P_MAX + 1)
-    for ax, T in zip(axes, T_LIST):
-        for label, f, col, ls in lines:
-            ax.plot(ps, [f(T, pp) for pp in ps], color=col, ls=ls, lw=1.5, label=label)
-        ax.set_title(f"T = {T} min", loc="left")
-        ax.set_xlabel("Number of stations / units")
-        ax.yaxis.grid(True)
-        ax.set_axisbelow(True)
-        ax.set_ylim(0, 100)
-    axes[0].set_ylabel("2024 incidents covered (%)")
-    handles, labels = axes[0].get_legend_handles_labels()
-    fig.legend(handles, labels, ncol=3, loc="lower center", bbox_to_anchor=(0.5, -0.12), fontsize=7)
-    fig.tight_layout()
-    fig.savefig(FIGURES / "Figure8_coverage.png")
-    plt.close(fig)
+    # Figure 8: coverage vs number of stations (drawn from the saved results).
+    import plot_coverage
+    plot_coverage.main()
 
     # Figure 9: recommended static stations (p = 10, T = 15).
     covered_cells = (np.minimum(times["offpeak"][st].min(0), np.inf) <= 15)
@@ -252,7 +243,14 @@ def main():
         ax.scatter(cells.loc[st, "lon"], cells.loc[st, "lat"], s=60 if panel == "jax" else 30, marker="^",
                    c="#e34948", edgecolors="white", linewidths=0.6, zorder=4)
 
-    fig, _ = two_panel_map(draw)
+    fig, (ax1, ax2) = two_panel_map(draw)
+    from plots import JAX
+    for _, r in stations.iterrows():
+        in_jax = JAX["lon"][0] < r["lon"] < JAX["lon"][1] and JAX["lat"][0] < r["lat"] < JAX["lat"][1]
+        for ax in ([ax1] if not in_jax else [ax2]):
+            ax.annotate(r["id"], (r["lon"], r["lat"]), xytext=(5, 5), textcoords="offset points", fontsize=7,
+                        fontweight="bold", color=INK,
+                        bbox={"boxstyle": "round,pad=0.15", "fc": "white", "ec": "none", "alpha": 0.85})
     from matplotlib.lines import Line2D
     handles = [Line2D([], [], marker="^", ls="", color="#e34948", markersize=7),
                Line2D([], [], marker="s", ls="", color="#86b6ef", markersize=6),

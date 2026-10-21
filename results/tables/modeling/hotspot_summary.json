@@ -40,5 +40,6 @@
     "baseline_hot_retained_pct": 65.7,
     "jaccard": 0.25
   },
-  "duval_share_of_hot_pct": 100.0
+  "duval_share_of_hot_pct": 100.0,
+  "clusters": 8
 }

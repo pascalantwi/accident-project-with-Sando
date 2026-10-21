@@ -1,0 +1,11 @@
+id,cell,lat,lon,name,county,route,incidents_2024_nearest,share_of_2024_pct,covered_15min_pct_of_served
+S1,779,30.24984224342105,-81.55614592105263,SR-202 / Butler Blvd at ramp from Southside Blvd SB (Duval County),Duval,SR-202 / Butler Blvd,14394,24.0,97.7
+S2,542,30.270656,-81.736003,SR-21 / Blanding Blvd at Wilson Blvd (Duval County),Duval,SR-21 / Blanding Blvd,11285,18.8,96.6
+S3,658,30.46392489084507,-81.6482484330986,I-95 at ramp to I-295 W (Duval County),Duval,I-95,6506,10.8,89.0
+S4,203,30.25454119069768,-82.7169352511628,I-10 near MM 299 (Columbia County),Columbia,I-10,6380,10.6,87.5
+S5,357,29.598327384615384,-82.37100330769232,"I-75 at SR-121 (Alachua County, MM 381)",Alachua,I-75,5115,8.5,95.1
+S6,271,29.91562,-82.55413899999999,I-75 near MM 407 (Alachua County),Alachua,I-75,4551,7.6,90.4
+S7,924,29.913288924050637,-81.41083043037975,"I-95 at SR-16 (St. Johns County, MM 317)",St. Johns,I-95,3155,5.3,76.0
+S8,437,30.2626,-82.10755,I-10 at ramp from SR-228 (Baker County),Baker,I-10,2926,4.9,74.5
+S9,107,30.491465800000004,-83.0236132,I-75 near MM 457 (Hamilton County),Hamilton,I-75,2877,4.8,93.5
+S10,78,30.337559887096774,-83.10800425268818,"I-10 at US-90 (Suwannee County, MM 274)",Suwannee,I-10,2792,4.7,66.7
