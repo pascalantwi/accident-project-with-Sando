@@ -1,4 +1,4 @@
-"""Print Tables 2-6 and S2-S4 as markdown from the result files (for pasting into the manuscript)."""
+"""Print Tables 2-6 and S2-S6 as markdown from the result files (for pasting into the manuscript)."""
 import json
 
 import pandas as pd
@@ -98,8 +98,28 @@ def table_s4():
     return "\n".join(lines)
 
 
+def table_s5():
+    t = pd.read_csv(TABLES / "TableS5_site_robustness.csv")
+    lines = ["| ID | Station site | Selected, demand resamples (%) | Site within 5 km selected, demand resamples (%) | Selected, all re-solved layouts (%) | Site within 5 km selected, all layouts (%) |",
+             "| --- | --- | ---: | ---: | ---: | ---: |"]
+    for _, r in t.iterrows():
+        lines.append(f"| {r['id']} | {r['site_name']} | {r['selected_bootstrap_pct']:.1f} | {r['near_bootstrap_pct']:.1f} | "
+                     f"{r['selected_all_pct']:.1f} | {r['near_all_pct']:.1f} |")
+    return "\n".join(lines)
+
+
+def table_s6():
+    t = pd.read_csv(TABLES / "TableS6_scenario_regret.csv")
+    lines = ["| Travel-speed scenario | Recommended layout, covered ≤ 15 min (%) | Layout optimised for the scenario (%) | Difference (percentage points) | Sites shared |",
+             "| --- | ---: | ---: | ---: | ---: |"]
+    for _, r in t.iterrows():
+        lines.append(f"| {r['scenario']} | {r['recommended_layout_pct']:.1f} | {r['scenario_optimised_pct']:.1f} | "
+                     f"{r['gap_pct_points']:.1f} | {r['sites_shared']} of 10 |")
+    return "\n".join(lines)
+
+
 if __name__ == "__main__":
-    for f in (table2, table3, table4, table5, table6, table_s2, table_s3, table_s4):
+    for f in (table2, table3, table4, table5, table6, table_s2, table_s3, table_s4, table_s5, table_s6):
         try:
             print(f(), "\n")
         except FileNotFoundError as e:
