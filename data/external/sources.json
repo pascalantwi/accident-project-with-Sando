@@ -1,0 +1,27 @@
+{
+  "aadt_current": {
+    "source": "https://services1.arcgis.com/O1JpcwDW8sjYuddV/ArcGIS/rest/services/Annual_Average_Daily_Traffic_TDA/FeatureServer/0",
+    "features": 4046,
+    "fetched_at": "2026-10-21T16:24:56.359028+00:00"
+  },
+  "aadt_historical": {
+    "source": "https://services1.arcgis.com/O1JpcwDW8sjYuddV/ArcGIS/rest/services/Annual_Average_Daily_Traffic_Historical_TDA/FeatureServer/0",
+    "features": 19814,
+    "fetched_at": "2026-10-21T16:25:14.619884+00:00"
+  },
+  "fl_counties": {
+    "source": "https://www2.census.gov/geo/tiger/TIGER2023/COUNTY/tl_2023_us_county.zip",
+    "features": 67,
+    "fetched_at": "2026-10-21T16:25:18.273244+00:00"
+  },
+  "fl_primary_secondary_roads": {
+    "source": "https://www2.census.gov/geo/tiger/TIGER2023/PRISECROADS/tl_2023_12_prisecroads.zip",
+    "features": 9013,
+    "fetched_at": "2026-10-21T16:25:19.866302+00:00"
+  },
+  "noaa_weather": {
+    "source": "https://www.ncei.noaa.gov/access/services/data/v1 (global-hourly, AA1), stations from https://www.ncei.noaa.gov/pub/data/noaa/isd-history.csv",
+    "features": 314124,
+    "fetched_at": "2026-10-21T16:26:45.188746+00:00"
+  }
+}
