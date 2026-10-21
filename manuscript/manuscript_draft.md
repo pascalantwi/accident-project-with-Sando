@@ -59,17 +59,63 @@ In the fourth stage, all models are fitted on data up to 30 September 2023, tune
 
 ### 2.5 Exploratory data analysis <a id="sec-2-5"></a>
 
+Exploratory analysis described the composition, timing, location and duration of incidents. Incident types were summarised by year, weekday share, share in the afternoon peak (15:00–17:59) and share created through the vehicle-location subsystem ([Table 1](#table-1)), and all recorded event types were compared with the analysis sample ([Figure S1](#figure-s1)). Temporal patterns were examined as monthly counts by type ([Figure S2](#figure-s2)), mean hourly counts by hour and day of week ([Figure 3](#figure-3)) and the hourly distribution within each type ([Figure S3](#figure-s3)). Spatial patterns were mapped as hexagonal-bin densities on a logarithmic scale ([Figure 1](#figure-1)). Concentration was measured by ranking the 1 km cells by mean annual incidents and computing the share of all incidents held by the busiest cells ([Figure 4](#figure-4)), and counts by route and type were compared for the eight busiest routes ([Figure S4](#figure-s4)). Event duration was summarised by type with medians, interquartile ranges and 5th–95th percentiles, excluding flagged durations ([Figure 5](#figure-5)). Finally, the completeness and variability of the recorded condition codes were tabulated to decide which variables could enter the models ([Table S1](#table-s1)).
+
 ### 2.6 Traffic exposure, precipitation and road network <a id="sec-2-6"></a>
+
+**Traffic exposure.** Each incident was matched to the nearest AADT segment of its own year within 150 m (96.9% matched). FDOT roadways with at least 20 matched incidents (594 roadway identifiers) were taken as the patrolled network, and the vehicle-kilometres travelled in each cell and year were computed as the sum, over these segments, of AADT × segment length within the cell × days in the year. Exposure was available for 944 cells holding 99.1% of incidents. Rates per million vehicle-kilometres were smoothed with a global empirical Bayes estimator [[14]](#ref-marshall1991) for hotspot analysis ([Section 2.7](#sec-2-7)); the forecasting models use the previous year's exposure, the latest available at forecast time.
+
+**Precipitation.** Hourly totals were taken from each station's routine hourly report; special reports, which carry partial accumulations, were not added. Totals were summed to three-hour windows and assigned to each cell from its nearest station (median distance 15.3 km). Incident rates in wet and dry windows were compared by incident type and precipitation class (light, < 2.5 mm; moderate, 2.5–10 mm; heavy, ≥ 10 mm per window) with Mantel–Haenszel rate ratios [[15]](#ref-mantel1959) stratified by window of day, month and day type, with Greenland–Robins confidence intervals [[16]](#ref-greenland1985).
+
+**Road network and sites.** Two-way OpenStreetMap links were represented in both directions, and the largest strongly connected component was retained (92.5% of links). Off-peak speeds were the posted limits (56.0% of links) or class defaults (motorway 65, trunk 55, primary 45 and ramps 30–35 mph); peak speeds (weekdays 06:00–08:59 and 15:00–17:59) were set to two-thirds of off-peak. Incidents were snapped to the nearest link within 200 m whose heading matched their recorded direction (95.1% of incidents), otherwise to the nearest link. Candidate sites in District 2 within 0.5 km of each other were merged, giving 307 sites (275 interchanges, 19 service plazas and 13 rest areas); a unit leaves a site from any network node within 300 m.
 
 ### 2.7 Hotspot detection <a id="sec-2-7"></a>
 
+Hotspots were identified with the Getis-Ord Gi\* statistic [[7]](#ref-getis1992), [[17]](#ref-ord1995), applied to the mean annual number of incidents *x*ⱼ in each of the *n* = 983 cells, with binary weights *w*ᵢⱼ = 1 for cells within 2 km of cell *i*, including *i* itself:
+
+$$
+G_i^* = \frac{\sum_j w_{ij} x_j - \bar{x} \sum_j w_{ij}}{s \sqrt{\left[ n \sum_j w_{ij}^2 - \left( \sum_j w_{ij} \right)^2 \right] / (n - 1)}},
+$$
+
+where *x̄* and *s* are the mean and standard deviation of *x*. Two-sided p-values from the standard normal distribution were adjusted for the false discovery rate [[8]](#ref-benjamini1995), and cells were classified at q < 0.01, 0.05 and 0.10; cells with a positive statistic and q < 0.05 are termed hot. Contiguous hot cells were grouped into clusters and named after their busiest cell. Persistence was assessed by repeating the analysis for each year and counting the years in which each cell was hot. Robustness was assessed by repeating it without incidents created through the vehicle-location subsystem, without near-duplicates and for crashes only, with agreement measured as the share of hot cells retained and the Jaccard index. A second analysis applied the same procedure to empirical Bayes-smoothed rates per million vehicle-kilometres for the 944 cells with exposure data ([Section 2.6](#sec-2-6)).
+
 ### 2.8 Demand forecasting <a id="sec-2-8"></a>
+
+**Task and data split.** At the start of each day, incidents are forecast for each of the eight three-hour windows in every cell, using only data up to the end of the previous day. Models were trained on 29 January 2022 – 30 September 2023 (610 days; the first 28 days of 2022 supply lagged inputs), tuned and early-stopped on 1 October – 31 December 2023 (92 days) and tested on 2024 (366 days).
+
+**Inputs.** The historical mean for each cell, window and day type (weekday, or weekend and federal holiday) over the training days; counts in the same window one and seven days earlier; cell totals over the previous 1, 7 and 28 days; the neighbouring cells' 7-day total; the district total on the previous day; window, weekday, month and holiday indicators; the share of the window in darkness; cell coordinates; the previous year's traffic exposure; and the previous day's precipitation.
+
+**Baselines.** (i) The historical mean; (ii) a Poisson log-linear model with cell, window × day type and month main effects, fitted by iterative proportional fitting; and (iii) LightGBM [[9]](#ref-ke2017) with a Poisson objective (learning rate 0.05, 63 leaves, at least 500 observations per leaf, early stopping after 100 rounds without improvement). An ablation refitted LightGBM without the exposure and precipitation inputs, and with the observed precipitation in the target window as a perfect-forecast bound.
+
+**Deep learning models.** Each model encodes the last 16 windows (two days) of counts and precipitation in every cell, with time-of-day and weekend indicators, into a cell representation; a shared output layer combines it with the inputs above and predicts the log-rate, offset by the log historical mean, under a Poisson likelihood. The LSTM [[10]](#ref-hochreiter1997) encodes each cell separately, without spatial information; Graph WaveNet [[11]](#ref-wu2019) combines gated dilated temporal convolutions with diffusion convolution over the cell graph and a learned adjacency matrix; and the spatio-temporal Transformer [[12]](#ref-vaswani2017) applies attention over time within each cell and then across cells. Models were trained with Adam [[18]](#ref-kingma2015) on batches of eight days with early stopping (patience 3). Hidden size (32 or 64) and learning rate (10⁻³ or 3 × 10⁻⁴) were tuned on the validation period; differences in validation deviance below 0.1% were treated as ties, and the smaller configuration was retained. LightGBM and each deep model were trained with five random seeds.
 
 ### 2.9 Station location optimisation <a id="sec-2-9"></a>
 
+**Demand and coverage.** Demand points are the directed links with at least one incident in 2022–2023 (1,708 links), weighted by their mean annual number of incidents *a*ᵢʳ in each speed regime *r* (peak, off-peak). A candidate site *j* covers link *i* in regime *r* if the travel time from *j* to the midpoint of *i* is at most *T* minutes; *N*ᵢʳ is the set of such sites.
+
+**Fixed stations.** *p* stations were located with the maximal covering location problem [[13]](#ref-church1974), extended to the two speed regimes:
+
+$$
+\max \sum_{r} \sum_{i} a_i^r y_i^r \quad \text{s.t.} \quad \sum_{j \in N_i^r} x_j \ge y_i^r \;\; \forall i, r, \qquad \sum_j x_j = p, \qquad x_j \in \{0, 1\}, \;\; 0 \le y_i^r \le 1,
+$$
+
+where *x*ⱼ = 1 if a station is placed at site *j* and *y*ᵢʳ is the covered share of the demand at link *i*. The problem was solved exactly as a mixed-integer program with the HiGHS solver [[19]](#ref-huangfu2018) through SciPy [[20]](#ref-virtanen2020), for *p* = 1–20 and *T* = 10, 15 and 20 minutes.
+
+**Day-ahead staging.** For each day of 2024 and four time bands (night, 18:00–05:59; morning peak, 06:00–08:59; midday, 09:00–14:59; afternoon peak, 15:00–17:59), *p* staging sites were selected by greedy maximal covering of the forecast demand in that band, with each cell's forecast distributed over its links in proportion to their 2022–2023 incidents. An oracle using the band's actual incidents gives an upper bound.
+
+**Comparison layouts.** Two layouts without optimisation were also evaluated: the candidate sites nearest the busiest 2022–2023 cells, and randomly drawn sites (mean of 200 draws).
+
 ### 2.10 Evaluation and sensitivity analysis <a id="sec-2-10"></a>
 
+**Forecasts.** On the 2024 test year, models were compared by the mean absolute error, root mean squared error and mean Poisson deviance over cell-windows, and by the daily hit rate, the share of a day's incidents falling in the 5% of cells with the highest predicted daily demand, together with the predictive accuracy index (hit rate ÷ share of cells) [[21]](#ref-chainey2008). Differences in deviance from LightGBM were assessed with a bootstrap over days (2,000 resamples) using seed-averaged predictions; results are reported as mean ± standard deviation over seeds.
+
+**Station layouts.** Each layout was evaluated on the 59,981 incidents of 2024 by the share reached within *T* minutes from the nearest station or staged unit, using each incident's exact location and the speed regime at its time, and by the mean travel time.
+
+**Sensitivity and robustness.** For 10 stations and *T* = 15 minutes, the fixed layout was re-solved with peak speeds of 50% and 83% of off-peak; with off-peak speeds 15% lower and higher; with demand excluding incidents created through the vehicle-location subsystem, excluding near-duplicates, and for crashes only; and with two alternative travel-time models on the road cells, the undirected Census network and a cell graph with distances inflated by a circuity factor of 1.2. For temporal validation, sites were selected on 2022 and evaluated on 2023, and selected on 2023 and evaluated on 2024. Finally, the problem was re-solved on 200 bootstrap samples of 2022–2023 days, on each year alone and under each scenario, recording how often each recommended site, or a site within 5 km of it, was selected, and the coverage lost by the recommended layout relative to the layout optimised for each speed scenario.
+
 ### 2.11 Simulation with busy units <a id="sec-2-11"></a>
+
+The coverage model assumes that every unit is free when an incident occurs. A discrete-event simulation of 2024 relaxed this assumption. Incidents were processed in the order they were logged and assigned to the unit that could reach them first: a free unit departs immediately, and a busy unit departs from its station once it has returned from its current job. A unit is busy for the travel time to the incident, the on-scene time and the travel time back to its station on the directed network, at the speed regime of the incident's time. On-scene time was the logged event duration, replaced by the median for the incident type where flagged ([Section 2.3](#sec-2-3)). Every incident was assumed to require a unit, and units were assumed to operate around the clock. Layouts of 10, 15 and 20 stations (*T* = 15 minutes) were simulated with fleets of one to three units per station on average, allocated either equally or in proportion to each station's 2022–2023 demand (largest remainder, with at least one unit per station). Outcomes were the share of incidents reached within 10, 15 and 20 minutes of being logged, the mean and 90th percentile response times, the share of incidents delayed because a closer unit was busy, and unit utilisation. Two variants halved the on-scene times and excluded incidents created through the vehicle-location subsystem, which a patrolling unit had already found.
 
 ## 3. Results <a id="sec-3"></a>
 
@@ -138,31 +184,37 @@ In the fourth stage, all models are fitted on data up to 30 September 2023, tune
 
 <a id="ref-church1974"></a>[13] R. Church and C. ReVelle, "The maximal covering location problem," *Pap. Reg. Sci. Assoc.*, vol. 32, pp. 101–118, 1974.
 
-<a id="ref-chainey2008"></a>[14] S. Chainey, L. Tompson, and S. Uhlig, "The utility of hotspot mapping for predicting spatial patterns of crime," *Secur. J.*, vol. 21, pp. 4–28, 2008.
+<a id="ref-marshall1991"></a>[14] R. J. Marshall, "Mapping disease and mortality rates using empirical Bayes estimators," *J. R. Stat. Soc. Ser. C (Appl. Stat.)*, vol. 40, no. 2, pp. 283–294, 1991.
 
-<a id="ref-greenland1985"></a>[15] S. Greenland and J. M. Robins, "Estimation of a common effect parameter from sparse follow-up data," *Biometrics*, vol. 41, no. 1, pp. 55–68, 1985.
+<a id="ref-mantel1959"></a>[15] N. Mantel and W. Haenszel, "Statistical aspects of the analysis of data from retrospective studies of disease," *J. Natl. Cancer Inst.*, vol. 22, no. 4, pp. 719–748, 1959.
 
-<a id="ref-hakimi1964"></a>[16] S. L. Hakimi, "Optimum locations of switching centers and the absolute centers and medians of a graph," *Oper. Res.*, vol. 12, no. 3, pp. 450–459, 1964.
+<a id="ref-greenland1985"></a>[16] S. Greenland and J. M. Robins, "Estimation of a common effect parameter from sparse follow-up data," *Biometrics*, vol. 41, no. 1, pp. 55–68, 1985.
 
-<a id="ref-li2018"></a>[17] Y. Li, R. Yu, C. Shahabi, and Y. Liu, "Diffusion convolutional recurrent neural network: Data-driven traffic forecasting," in *Proc. Int. Conf. Learn. Represent. (ICLR)*, 2018.
+<a id="ref-ord1995"></a>[17] J. K. Ord and A. Getis, "Local spatial autocorrelation statistics: Distributional issues and an application," *Geogr. Anal.*, vol. 27, no. 4, pp. 286–306, 1995.
 
-<a id="ref-lundberg2017"></a>[18] S. M. Lundberg and S.-I. Lee, "A unified approach to interpreting model predictions," in *Adv. Neural Inf. Process. Syst.*, vol. 30, 2017.
+<a id="ref-kingma2015"></a>[18] D. P. Kingma and J. Ba, "Adam: A method for stochastic optimization," in *Proc. Int. Conf. Learn. Represent. (ICLR)*, 2015.
 
-<a id="ref-mantel1959"></a>[19] N. Mantel and W. Haenszel, "Statistical aspects of the analysis of data from retrospective studies of disease," *J. Natl. Cancer Inst.*, vol. 22, no. 4, pp. 719–748, 1959.
+<a id="ref-huangfu2018"></a>[19] Q. Huangfu and J. A. J. Hall, "Parallelizing the dual revised simplex method," *Math. Program. Comput.*, vol. 10, no. 1, pp. 119–142, 2018.
 
-<a id="ref-marshall1991"></a>[20] R. J. Marshall, "Mapping disease and mortality rates using empirical Bayes estimators," *J. R. Stat. Soc. Ser. C (Appl. Stat.)*, vol. 40, no. 2, pp. 283–294, 1991.
+<a id="ref-virtanen2020"></a>[20] P. Virtanen *et al.*, "SciPy 1.0: Fundamental algorithms for scientific computing in Python," *Nat. Methods*, vol. 17, pp. 261–272, 2020.
 
-<a id="ref-okabe2009"></a>[21] A. Okabe, T. Satoh, and K. Sugihara, "A kernel density estimation method for networks, its computational method and a GIS-based tool," *Int. J. Geogr. Inf. Sci.*, vol. 23, no. 1, pp. 7–32, 2009.
+<a id="ref-chainey2008"></a>[21] S. Chainey, L. Tompson, and S. Uhlig, "The utility of hotspot mapping for predicting spatial patterns of crime," *Secur. J.*, vol. 21, pp. 4–28, 2008.
 
-<a id="ref-ord1995"></a>[22] J. K. Ord and A. Getis, "Local spatial autocorrelation statistics: Distributional issues and an application," *Geogr. Anal.*, vol. 27, no. 4, pp. 286–306, 1995.
+<a id="ref-hakimi1964"></a>[22] S. L. Hakimi, "Optimum locations of switching centers and the absolute centers and medians of a graph," *Oper. Res.*, vol. 12, no. 3, pp. 450–459, 1964.
 
-<a id="ref-toregas1971"></a>[23] C. Toregas, R. Swain, C. ReVelle, and L. Bergman, "The location of emergency service facilities," *Oper. Res.*, vol. 19, no. 6, pp. 1363–1373, 1971.
+<a id="ref-li2018"></a>[23] Y. Li, R. Yu, C. Shahabi, and Y. Liu, "Diffusion convolutional recurrent neural network: Data-driven traffic forecasting," in *Proc. Int. Conf. Learn. Represent. (ICLR)*, 2018.
 
-<a id="ref-xie2008"></a>[24] Z. Xie and J. Yan, "Kernel density estimation of traffic accidents in a network space," *Comput. Environ. Urban Syst.*, vol. 32, no. 5, pp. 396–406, 2008.
+<a id="ref-lundberg2017"></a>[24] S. M. Lundberg and S.-I. Lee, "A unified approach to interpreting model predictions," in *Adv. Neural Inf. Process. Syst.*, vol. 30, 2017.
 
-<a id="ref-yu2018"></a>[25] B. Yu, H. Yin, and Z. Zhu, "Spatio-temporal graph convolutional networks: A deep learning framework for traffic forecasting," in *Proc. 27th Int. Joint Conf. Artif. Intell. (IJCAI)*, 2018, pp. 3634–3640.
+<a id="ref-okabe2009"></a>[25] A. Okabe, T. Satoh, and K. Sugihara, "A kernel density estimation method for networks, its computational method and a GIS-based tool," *Int. J. Geogr. Inf. Sci.*, vol. 23, no. 1, pp. 7–32, 2009.
 
-<a id="ref-yuan2018"></a>[26] Z. Yuan, X. Zhou, and T. Yang, "Hetero-ConvLSTM: A deep learning approach to traffic accident prediction on heterogeneous spatio-temporal data," in *Proc. 24th ACM SIGKDD Int. Conf. Knowl. Discov. Data Min.*, 2018, pp. 984–992.
+<a id="ref-toregas1971"></a>[26] C. Toregas, R. Swain, C. ReVelle, and L. Bergman, "The location of emergency service facilities," *Oper. Res.*, vol. 19, no. 6, pp. 1363–1373, 1971.
+
+<a id="ref-xie2008"></a>[27] Z. Xie and J. Yan, "Kernel density estimation of traffic accidents in a network space," *Comput. Environ. Urban Syst.*, vol. 32, no. 5, pp. 396–406, 2008.
+
+<a id="ref-yu2018"></a>[28] B. Yu, H. Yin, and Z. Zhu, "Spatio-temporal graph convolutional networks: A deep learning framework for traffic forecasting," in *Proc. 27th Int. Joint Conf. Artif. Intell. (IJCAI)*, 2018, pp. 3634–3640.
+
+<a id="ref-yuan2018"></a>[29] Z. Yuan, X. Zhou, and T. Yang, "Hetero-ConvLSTM: A deep learning approach to traffic accident prediction on heterogeneous spatio-temporal data," in *Proc. 24th ACM SIGKDD Int. Conf. Knowl. Discov. Data Min.*, 2018, pp. 984–992.
 
 ---
 
