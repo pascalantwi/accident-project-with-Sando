@@ -27,7 +27,7 @@ BOXES = {
     "demand": (10.6, 2.6, 2.6, 1.2, "Predicted demand", ["cell × time band"], False),
     "optim": (13.65, 2.6, 2.6, 1.2, "Station location", ["MCLP, day-ahead", "staging"], False),
     "eval": (13.65, 4.5, 2.6, 0.95, "Evaluation (2024)", ["forecast error,", "incident coverage"], False),
-    "roads": (13.65, 0.95, 2.6, 0.95, "Road network", ["Census primary and", "secondary roads"], False),
+    "roads": (13.65, 0.95, 2.6, 0.95, "Road network", ["OpenStreetMap,", "candidate sites"], False),
 }
 INPUTS = ["incidents", "network", "external", "exog"]         # joined by a collector line into "graph"
 ARROWS = [("graph", "hotspot"), ("graph", "forecast"), ("forecast", "demand"), ("demand", "optim"),

@@ -99,21 +99,23 @@ Pascal Antwi¹, Thobias Sando²,
 
 [16] A. Okabe, T. Satoh, and K. Sugihara, "A kernel density estimation method for networks, its computational method and a GIS-based tool," *Int. J. Geogr. Inf. Sci.*, vol. 23, no. 1, pp. 7–32, 2009.
 
-[17] J. K. Ord and A. Getis, "Local spatial autocorrelation statistics: Distributional issues and an application," *Geogr. Anal.*, vol. 27, no. 4, pp. 286–306, 1995.
+[17] OpenStreetMap contributors, "OpenStreetMap," Florida extract distributed by Geofabrik GmbH, 2026. [Online]. Available: https://download.geofabrik.de/north-america/us/florida.html
 
-[18] C. Toregas, R. Swain, C. ReVelle, and L. Bergman, "The location of emergency service facilities," *Oper. Res.*, vol. 19, no. 6, pp. 1363–1373, 1971.
+[18] J. K. Ord and A. Getis, "Local spatial autocorrelation statistics: Distributional issues and an application," *Geogr. Anal.*, vol. 27, no. 4, pp. 286–306, 1995.
 
-[19] U.S. Census Bureau, "TIGER/Line Shapefiles 2023: Primary and secondary roads, Florida," Washington, DC, USA, 2023. [Online]. Available: https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html
+[19] C. Toregas, R. Swain, C. ReVelle, and L. Bergman, "The location of emergency service facilities," *Oper. Res.*, vol. 19, no. 6, pp. 1363–1373, 1971.
 
-[20] A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez, Ł. Kaiser, and I. Polosukhin, "Attention is all you need," in *Adv. Neural Inf. Process. Syst.*, vol. 30, 2017.
+[20] U.S. Census Bureau, "TIGER/Line Shapefiles 2023: Primary and secondary roads, Florida," Washington, DC, USA, 2023. [Online]. Available: https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html
 
-[21] Z. Wu, S. Pan, G. Long, J. Jiang, and C. Zhang, "Graph WaveNet for deep spatial-temporal graph modeling," in *Proc. 28th Int. Joint Conf. Artif. Intell. (IJCAI)*, 2019, pp. 1907–1913.
+[21] A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez, Ł. Kaiser, and I. Polosukhin, "Attention is all you need," in *Adv. Neural Inf. Process. Syst.*, vol. 30, 2017.
 
-[22] Z. Xie and J. Yan, "Kernel density estimation of traffic accidents in a network space," *Comput. Environ. Urban Syst.*, vol. 32, no. 5, pp. 396–406, 2008.
+[22] Z. Wu, S. Pan, G. Long, J. Jiang, and C. Zhang, "Graph WaveNet for deep spatial-temporal graph modeling," in *Proc. 28th Int. Joint Conf. Artif. Intell. (IJCAI)*, 2019, pp. 1907–1913.
 
-[23] B. Yu, H. Yin, and Z. Zhu, "Spatio-temporal graph convolutional networks: A deep learning framework for traffic forecasting," in *Proc. 27th Int. Joint Conf. Artif. Intell. (IJCAI)*, 2018, pp. 3634–3640.
+[23] Z. Xie and J. Yan, "Kernel density estimation of traffic accidents in a network space," *Comput. Environ. Urban Syst.*, vol. 32, no. 5, pp. 396–406, 2008.
 
-[24] Z. Yuan, X. Zhou, and T. Yang, "Hetero-ConvLSTM: A deep learning approach to traffic accident prediction on heterogeneous spatio-temporal data," in *Proc. 24th ACM SIGKDD Int. Conf. Knowl. Discov. Data Min.*, 2018, pp. 984–992.
+[24] B. Yu, H. Yin, and Z. Zhu, "Spatio-temporal graph convolutional networks: A deep learning framework for traffic forecasting," in *Proc. 27th Int. Joint Conf. Artif. Intell. (IJCAI)*, 2018, pp. 3634–3640.
+
+[25] Z. Yuan, X. Zhou, and T. Yang, "Hetero-ConvLSTM: A deep learning approach to traffic accident prediction on heterogeneous spatio-temporal data," in *Proc. 24th ACM SIGKDD Int. Conf. Knowl. Discov. Data Min.*, 2018, pp. 984–992.
 
 ---
 
@@ -187,7 +189,7 @@ Pascal Antwi¹, Thobias Sando²,
 
 ![Figure 9](../results/figures/Figure9_stations.png)
 
-**Figure 9.** Recommended static station locations (10 stations, 15-minute standard), labelled S1–S10. Blue cells are within 15 minutes of a station at off-peak speed. (a) FDOT District 2; (b) Jacksonville.
+**Figure 9.** Recommended static station locations (10 stations, 15-minute standard), labelled S1–S10, and the 307 candidate sites (interchanges, rest areas and service plazas). Blue cells: at least half of the cell's 2024 incidents within 15 minutes of a station at off-peak speed. (a) FDOT District 2; (b) Jacksonville.
 
 
 ## Appendix B. Tables
@@ -248,10 +250,10 @@ Pascal Antwi¹, Thobias Sando²,
 | Day-ahead staging, ST-Transformer | 10 | 77.2 | 91.6 | 97.0 | 9.4 |
 | Day-ahead staging, oracle (upper bound) | 10 | 93.9 | 99.1 | 99.9 | 9.1 |
 
-*Note:* Static layouts are solved separately for each response-time standard; their mean travel time refers to the 15-minute layout. Travel times: shortest paths on the Census primary and secondary road network.
+*Note:* Static layouts are solved separately for each response-time standard; their mean travel time refers to the 15-minute layout. Travel times: shortest paths on the directed OpenStreetMap network (motorway, trunk and primary roads with ramps), with incidents matched to their recorded direction of travel.
 
 
-<a id="table-5"></a>**Table 5.** Recommended station locations (10 stations, 15-minute standard, 2022–2023 demand).
+<a id="table-5"></a>**Table 5.** Recommended station sites (10 stations, 15-minute standard, 2022–2023 demand), selected from 307 candidate interchanges, rest areas and service plazas.
 
 | ID | Station location | Latitude | Longitude | 2024 incidents nearest to station | Share of 2024 incidents (%) | Of these, reached within 15 min (%) |
 | --- | --- | ---: | ---: | ---: | ---: | ---: |
@@ -266,7 +268,7 @@ Pascal Antwi¹, Thobias Sando²,
 | S9 | I-75 near MM 457 (Hamilton County) | 30.4915 | -83.0236 | 2,877 | 4.8 | 93.5 |
 | S10 | I-10 at US-90 (Suwannee County, MM 274) | 30.3376 | -83.1080 | 2,792 | 4.7 | 66.7 |
 
-*Note:* Coordinates are cell centroids (WGS84).
+*Note:* Coordinates are OpenStreetMap site locations (WGS84). Nearest incident landmark: name of the closest 1 km road cell, from the incident location descriptions.
 
 
 ## Appendix C. Supplementary material
@@ -314,7 +316,7 @@ Pascal Antwi¹, Thobias Sando²,
 
 ![Figure S6](../results/figures/FigureS6_sensitivity.png)
 
-**Figure S6.** Sensitivity of the static layout (10 stations, 15-minute standard): coverage within 15 minutes and base-case stations retained under alternative speeds, travel-time models and demand definitions.
+**Figure S6.** Sensitivity of the static layout (10 stations, 15-minute standard): coverage within 15 minutes and base-case stations retained under alternative speeds, demand definitions and travel-time models; the two cell-based travel-time models use road cells as candidate sites, so shared stations are not reported for them.
 
 <a id="figure-s7"></a>
 
