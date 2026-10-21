@@ -1,761 +1,696 @@
 {
-  "lstm": {
+  "gwn": {
     "11": {
-      "best_val_deviance": 0.13586836727185697,
-      "epochs": 19,
-      "parameters": 40353,
+      "best_val_deviance": 0.13601375129170248,
+      "epochs": 11,
+      "parameters": 61645,
       "log": [
         {
           "epoch": 0,
-          "val_deviance": 0.13657752875652396,
-          "seconds": 11.2
+          "val_deviance": 0.13643200638240544,
+          "seconds": 44.6
         },
         {
           "epoch": 1,
-          "val_deviance": 0.13669209824273174,
-          "seconds": 14.3
+          "val_deviance": 0.1368064409629116,
+          "seconds": 45.4
         },
         {
           "epoch": 2,
-          "val_deviance": 0.1363939825787971,
-          "seconds": 10.3
+          "val_deviance": 0.13642443334193172,
+          "seconds": 37.9
         },
         {
           "epoch": 3,
-          "val_deviance": 0.1361623957480981,
-          "seconds": 10.4
+          "val_deviance": 0.13623123138574864,
+          "seconds": 37.0
         },
         {
           "epoch": 4,
-          "val_deviance": 0.13618276554647415,
-          "seconds": 9.9
+          "val_deviance": 0.1361839621422107,
+          "seconds": 37.1
         },
         {
           "epoch": 5,
-          "val_deviance": 0.13610608015980397,
-          "seconds": 10.6
+          "val_deviance": 0.13623081159863742,
+          "seconds": 35.9
         },
         {
           "epoch": 6,
-          "val_deviance": 0.1364817113360467,
-          "seconds": 10.6
+          "val_deviance": 0.13640479175946077,
+          "seconds": 37.4
         },
         {
           "epoch": 7,
-          "val_deviance": 0.13606686380985242,
-          "seconds": 10.5
+          "val_deviance": 0.13601375129170248,
+          "seconds": 36.8
         },
         {
           "epoch": 8,
-          "val_deviance": 0.13635182501947166,
-          "seconds": 10.8
+          "val_deviance": 0.13636565369778075,
+          "seconds": 36.6
         },
         {
           "epoch": 9,
-          "val_deviance": 0.13605914836571237,
-          "seconds": 11.0
+          "val_deviance": 0.13604965051359696,
+          "seconds": 35.0
         },
         {
           "epoch": 10,
-          "val_deviance": 0.13623903119225025,
-          "seconds": 10.8
-        },
-        {
-          "epoch": 11,
-          "val_deviance": 0.13605191277468492,
-          "seconds": 10.2
-        },
-        {
-          "epoch": 12,
-          "val_deviance": 0.13610187418990535,
-          "seconds": 10.6
-        },
-        {
-          "epoch": 13,
-          "val_deviance": 0.1358734789560694,
-          "seconds": 10.3
-        },
-        {
-          "epoch": 14,
-          "val_deviance": 0.13625894880836828,
-          "seconds": 10.9
-        },
-        {
-          "epoch": 15,
-          "val_deviance": 0.13586836727185697,
-          "seconds": 10.5
-        },
-        {
-          "epoch": 16,
-          "val_deviance": 0.13636127292906897,
-          "seconds": 10.5
-        },
-        {
-          "epoch": 17,
-          "val_deviance": 0.13634874073153253,
-          "seconds": 10.1
-        },
-        {
-          "epoch": 18,
-          "val_deviance": 0.13599236172109974,
-          "seconds": 11.1
+          "val_deviance": 0.13627278895995856,
+          "seconds": 37.6
         }
       ]
     },
     "23": {
-      "best_val_deviance": 0.13615677653991842,
-      "epochs": 8,
-      "parameters": 40353,
+      "best_val_deviance": 0.1358817572658859,
+      "epochs": 15,
+      "parameters": 61645,
       "log": [
         {
           "epoch": 0,
-          "val_deviance": 0.13646818973673372,
-          "seconds": 10.7
+          "val_deviance": 0.13642726386788723,
+          "seconds": 35.8
         },
         {
           "epoch": 1,
-          "val_deviance": 0.13661837228770554,
-          "seconds": 11.0
+          "val_deviance": 0.13662839521115935,
+          "seconds": 36.7
         },
         {
           "epoch": 2,
-          "val_deviance": 0.1365033344216663,
-          "seconds": 11.0
+          "val_deviance": 0.13647181529358468,
+          "seconds": 36.9
         },
         {
           "epoch": 3,
-          "val_deviance": 0.13631630576565368,
-          "seconds": 11.6
+          "val_deviance": 0.13638692853557177,
+          "seconds": 34.6
         },
         {
           "epoch": 4,
-          "val_deviance": 0.13615677653991842,
-          "seconds": 12.5
+          "val_deviance": 0.13613627446135942,
+          "seconds": 35.9
         },
         {
           "epoch": 5,
-          "val_deviance": 0.13621580589665966,
-          "seconds": 10.5
+          "val_deviance": 0.13608879464936702,
+          "seconds": 34.9
         },
         {
           "epoch": 6,
-          "val_deviance": 0.13644438065360104,
-          "seconds": 12.3
+          "val_deviance": 0.13625329720504176,
+          "seconds": 37.3
         },
         {
           "epoch": 7,
-          "val_deviance": 0.1362624225129684,
-          "seconds": 10.6
+          "val_deviance": 0.13619547929181272,
+          "seconds": 35.9
+        },
+        {
+          "epoch": 8,
+          "val_deviance": 0.13607733284147422,
+          "seconds": 36.5
+        },
+        {
+          "epoch": 9,
+          "val_deviance": 0.1361702259250499,
+          "seconds": 36.8
+        },
+        {
+          "epoch": 10,
+          "val_deviance": 0.13624108625937817,
+          "seconds": 36.5
+        },
+        {
+          "epoch": 11,
+          "val_deviance": 0.1358817572658859,
+          "seconds": 36.1
+        },
+        {
+          "epoch": 12,
+          "val_deviance": 0.13597653669186635,
+          "seconds": 34.3
+        },
+        {
+          "epoch": 13,
+          "val_deviance": 0.13592229641766693,
+          "seconds": 37.0
+        },
+        {
+          "epoch": 14,
+          "val_deviance": 0.13603559911865332,
+          "seconds": 36.3
         }
       ]
     },
     "37": {
-      "best_val_deviance": 0.13607758255406446,
+      "best_val_deviance": 0.1360660829518337,
       "epochs": 7,
-      "parameters": 40353,
+      "parameters": 61645,
       "log": [
         {
           "epoch": 0,
-          "val_deviance": 0.13644609692148488,
-          "seconds": 10.4
+          "val_deviance": 0.13647795822330502,
+          "seconds": 34.9
         },
         {
           "epoch": 1,
-          "val_deviance": 0.13665248775182692,
-          "seconds": 10.6
+          "val_deviance": 0.13652022714094775,
+          "seconds": 35.7
         },
         {
           "epoch": 2,
-          "val_deviance": 0.13625797830376074,
-          "seconds": 10.8
+          "val_deviance": 0.1361120847352513,
+          "seconds": 34.5
         },
         {
           "epoch": 3,
-          "val_deviance": 0.13607758255406446,
-          "seconds": 10.4
+          "val_deviance": 0.1360660829518337,
+          "seconds": 36.2
         },
         {
           "epoch": 4,
-          "val_deviance": 0.13628184610309707,
-          "seconds": 10.9
+          "val_deviance": 0.13619263324318268,
+          "seconds": 36.8
         },
         {
           "epoch": 5,
-          "val_deviance": 0.1366891253131099,
-          "seconds": 11.6
+          "val_deviance": 0.13669988860064888,
+          "seconds": 37.4
         },
         {
           "epoch": 6,
-          "val_deviance": 0.13615922372330294,
-          "seconds": 10.7
+          "val_deviance": 0.13608595872422038,
+          "seconds": 35.5
         }
       ]
     },
     "41": {
-      "best_val_deviance": 0.13615286212634142,
+      "best_val_deviance": 0.1361530544725258,
       "epochs": 7,
-      "parameters": 40353,
+      "parameters": 61645,
       "log": [
         {
           "epoch": 0,
-          "val_deviance": 0.1365568296074883,
-          "seconds": 10.4
-        },
-        {
-          "epoch": 1,
-          "val_deviance": 0.1364351149667047,
-          "seconds": 10.7
-        },
-        {
-          "epoch": 2,
-          "val_deviance": 0.13673526005160935,
-          "seconds": 10.5
-        },
-        {
-          "epoch": 3,
-          "val_deviance": 0.13615286212634142,
-          "seconds": 10.4
-        },
-        {
-          "epoch": 4,
-          "val_deviance": 0.13642237152581488,
-          "seconds": 10.5
-        },
-        {
-          "epoch": 5,
-          "val_deviance": 0.1364448638812081,
-          "seconds": 10.8
-        },
-        {
-          "epoch": 6,
-          "val_deviance": 0.13625289631509957,
-          "seconds": 10.3
-        }
-      ]
-    },
-    "59": {
-      "best_val_deviance": 0.13625977285991614,
-      "epochs": 4,
-      "parameters": 40353,
-      "log": [
-        {
-          "epoch": 0,
-          "val_deviance": 0.13625977285991614,
-          "seconds": 10.8
-        },
-        {
-          "epoch": 1,
-          "val_deviance": 0.13629581313567918,
-          "seconds": 11.5
-        },
-        {
-          "epoch": 2,
-          "val_deviance": 0.1363388905821952,
-          "seconds": 10.8
-        },
-        {
-          "epoch": 3,
-          "val_deviance": 0.13640858266654043,
-          "seconds": 10.4
-        }
-      ]
-    }
-  },
-  "gwn": {
-    "11": {
-      "best_val_deviance": 0.136075304770302,
-      "epochs": 13,
-      "parameters": 61485,
-      "log": [
-        {
-          "epoch": 0,
-          "val_deviance": 0.1364356062930985,
-          "seconds": 42.7
-        },
-        {
-          "epoch": 1,
-          "val_deviance": 0.13674655111008233,
-          "seconds": 40.5
-        },
-        {
-          "epoch": 2,
-          "val_deviance": 0.1364181905271753,
-          "seconds": 39.3
-        },
-        {
-          "epoch": 3,
-          "val_deviance": 0.13630080401298986,
-          "seconds": 44.5
-        },
-        {
-          "epoch": 4,
-          "val_deviance": 0.13624862757960396,
-          "seconds": 40.6
-        },
-        {
-          "epoch": 5,
-          "val_deviance": 0.13622529092569607,
-          "seconds": 40.8
-        },
-        {
-          "epoch": 6,
-          "val_deviance": 0.1365171455526042,
-          "seconds": 39.5
-        },
-        {
-          "epoch": 7,
-          "val_deviance": 0.13612025776084055,
-          "seconds": 40.2
-        },
-        {
-          "epoch": 8,
-          "val_deviance": 0.13641316050572885,
-          "seconds": 39.2
-        },
-        {
-          "epoch": 9,
-          "val_deviance": 0.136075304770302,
-          "seconds": 39.8
-        },
-        {
-          "epoch": 10,
-          "val_deviance": 0.13632127167170532,
-          "seconds": 38.6
-        },
-        {
-          "epoch": 11,
-          "val_deviance": 0.13611804476737174,
-          "seconds": 38.5
-        },
-        {
-          "epoch": 12,
-          "val_deviance": 0.13617600575916602,
-          "seconds": 38.7
-        }
-      ]
-    },
-    "23": {
-      "best_val_deviance": 0.1358525226705557,
-      "epochs": 15,
-      "parameters": 61485,
-      "log": [
-        {
-          "epoch": 0,
-          "val_deviance": 0.13644458582286437,
-          "seconds": 40.3
-        },
-        {
-          "epoch": 1,
-          "val_deviance": 0.13667992171691168,
-          "seconds": 62.6
-        },
-        {
-          "epoch": 2,
-          "val_deviance": 0.1364545810754636,
-          "seconds": 42.8
-        },
-        {
-          "epoch": 3,
-          "val_deviance": 0.13636775735762893,
-          "seconds": 38.7
-        },
-        {
-          "epoch": 4,
-          "val_deviance": 0.1362092931223462,
-          "seconds": 37.5
-        },
-        {
-          "epoch": 5,
-          "val_deviance": 0.1361418848958535,
-          "seconds": 38.3
-        },
-        {
-          "epoch": 6,
-          "val_deviance": 0.1363035130571447,
-          "seconds": 38.3
-        },
-        {
-          "epoch": 7,
-          "val_deviance": 0.136156741445176,
-          "seconds": 38.7
-        },
-        {
-          "epoch": 8,
-          "val_deviance": 0.13608545120025314,
-          "seconds": 38.1
-        },
-        {
-          "epoch": 9,
-          "val_deviance": 0.13614917177919675,
+          "val_deviance": 0.13652397417959938,
           "seconds": 37.6
         },
         {
-          "epoch": 10,
-          "val_deviance": 0.1362410133702978,
-          "seconds": 38.2
-        },
-        {
-          "epoch": 11,
-          "val_deviance": 0.1358525226705557,
-          "seconds": 38.2
-        },
-        {
-          "epoch": 12,
-          "val_deviance": 0.13599111990713736,
-          "seconds": 38.3
-        },
-        {
-          "epoch": 13,
-          "val_deviance": 0.13590403297873463,
-          "seconds": 37.5
-        },
-        {
-          "epoch": 14,
-          "val_deviance": 0.13599847563016768,
-          "seconds": 39.1
-        }
-      ]
-    },
-    "37": {
-      "best_val_deviance": 0.13619513374357972,
-      "epochs": 7,
-      "parameters": 61485,
-      "log": [
-        {
-          "epoch": 0,
-          "val_deviance": 0.13646469983456014,
-          "seconds": 38.8
-        },
-        {
           "epoch": 1,
-          "val_deviance": 0.13658975050056982,
-          "seconds": 38.2
-        },
-        {
-          "epoch": 2,
-          "val_deviance": 0.1362972661929949,
-          "seconds": 38.2
-        },
-        {
-          "epoch": 3,
-          "val_deviance": 0.13619513374357972,
-          "seconds": 38.9
-        },
-        {
-          "epoch": 4,
-          "val_deviance": 0.1363902038198975,
-          "seconds": 39.0
-        },
-        {
-          "epoch": 5,
-          "val_deviance": 0.13678843128596294,
-          "seconds": 38.4
-        },
-        {
-          "epoch": 6,
-          "val_deviance": 0.13621442302882875,
-          "seconds": 38.3
-        }
-      ]
-    },
-    "41": {
-      "best_val_deviance": 0.13612524863815123,
-      "epochs": 7,
-      "parameters": 61485,
-      "log": [
-        {
-          "epoch": 0,
-          "val_deviance": 0.1365001839936357,
-          "seconds": 39.3
-        },
-        {
-          "epoch": 1,
-          "val_deviance": 0.1363535844808846,
+          "val_deviance": 0.13650530310173598,
           "seconds": 39.6
         },
         {
           "epoch": 2,
-          "val_deviance": 0.13662105838529803,
-          "seconds": 39.4
+          "val_deviance": 0.1369246704258139,
+          "seconds": 38.1
         },
         {
           "epoch": 3,
-          "val_deviance": 0.13612524863815123,
-          "seconds": 39.4
+          "val_deviance": 0.1361530544725258,
+          "seconds": 42.8
         },
         {
           "epoch": 4,
-          "val_deviance": 0.13640669227474228,
-          "seconds": 38.9
+          "val_deviance": 0.13648452633932767,
+          "seconds": 38.4
         },
         {
           "epoch": 5,
-          "val_deviance": 0.13634576645211288,
-          "seconds": 38.8
+          "val_deviance": 0.13635671398704954,
+          "seconds": 36.8
         },
         {
           "epoch": 6,
-          "val_deviance": 0.13622471793653626,
-          "seconds": 39.2
+          "val_deviance": 0.1361681404874718,
+          "seconds": 36.8
         }
       ]
     },
     "59": {
-      "best_val_deviance": 0.13608788286096313,
-      "epochs": 12,
-      "parameters": 61485,
+      "best_val_deviance": 0.1364028406267623,
+      "epochs": 4,
+      "parameters": 61645,
       "log": [
         {
           "epoch": 0,
-          "val_deviance": 0.1363923702453427,
-          "seconds": 41.4
+          "val_deviance": 0.1364028406267623,
+          "seconds": 39.6
         },
         {
           "epoch": 1,
-          "val_deviance": 0.13636821156458365,
-          "seconds": 40.5
+          "val_deviance": 0.13642152925199694,
+          "seconds": 37.3
         },
         {
           "epoch": 2,
-          "val_deviance": 0.136459284445846,
-          "seconds": 39.9
+          "val_deviance": 0.1366224992944337,
+          "seconds": 37.9
         },
         {
           "epoch": 3,
-          "val_deviance": 0.136480370986846,
-          "seconds": 38.8
+          "val_deviance": 0.13661575368000228,
+          "seconds": 38.6
+        }
+      ]
+    }
+  },
+  "lstm": {
+    "11": {
+      "best_val_deviance": 0.13603653182892286,
+      "epochs": 11,
+      "parameters": 40609,
+      "log": [
+        {
+          "epoch": 0,
+          "val_deviance": 0.1365070200445187,
+          "seconds": 8.6
+        },
+        {
+          "epoch": 1,
+          "val_deviance": 0.1365974004795173,
+          "seconds": 8.7
+        },
+        {
+          "epoch": 2,
+          "val_deviance": 0.13640840179363722,
+          "seconds": 8.2
+        },
+        {
+          "epoch": 3,
+          "val_deviance": 0.1362105943274111,
+          "seconds": 8.1
         },
         {
           "epoch": 4,
-          "val_deviance": 0.13620936938592104,
-          "seconds": 37.6
+          "val_deviance": 0.13616382788354817,
+          "seconds": 8.1
         },
         {
           "epoch": 5,
-          "val_deviance": 0.13609518459208203,
-          "seconds": 38.8
+          "val_deviance": 0.13625915127803606,
+          "seconds": 8.8
         },
         {
           "epoch": 6,
-          "val_deviance": 0.1361719374686415,
-          "seconds": 39.9
+          "val_deviance": 0.1364781417958038,
+          "seconds": 8.6
         },
         {
           "epoch": 7,
-          "val_deviance": 0.13620496162125356,
-          "seconds": 40.5
+          "val_deviance": 0.13603653182892286,
+          "seconds": 8.0
         },
         {
           "epoch": 8,
-          "val_deviance": 0.13608788286096313,
-          "seconds": 39.2
+          "val_deviance": 0.13636908960804292,
+          "seconds": 8.6
         },
         {
           "epoch": 9,
-          "val_deviance": 0.13611090838648154,
-          "seconds": 40.2
+          "val_deviance": 0.1360990861825801,
+          "seconds": 8.1
         },
         {
           "epoch": 10,
-          "val_deviance": 0.1361571794545573,
-          "seconds": 38.4
+          "val_deviance": 0.13628879351229736,
+          "seconds": 8.2
+        }
+      ]
+    },
+    "23": {
+      "best_val_deviance": 0.13615386097670246,
+      "epochs": 8,
+      "parameters": 40609,
+      "log": [
+        {
+          "epoch": 0,
+          "val_deviance": 0.13645942010052345,
+          "seconds": 8.6
         },
         {
-          "epoch": 11,
-          "val_deviance": 0.13613629740792177,
-          "seconds": 38.6
+          "epoch": 1,
+          "val_deviance": 0.1365833700064393,
+          "seconds": 8.5
+        },
+        {
+          "epoch": 2,
+          "val_deviance": 0.13644100953363256,
+          "seconds": 8.4
+        },
+        {
+          "epoch": 3,
+          "val_deviance": 0.13635088623511205,
+          "seconds": 8.3
+        },
+        {
+          "epoch": 4,
+          "val_deviance": 0.13615386097670246,
+          "seconds": 8.8
+        },
+        {
+          "epoch": 5,
+          "val_deviance": 0.13616999106023528,
+          "seconds": 8.3
+        },
+        {
+          "epoch": 6,
+          "val_deviance": 0.13633567536387092,
+          "seconds": 8.5
+        },
+        {
+          "epoch": 7,
+          "val_deviance": 0.13624686676839318,
+          "seconds": 8.2
+        }
+      ]
+    },
+    "37": {
+      "best_val_deviance": 0.13609530944837717,
+      "epochs": 7,
+      "parameters": 40609,
+      "log": [
+        {
+          "epoch": 0,
+          "val_deviance": 0.13650312047871735,
+          "seconds": 8.6
+        },
+        {
+          "epoch": 1,
+          "val_deviance": 0.1366129940184305,
+          "seconds": 8.6
+        },
+        {
+          "epoch": 2,
+          "val_deviance": 0.13628842231790644,
+          "seconds": 7.9
+        },
+        {
+          "epoch": 3,
+          "val_deviance": 0.13609530944837717,
+          "seconds": 8.1
+        },
+        {
+          "epoch": 4,
+          "val_deviance": 0.13627407261765226,
+          "seconds": 8.7
+        },
+        {
+          "epoch": 5,
+          "val_deviance": 0.13659876782467367,
+          "seconds": 8.5
+        },
+        {
+          "epoch": 6,
+          "val_deviance": 0.1360961348497228,
+          "seconds": 7.8
+        }
+      ]
+    },
+    "41": {
+      "best_val_deviance": 0.13609008573094855,
+      "epochs": 7,
+      "parameters": 40609,
+      "log": [
+        {
+          "epoch": 0,
+          "val_deviance": 0.13653543868708776,
+          "seconds": 8.2
+        },
+        {
+          "epoch": 1,
+          "val_deviance": 0.13643221020187102,
+          "seconds": 8.2
+        },
+        {
+          "epoch": 2,
+          "val_deviance": 0.13671021320390767,
+          "seconds": 8.4
+        },
+        {
+          "epoch": 3,
+          "val_deviance": 0.13609008573094855,
+          "seconds": 7.8
+        },
+        {
+          "epoch": 4,
+          "val_deviance": 0.13646422538063865,
+          "seconds": 7.8
+        },
+        {
+          "epoch": 5,
+          "val_deviance": 0.13637538708960964,
+          "seconds": 8.3
+        },
+        {
+          "epoch": 6,
+          "val_deviance": 0.13620798044400012,
+          "seconds": 8.7
+        }
+      ]
+    },
+    "59": {
+      "best_val_deviance": 0.13629521922465368,
+      "epochs": 4,
+      "parameters": 40609,
+      "log": [
+        {
+          "epoch": 0,
+          "val_deviance": 0.13629521922465368,
+          "seconds": 9.3
+        },
+        {
+          "epoch": 1,
+          "val_deviance": 0.1363372890471231,
+          "seconds": 8.3
+        },
+        {
+          "epoch": 2,
+          "val_deviance": 0.13644078141780686,
+          "seconds": 8.6
+        },
+        {
+          "epoch": 3,
+          "val_deviance": 0.13643066535830586,
+          "seconds": 9.0
         }
       ]
     }
   },
   "transformer": {
     "11": {
-      "best_val_deviance": 0.135987245312595,
+      "best_val_deviance": 0.13605644202115308,
       "epochs": 11,
-      "parameters": 53249,
+      "parameters": 53409,
       "log": [
         {
           "epoch": 0,
-          "val_deviance": 0.13637527033210123,
-          "seconds": 71.7
+          "val_deviance": 0.13645435903372793,
+          "seconds": 87.8
         },
         {
           "epoch": 1,
-          "val_deviance": 0.13651098035122042,
-          "seconds": 68.2
+          "val_deviance": 0.13661210922598233,
+          "seconds": 84.3
         },
         {
           "epoch": 2,
-          "val_deviance": 0.136263009675005,
-          "seconds": 71.6
+          "val_deviance": 0.13640489299429465,
+          "seconds": 79.4
         },
         {
           "epoch": 3,
-          "val_deviance": 0.13634212064829512,
-          "seconds": 69.4
+          "val_deviance": 0.1363543133716886,
+          "seconds": 80.2
         },
         {
           "epoch": 4,
-          "val_deviance": 0.13609679625063753,
-          "seconds": 69.6
+          "val_deviance": 0.1362352848284975,
+          "seconds": 79.7
         },
         {
           "epoch": 5,
-          "val_deviance": 0.13630601085794616,
-          "seconds": 70.7
+          "val_deviance": 0.13631962559330632,
+          "seconds": 81.4
         },
         {
           "epoch": 6,
-          "val_deviance": 0.13663777023167628,
-          "seconds": 70.7
+          "val_deviance": 0.13662479867496075,
+          "seconds": 80.2
         },
         {
           "epoch": 7,
-          "val_deviance": 0.135987245312595,
-          "seconds": 69.2
+          "val_deviance": 0.13605644202115308,
+          "seconds": 78.3
         },
         {
           "epoch": 8,
-          "val_deviance": 0.13637462985305215,
-          "seconds": 68.6
+          "val_deviance": 0.13637757173732495,
+          "seconds": 81.9
         },
         {
           "epoch": 9,
-          "val_deviance": 0.13625109163546079,
-          "seconds": 69.7
+          "val_deviance": 0.13624594553140482,
+          "seconds": 73.6
         },
         {
           "epoch": 10,
-          "val_deviance": 0.13617176132003053,
-          "seconds": 68.0
+          "val_deviance": 0.13613640741644126,
+          "seconds": 96.4
         }
       ]
     },
     "23": {
-      "best_val_deviance": 0.13627823674381953,
-      "epochs": 4,
-      "parameters": 53249,
+      "best_val_deviance": 0.13625620466947103,
+      "epochs": 6,
+      "parameters": 53409,
       "log": [
         {
           "epoch": 0,
-          "val_deviance": 0.13627823674381953,
-          "seconds": 71.4
+          "val_deviance": 0.13638464737731482,
+          "seconds": 92.0
         },
         {
           "epoch": 1,
-          "val_deviance": 0.13685009949737417,
-          "seconds": 70.2
+          "val_deviance": 0.1367703811150807,
+          "seconds": 72.0
         },
         {
           "epoch": 2,
-          "val_deviance": 0.13636795915239783,
-          "seconds": 67.0
+          "val_deviance": 0.13625620466947103,
+          "seconds": 69.9
         },
         {
           "epoch": 3,
-          "val_deviance": 0.13660543380103574,
-          "seconds": 68.1
+          "val_deviance": 0.13653975804000032,
+          "seconds": 71.6
+        },
+        {
+          "epoch": 4,
+          "val_deviance": 0.13629737147722215,
+          "seconds": 70.7
+        },
+        {
+          "epoch": 5,
+          "val_deviance": 0.13628136287548998,
+          "seconds": 70.1
         }
       ]
     },
     "37": {
-      "best_val_deviance": 0.13627041601545223,
+      "best_val_deviance": 0.1362987145260184,
       "epochs": 4,
-      "parameters": 53249,
+      "parameters": 53409,
       "log": [
         {
           "epoch": 0,
-          "val_deviance": 0.13627041601545223,
-          "seconds": 67.8
+          "val_deviance": 0.1362987145260184,
+          "seconds": 69.0
         },
         {
           "epoch": 1,
-          "val_deviance": 0.13655099983085414,
-          "seconds": 69.9
+          "val_deviance": 0.13646118631092533,
+          "seconds": 69.8
         },
         {
           "epoch": 2,
-          "val_deviance": 0.13660909917692138,
-          "seconds": 68.1
+          "val_deviance": 0.13640855904507918,
+          "seconds": 155.2
         },
         {
           "epoch": 3,
-          "val_deviance": 0.13664038816448063,
-          "seconds": 67.7
+          "val_deviance": 0.1365160697637694,
+          "seconds": 96.8
         }
       ]
     },
     "41": {
-      "best_val_deviance": 0.13649503316528747,
-      "epochs": 7,
-      "parameters": 53249,
+      "best_val_deviance": 0.13627516055466712,
+      "epochs": 10,
+      "parameters": 53409,
       "log": [
         {
           "epoch": 0,
-          "val_deviance": 0.1365686457372997,
-          "seconds": 69.3
+          "val_deviance": 0.13648259005440483,
+          "seconds": 125.0
         },
         {
           "epoch": 1,
-          "val_deviance": 0.1366060486339269,
-          "seconds": 69.0
+          "val_deviance": 0.13657176444508237,
+          "seconds": 76.6
         },
         {
           "epoch": 2,
-          "val_deviance": 0.13747722499695053,
-          "seconds": 69.4
+          "val_deviance": 0.13738956642918576,
+          "seconds": 72.6
         },
         {
           "epoch": 3,
-          "val_deviance": 0.13649503316528747,
-          "seconds": 68.6
+          "val_deviance": 0.13634329564726713,
+          "seconds": 68.8
         },
         {
           "epoch": 4,
-          "val_deviance": 0.13705794136033528,
-          "seconds": 69.2
+          "val_deviance": 0.13695593241741744,
+          "seconds": 71.3
         },
         {
           "epoch": 5,
-          "val_deviance": 0.1364981343256989,
-          "seconds": 69.3
+          "val_deviance": 0.13647008282812742,
+          "seconds": 69.7
         },
         {
           "epoch": 6,
-          "val_deviance": 0.1365039796250076,
-          "seconds": 69.0
+          "val_deviance": 0.13627516055466712,
+          "seconds": 71.5
+        },
+        {
+          "epoch": 7,
+          "val_deviance": 0.1362874707104679,
+          "seconds": 71.5
+        },
+        {
+          "epoch": 8,
+          "val_deviance": 0.13633977065035113,
+          "seconds": 72.2
+        },
+        {
+          "epoch": 9,
+          "val_deviance": 0.1363824748777796,
+          "seconds": 73.5
         }
       ]
     },
     "59": {
-      "best_val_deviance": 0.1364083855960638,
+      "best_val_deviance": 0.1363574010341222,
       "epochs": 5,
-      "parameters": 53249,
+      "parameters": 53409,
       "log": [
         {
           "epoch": 0,
-          "val_deviance": 0.13661506528313186,
-          "seconds": 71.5
+          "val_deviance": 0.13648540573258472,
+          "seconds": 72.7
         },
         {
           "epoch": 1,
-          "val_deviance": 0.1364083855960638,
-          "seconds": 69.0
+          "val_deviance": 0.1363574010341222,
+          "seconds": 70.4
         },
         {
           "epoch": 2,
-          "val_deviance": 0.136585709206001,
-          "seconds": 70.0
+          "val_deviance": 0.13658418325960486,
+          "seconds": 72.0
         },
         {
           "epoch": 3,
-          "val_deviance": 0.13680495551044902,
-          "seconds": 70.7
+          "val_deviance": 0.13686539608077467,
+          "seconds": 71.6
         },
         {
           "epoch": 4,
-          "val_deviance": 0.13642966650794486,
-          "seconds": 71.4
+          "val_deviance": 0.13645552120962096,
+          "seconds": 70.5
         }
       ]
     }

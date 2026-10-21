@@ -1,11 +1,11 @@
-id,cell,lat,lon,name,county,route,incidents_2024_nearest,share_of_2024_pct,covered_15min_pct_of_served
-S1,779,30.24984224342105,-81.55614592105263,SR-202 / Butler Blvd at ramp from Southside Blvd SB (Duval County),Duval,SR-202 / Butler Blvd,14394,24.0,97.7
-S2,542,30.270656,-81.736003,SR-21 / Blanding Blvd at Wilson Blvd (Duval County),Duval,SR-21 / Blanding Blvd,11285,18.8,96.6
-S3,658,30.46392489084507,-81.6482484330986,I-95 at ramp to I-295 W (Duval County),Duval,I-95,6506,10.8,89.0
-S4,203,30.25454119069768,-82.7169352511628,I-10 near MM 299 (Columbia County),Columbia,I-10,6380,10.6,87.5
-S5,357,29.598327384615384,-82.37100330769232,"I-75 at SR-121 (Alachua County, MM 381)",Alachua,I-75,5115,8.5,95.1
-S6,271,29.91562,-82.55413899999999,I-75 near MM 407 (Alachua County),Alachua,I-75,4551,7.6,90.4
-S7,924,29.913288924050637,-81.41083043037975,"I-95 at SR-16 (St. Johns County, MM 317)",St. Johns,I-95,3155,5.3,76.0
-S8,437,30.2626,-82.10755,I-10 at ramp from SR-228 (Baker County),Baker,I-10,2926,4.9,74.5
-S9,107,30.491465800000004,-83.0236132,I-75 near MM 457 (Hamilton County),Hamilton,I-75,2877,4.8,93.5
-S10,78,30.337559887096774,-83.10800425268818,"I-10 at US-90 (Suwannee County, MM 274)",Suwannee,I-10,2792,4.7,66.7
+id,site,site_name,landmark,highway,route,county,lat,lon,incidents_2024_nearest,share_of_2024_pct,covered_15min_pct_of_served
+S1,181,"I-295 Exit 54, Duval County",I-295 E at Gate Parkway,motorway_junction,I-295,Duval,30.24247040000001,-81.514584,10274,17.1,89.2
+S2,52,"I-10 Exit 358, Duval County",I-10 at Cassat Ave,motorway_junction,I-10,Duval,30.318243599999995,-81.7277757,9580,16.0,92.2
+S3,37,"I-295 Exit 10, Duval County",I-295 W between Buckman Bridge and US-17,motorway_junction,I-295,Duval,30.1917729,-81.6975282,6849,11.4,97.7
+S4,11,"I-75 Exit 435, Columbia County",I-75 at ramp to I-10,motorway_junction,I-75,Columbia,30.273272000000023,-82.7581978,6411,10.7,77.5
+S5,141,"I-10 Exit 283, Suwannee County",I-10 at US-129,motorway_junction,I-10,Suwannee,30.333239499999987,-82.9663806,5757,9.6,32.3
+S6,79,"I-95 Exit 366, Duval County",I-95 at ramp from Pecan Park Rd,motorway_junction,I-95,Duval,30.5221559,-81.6357245,5478,9.1,86.2
+S7,10,"I-75 Exit 384, Alachua County",I-75 at ramp from SR-24/Archer Rd,motorway_junction,I-75,Alachua,29.621950500000004,-82.3895038,5038,8.4,77.3
+S8,6,"I-75 Exit 404, Alachua County",I-75 at ramp to CR-236,motorway_junction,I-75,Alachua,29.872891799999987,-82.5424136,4223,7.0,85.5
+S9,130,"I-95 Exit 318, St. Johns County",I-95 at SR-16,motorway_junction,I-95,St. Johns,29.922120699999994,-81.4138561,3384,5.6,77.7
+S10,156,"I-10 Exit 333, Baker County",I-10 at CR-125,motorway_junction,I-10,Baker,30.26151180000001,-82.1656906,2987,5.0,68.9

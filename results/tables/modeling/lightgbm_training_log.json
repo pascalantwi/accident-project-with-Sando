@@ -15,40 +15,107 @@
     "holiday",
     "dark_share",
     "lat",
-    "lon"
+    "lon",
+    "exposure_prev_year",
+    "precip_prev_day"
   ],
   "seeds": {
     "11": {
-      "best_iteration": 114
+      "best_iteration": 119
     },
     "23": {
-      "best_iteration": 118
+      "best_iteration": 120
     },
     "37": {
-      "best_iteration": 125
+      "best_iteration": 118
     },
     "41": {
       "best_iteration": 121
     },
     "59": {
-      "best_iteration": 124
+      "best_iteration": 122
     }
   },
   "gain_importance_pct": {
-    "hist_mean": 80.64,
+    "hist_mean": 80.85,
     "lag1_same_window": 0.01,
-    "lag7_same_window": 0.02,
-    "sum_1d": 0.22,
-    "sum_7d": 0.42,
-    "sum_28d": 12.29,
-    "nbr_sum_7d": 0.23,
-    "district_1d": 0.47,
-    "window": 3.1,
-    "weekday": 0.64,
-    "month": 0.59,
+    "lag7_same_window": 0.01,
+    "sum_1d": 0.1,
+    "sum_7d": 1.0,
+    "sum_28d": 11.43,
+    "nbr_sum_7d": 0.13,
+    "district_1d": 0.42,
+    "window": 2.75,
+    "weekday": 0.61,
+    "month": 0.55,
     "holiday": 0.03,
-    "dark_share": 0.33,
-    "lat": 0.36,
-    "lon": 0.66
+    "dark_share": 0.61,
+    "lat": 0.28,
+    "lon": 0.52,
+    "exposure_prev_year": 0.52,
+    "precip_prev_day": 0.19
+  },
+  "ablation": {
+    "lightgbm_noexternal": {
+      "features": [
+        "hist_mean",
+        "lag1_same_window",
+        "lag7_same_window",
+        "sum_1d",
+        "sum_7d",
+        "sum_28d",
+        "nbr_sum_7d",
+        "district_1d",
+        "window",
+        "weekday",
+        "month",
+        "holiday",
+        "dark_share",
+        "lat",
+        "lon"
+      ]
+    },
+    "lightgbm_aadt": {
+      "features": [
+        "hist_mean",
+        "lag1_same_window",
+        "lag7_same_window",
+        "sum_1d",
+        "sum_7d",
+        "sum_28d",
+        "nbr_sum_7d",
+        "district_1d",
+        "window",
+        "weekday",
+        "month",
+        "holiday",
+        "dark_share",
+        "lat",
+        "lon",
+        "exposure_prev_year"
+      ]
+    },
+    "lightgbm_precipwindow": {
+      "features": [
+        "hist_mean",
+        "lag1_same_window",
+        "lag7_same_window",
+        "sum_1d",
+        "sum_7d",
+        "sum_28d",
+        "nbr_sum_7d",
+        "district_1d",
+        "window",
+        "weekday",
+        "month",
+        "holiday",
+        "dark_share",
+        "lat",
+        "lon",
+        "exposure_prev_year",
+        "precip_prev_day",
+        "precip_window"
+      ]
+    }
   }
 }

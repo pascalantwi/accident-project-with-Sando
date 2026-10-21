@@ -244,10 +244,10 @@ Pascal Antwi¹, Thobias Sando²,
 | --- | ---: | --- | --- | --- | --- | --- |
 | Historical average | 1 | 3.796 | 15.068 | 14.471 | 23.26 | 4.57 |
 | Poisson log-linear | 1 | 3.781 | 15.054 | 13.259 | 22.85 | 4.49 |
-| LightGBM | 5 | 3.803 ± 0.002 | 15.043 ± 0.001 | 13.256 ± 0.011 | 23.59 ± 0.05 | 4.64 ± 0.01 |
-| LSTM (no graph) | 5 | 3.825 ± 0.030 | 15.053 ± 0.005 | 13.324 ± 0.021 | 23.47 ± 0.07 | 4.61 ± 0.01 |
-| Graph WaveNet | 5 | 3.814 ± 0.024 | 15.050 ± 0.002 | 13.316 ± 0.010 | 23.50 ± 0.02 | 4.62 ± 0.00 |
-| ST-Transformer | 5 | 3.894 ± 0.038 | 15.060 ± 0.005 | 13.348 ± 0.019 | 23.34 ± 0.07 | 4.59 ± 0.01 |
+| LightGBM | 5 | 3.801 ± 0.002 | 15.044 ± 0.001 | 13.266 ± 0.006 | 23.59 ± 0.04 | 4.64 ± 0.01 |
+| LSTM (no graph) | 5 | 3.832 ± 0.029 | 15.054 ± 0.005 | 13.329 ± 0.018 | 23.48 ± 0.12 | 4.62 ± 0.02 |
+| Graph WaveNet | 5 | 3.838 ± 0.020 | 15.054 ± 0.005 | 13.327 ± 0.022 | 23.49 ± 0.10 | 4.62 ± 0.02 |
+| ST-Transformer | 5 | 3.866 ± 0.052 | 15.058 ± 0.005 | 13.343 ± 0.017 | 23.37 ± 0.12 | 4.59 ± 0.02 |
 
 *Note:* PAI: predictive accuracy index.
 
@@ -257,31 +257,33 @@ Pascal Antwi¹, Thobias Sando²,
 | Layout (demand source) | Stations | Covered ≤ 10 min (%) | ≤ 15 min (%) | ≤ 20 min (%) | Mean travel time (min) |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | Current Road Ranger stations | 10 | [pending] | [pending] | [pending] | [pending] |
-| Static stations, 2022–2023 demand (MCLP) | 10 | 75.5 | 90.8 | 97.3 | 8.6 |
-| Day-ahead staging, historical average | 10 | 77.3 | 91.6 | 97.0 | 9.5 |
-| Day-ahead staging, LightGBM | 10 | 77.3 | 91.7 | 97.0 | 9.4 |
-| Day-ahead staging, LSTM | 10 | 77.3 | 91.6 | 97.0 | 9.4 |
-| Day-ahead staging, Graph WaveNet | 10 | 77.2 | 91.5 | 97.0 | 9.4 |
-| Day-ahead staging, ST-Transformer | 10 | 77.2 | 91.6 | 97.0 | 9.4 |
-| Day-ahead staging, oracle (upper bound) | 10 | 93.9 | 99.1 | 99.9 | 9.1 |
+| Sites nearest the busiest cells (no optimisation) | 10 | 37.9 | 47.1 | 52.2 | 40.5 |
+| Random candidate sites (mean of 200 draws) | 10 | 34.8 | 52.7 | 63.8 | 22.5 |
+| Static stations, 2022–2023 demand (MCLP) | 10 | 62.9 | 80.7 | 91.4 | 11.7 |
+| Day-ahead staging, historical average | 10 | 63.5 | 80.5 | 90.4 | 12.4 |
+| Day-ahead staging, LightGBM | 10 | 63.2 | 80.6 | 90.3 | 12.3 |
+| Day-ahead staging, LSTM | 10 | 63.5 | 80.5 | 90.4 | 12.4 |
+| Day-ahead staging, Graph WaveNet | 10 | 63.5 | 80.5 | 90.4 | 12.3 |
+| Day-ahead staging, ST-Transformer | 10 | 63.5 | 80.5 | 90.4 | 12.4 |
+| Day-ahead staging, oracle (upper bound) | 10 | 79.9 | 91.3 | 95.5 | 10.1 |
 
-*Note:* Static layouts are solved separately for each response-time standard; their mean travel time refers to the 15-minute layout. Travel times: shortest paths on the directed OpenStreetMap network (motorway, trunk and primary roads with ramps), with incidents matched to their recorded direction of travel.
+*Note:* Comparison layouts are not optimised: the candidate site nearest each of the busiest 2022–2023 cells (distinct sites), and random candidate sites (mean of 200 draws). Static layouts are solved separately for each response-time standard; their mean travel time refers to the 15-minute layout. Travel times: shortest paths on the directed OpenStreetMap network (motorway, trunk and primary roads with ramps), with incidents matched to their recorded direction of travel.
 
 
 <a id="table-5"></a>**Table 5.** Recommended station sites (10 stations, 15-minute standard, 2022–2023 demand), selected from 307 candidate interchanges, rest areas and service plazas.
 
-| ID | Station location | Latitude | Longitude | 2024 incidents nearest to station | Share of 2024 incidents (%) | Of these, reached within 15 min (%) |
-| --- | --- | ---: | ---: | ---: | ---: | ---: |
-| S1 | SR-202 / Butler Blvd at ramp from Southside Blvd SB (Duval County) | 30.2498 | -81.5561 | 14,394 | 24.0 | 97.7 |
-| S2 | SR-21 / Blanding Blvd at Wilson Blvd (Duval County) | 30.2707 | -81.7360 | 11,285 | 18.8 | 96.6 |
-| S3 | I-95 at ramp to I-295 W (Duval County) | 30.4639 | -81.6482 | 6,506 | 10.8 | 89.0 |
-| S4 | I-10 near MM 299 (Columbia County) | 30.2545 | -82.7169 | 6,380 | 10.6 | 87.5 |
-| S5 | I-75 at SR-121 (Alachua County, MM 381) | 29.5983 | -82.3710 | 5,115 | 8.5 | 95.1 |
-| S6 | I-75 near MM 407 (Alachua County) | 29.9156 | -82.5541 | 4,551 | 7.6 | 90.4 |
-| S7 | I-95 at SR-16 (St. Johns County, MM 317) | 29.9133 | -81.4108 | 3,155 | 5.3 | 76.0 |
-| S8 | I-10 at ramp from SR-228 (Baker County) | 30.2626 | -82.1076 | 2,926 | 4.9 | 74.5 |
-| S9 | I-75 near MM 457 (Hamilton County) | 30.4915 | -83.0236 | 2,877 | 4.8 | 93.5 |
-| S10 | I-10 at US-90 (Suwannee County, MM 274) | 30.3376 | -83.1080 | 2,792 | 4.7 | 66.7 |
+| ID | Station site | Nearest incident landmark | Latitude | Longitude | 2024 incidents nearest to station | Share of 2024 incidents (%) | Of these, reached within 15 min (%) |
+| --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
+| S1 | I-295 Exit 54, Duval County | I-295 E at Gate Parkway | 30.2425 | -81.5146 | 10,274 | 17.1 | 89.2 |
+| S2 | I-10 Exit 358, Duval County | I-10 at Cassat Ave | 30.3182 | -81.7278 | 9,580 | 16.0 | 92.2 |
+| S3 | I-295 Exit 10, Duval County | I-295 W between Buckman Bridge and US-17 | 30.1918 | -81.6975 | 6,849 | 11.4 | 97.7 |
+| S4 | I-75 Exit 435, Columbia County | I-75 at ramp to I-10 | 30.2733 | -82.7582 | 6,411 | 10.7 | 77.5 |
+| S5 | I-10 Exit 283, Suwannee County | I-10 at US-129 | 30.3332 | -82.9664 | 5,757 | 9.6 | 32.3 |
+| S6 | I-95 Exit 366, Duval County | I-95 at ramp from Pecan Park Rd | 30.5222 | -81.6357 | 5,478 | 9.1 | 86.2 |
+| S7 | I-75 Exit 384, Alachua County | I-75 at ramp from SR-24/Archer Rd | 29.6220 | -82.3895 | 5,038 | 8.4 | 77.3 |
+| S8 | I-75 Exit 404, Alachua County | I-75 at ramp to CR-236 | 29.8729 | -82.5424 | 4,223 | 7.0 | 85.5 |
+| S9 | I-95 Exit 318, St. Johns County | I-95 at SR-16 | 29.9221 | -81.4139 | 3,384 | 5.6 | 77.7 |
+| S10 | I-10 Exit 333, Baker County | I-10 at CR-125 | 30.2615 | -82.1657 | 2,987 | 5.0 | 68.9 |
 
 *Note:* Coordinates are OpenStreetMap site locations (WGS84). Nearest incident landmark: name of the closest 1 km road cell, from the incident location descriptions.
 
@@ -410,7 +412,12 @@ Pascal Antwi¹, Thobias Sando²,
 
 <a id="table-s3"></a>**Table S3.** LightGBM input ablation, day-ahead forecasts for 2024; mean ± s.d. over five seeds.
 
-[pending: model runs in progress]
+| LightGBM inputs | Runs | Poisson deviance (×10⁻²) | Hit rate, top 5% cells (%) | PAI | Deviance difference vs day-ahead model (×10⁻², 95% CI) |
+| --- | ---: | --- | ---: | ---: | --- |
+| Base inputs only (no AADT, no precipitation) | 5 | 13.256 ± 0.011 | 23.59 | 4.64 | -0.011 (-0.012 to -0.009) |
+| Base inputs + AADT exposure | 5 | 13.264 ± 0.013 | 23.58 | 4.64 | -0.002 (-0.003 to -0.001) |
+| Base inputs + AADT exposure + previous-day precipitation (day-ahead model) | 5 | 13.266 ± 0.006 | 23.59 | 4.64 | — |
+| As above + observed precipitation in the target window (perfect-forecast bound) | 5 | 13.253 ± 0.007 | 23.63 | 4.65 | -0.014 (-0.016 to -0.012) |
 
 *Note:* Differences: day-level bootstrap (2,000 resamples) of mean daily deviance, seed-averaged predictions.
 
@@ -419,7 +426,11 @@ Pascal Antwi¹, Thobias Sando²,
 
 <a id="table-s4"></a>**Table S4.** Temporal validation of the static layout (10 stations, 15-minute standard): sites selected on one period and evaluated on the following year.
 
-[pending: final siting run]
+| Sites selected on | Evaluated on | Covered ≤ 15 min (%) | Layout optimised on the evaluation year (%) | Sites shared with that layout | Sites shared with the recommended layout |
+| --- | --- | ---: | ---: | ---: | ---: |
+| 2022 | 2023 | 81.4 | 81.3 | 5 of 10 | 10 of 10 |
+| 2023 | 2024 | 80.5 | 80.6 | 6 of 10 | 5 of 10 |
+| 2022–2023 | 2024 | 80.7 | 80.6 | 7 of 10 | 10 of 10 |
 
 *Note:* The layout optimised on the evaluation year uses that year's incidents and is shown for reference.
 
