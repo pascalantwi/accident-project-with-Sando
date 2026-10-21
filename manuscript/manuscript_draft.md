@@ -13,7 +13,7 @@ The study area is Florida Department of Transportation (FDOT) District 2, which 
 
 The limited-access network comprises three interstate corridors and an urban beltway. I-95 follows the Atlantic coast through Nassau, Duval and St. Johns counties; I-10 runs west from Jacksonville through Baker, Columbia, Suwannee and Madison counties; and I-75 crosses Hamilton, Columbia and Alachua counties, meeting I-10 near Lake City. Around Jacksonville, I-295 forms a beltway, and several limited-access state roads, including SR-202 (J. Turner Butler Boulevard), SR-9B and SR-115 (Arlington Expressway), connect the beltway with the city centre and the beaches ([Figure 1](#figure-1)b). These facilities are patrolled by FDOT's Road Ranger freeway service patrol, which provides free roadside assistance and incident support as part of the state's traffic incident management programme.
 
-The incident records analysed in this study (Section 2.2) lie between 29.0° and 30.7° N and between 81.3° and 83.7° W, in 15 of the district's 18 counties; Gilchrist, Lafayette and Union counties, which contain no interstate highway, recorded none. The region has a humid subtropical climate with frequent warm-season convective storms, which is why precipitation is included as an explanatory variable (Section 2.6).
+The incident records analysed in this study ([Section 2.2](#sec-2-2)) lie between 29.0° and 30.7° N and between 81.3° and 83.7° W, in 15 of the district's 18 counties; Gilchrist, Lafayette and Union counties, which contain no interstate highway, recorded none. The region has a humid subtropical climate with frequent warm-season convective storms, which is why precipitation is included as an explanatory variable ([Section 2.6](#sec-2-6)).
 
 <a id="figure-1"></a>
 
@@ -22,6 +22,18 @@ The incident records analysed in this study (Section 2.2) lie between 29.0° and
 **Figure 1.** Spatial distribution of incidents in FDOT District 2, 2022–2024. (a) District overview; the dashed box marks panel (b). (b) Central Jacksonville; red circles mark 14 of the 15 busiest 1 km grid cells. Hexagon shading shows incident counts on a logarithmic scale.
 
 ### 2.2 Data <a id="sec-2-2"></a>
+
+Five data sources were combined: incident records, traffic volumes, weather observations, road network data and calendar and daylight information.
+
+**Incident records.** Incident data for 1 January 2022 to 31 December 2024 were obtained from the event chronology of the FDOT District 2 traffic management system [Author note: confirm the system name, e.g. SunGuide, and the data-use permission]. The export contains 9,206,764 chronology records for 227,196 unique events; each record documents one update to an event, such as a change of status, severity, responsible agency or location. Each record carries the event identifier, event type, creation time stamp, the user account that created the event, a roadway description (county, route, travel direction and nearest landmark or mile marker), latitude and longitude, and coded severity, road-surface, weather and lighting conditions. The analysis uses the four event types that Road Rangers attend (disabled vehicles, crashes, debris on the roadway and abandoned vehicles), which account for 173,198 events (76.2%); the remaining events are traffic-management records such as congestion, scheduled road work and bridge openings. The reduction of chronology records to one record per event is described in [Section 2.3](#sec-2-3).
+
+**Traffic volumes.** Annual average daily traffic (AADT) was taken from FDOT's historical AADT data [[1]](#ref-fdot-aadt), which report AADT for state-road segments identified by roadway number and beginning and ending mileposts, for 2021–2025. Segments for 2022–2024 were matched to the incident years, and 2021 segments were also retained because the forecasting models use the previous year's traffic volume ([Section 2.6](#sec-2-6)).
+
+**Weather.** Hourly precipitation was obtained from the National Oceanic and Atmospheric Administration (NOAA) Integrated Surface Database [[2]](#ref-noaa-isd) for the 20 weather stations located in or near the study area with records for 2022–2024. Precipitation amounts are reported in the liquid-precipitation group of routine hourly and special observations. Stations with fewer than 10,000 precipitation reports over the three years were excluded, leaving 11 stations ([Section 2.6](#sec-2-6)).
+
+**Road network and candidate station sites.** The road network was extracted from OpenStreetMap [[3]](#ref-osm) (Florida extract) for a rectangle enclosing the district (29.0–31.0° N, 81.0–83.9° W). Motorways, trunk roads, primary roads and their ramps were retained and converted to a directed graph with OSMnx [[4]](#ref-boeing2017), giving 8,944 nodes and 14,483 directed links with their length, travel direction and, where tagged, posted speed limit. Interchanges, rest areas and service plazas tagged in the same extract provided the candidate locations for Road Ranger stations. County boundaries and the primary and secondary road network from the U.S. Census Bureau's 2023 TIGER/Line files [[5]](#ref-census-tiger) were used to assign candidate sites to counties and as an alternative, undirected road network in the sensitivity analysis.
+
+**Calendar and daylight.** U.S. federal holidays were identified from the federal holiday calendar. Solar elevation was computed for each incident and each three-hour time window from standard solar position equations [[6]](#ref-spencer1971), so that daylight and darkness could be determined independently of the lighting code in the incident records, whose meaning is not documented ([Table S1](#table-s1)).
 
 ### 2.3 Data processing <a id="sec-2-3"></a>
 
@@ -83,55 +95,57 @@ The incident records analysed in this study (Section 2.2) lie between 29.0° and
 
 ## References
 
-[1] Y. Benjamini and Y. Hochberg, "Controlling the false discovery rate: A practical and powerful approach to multiple testing," *J. R. Stat. Soc. Ser. B*, vol. 57, no. 1, pp. 289–300, 1995.
+<a id="ref-fdot-aadt"></a>[1] Florida Department of Transportation, "Annual Average Daily Traffic (historical), 2021–2025," Transportation Data and Analytics Office, Tallahassee, FL, USA. [Online]. Available: https://gis-fdot.opendata.arcgis.com
 
-[2] G. Boeing, "OSMnx: New methods for acquiring, constructing, analyzing, and visualizing complex street networks," *Comput. Environ. Urban Syst.*, vol. 65, pp. 126–139, 2017.
+<a id="ref-noaa-isd"></a>[2] National Centers for Environmental Information, "Global Hourly – Integrated Surface Database (ISD)," NOAA, Asheville, NC, USA. [Online]. Available: https://www.ncei.noaa.gov/products/land-based-station/integrated-surface-database
 
-[3] S. Chainey, L. Tompson, and S. Uhlig, "The utility of hotspot mapping for predicting spatial patterns of crime," *Secur. J.*, vol. 21, pp. 4–28, 2008.
+<a id="ref-osm"></a>[3] OpenStreetMap contributors, "OpenStreetMap," Florida extract distributed by Geofabrik GmbH, 2026. [Online]. Available: https://download.geofabrik.de/north-america/us/florida.html
 
-[4] R. Church and C. ReVelle, "The maximal covering location problem," *Pap. Reg. Sci. Assoc.*, vol. 32, pp. 101–118, 1974.
+<a id="ref-boeing2017"></a>[4] G. Boeing, "OSMnx: New methods for acquiring, constructing, analyzing, and visualizing complex street networks," *Comput. Environ. Urban Syst.*, vol. 65, pp. 126–139, 2017.
 
-[5] Florida Department of Transportation, "Annual Average Daily Traffic (historical), 2021–2025," Transportation Data and Analytics Office, Tallahassee, FL, USA. [Online]. Available: https://gis-fdot.opendata.arcgis.com
+<a id="ref-census-tiger"></a>[5] U.S. Census Bureau, "TIGER/Line Shapefiles 2023: Counties; Primary and secondary roads, Florida," Washington, DC, USA, 2023. [Online]. Available: https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html
 
-[6] A. Getis and J. K. Ord, "The analysis of spatial association by use of distance statistics," *Geogr. Anal.*, vol. 24, no. 3, pp. 189–206, 1992.
+<a id="ref-spencer1971"></a>[6] J. W. Spencer, "Fourier series representation of the position of the sun," *Search*, vol. 2, no. 5, p. 172, 1971.
 
-[7] S. Greenland and J. M. Robins, "Estimation of a common effect parameter from sparse follow-up data," *Biometrics*, vol. 41, no. 1, pp. 55–68, 1985.
+<a id="ref-benjamini1995"></a>[7] Y. Benjamini and Y. Hochberg, "Controlling the false discovery rate: A practical and powerful approach to multiple testing," *J. R. Stat. Soc. Ser. B*, vol. 57, no. 1, pp. 289–300, 1995.
 
-[8] S. L. Hakimi, "Optimum locations of switching centers and the absolute centers and medians of a graph," *Oper. Res.*, vol. 12, no. 3, pp. 450–459, 1964.
+<a id="ref-chainey2008"></a>[8] S. Chainey, L. Tompson, and S. Uhlig, "The utility of hotspot mapping for predicting spatial patterns of crime," *Secur. J.*, vol. 21, pp. 4–28, 2008.
 
-[9] S. Hochreiter and J. Schmidhuber, "Long short-term memory," *Neural Comput.*, vol. 9, no. 8, pp. 1735–1780, 1997.
+<a id="ref-church1974"></a>[9] R. Church and C. ReVelle, "The maximal covering location problem," *Pap. Reg. Sci. Assoc.*, vol. 32, pp. 101–118, 1974.
 
-[10] G. Ke, Q. Meng, T. Finley, T. Wang, W. Chen, W. Ma, Q. Ye, and T.-Y. Liu, "LightGBM: A highly efficient gradient boosting decision tree," in *Adv. Neural Inf. Process. Syst.*, vol. 30, 2017.
+<a id="ref-getis1992"></a>[10] A. Getis and J. K. Ord, "The analysis of spatial association by use of distance statistics," *Geogr. Anal.*, vol. 24, no. 3, pp. 189–206, 1992.
 
-[11] Y. Li, R. Yu, C. Shahabi, and Y. Liu, "Diffusion convolutional recurrent neural network: Data-driven traffic forecasting," in *Proc. Int. Conf. Learn. Represent. (ICLR)*, 2018.
+<a id="ref-greenland1985"></a>[11] S. Greenland and J. M. Robins, "Estimation of a common effect parameter from sparse follow-up data," *Biometrics*, vol. 41, no. 1, pp. 55–68, 1985.
 
-[12] S. M. Lundberg and S.-I. Lee, "A unified approach to interpreting model predictions," in *Adv. Neural Inf. Process. Syst.*, vol. 30, 2017.
+<a id="ref-hakimi1964"></a>[12] S. L. Hakimi, "Optimum locations of switching centers and the absolute centers and medians of a graph," *Oper. Res.*, vol. 12, no. 3, pp. 450–459, 1964.
 
-[13] N. Mantel and W. Haenszel, "Statistical aspects of the analysis of data from retrospective studies of disease," *J. Natl. Cancer Inst.*, vol. 22, no. 4, pp. 719–748, 1959.
+<a id="ref-hochreiter1997"></a>[13] S. Hochreiter and J. Schmidhuber, "Long short-term memory," *Neural Comput.*, vol. 9, no. 8, pp. 1735–1780, 1997.
 
-[14] R. J. Marshall, "Mapping disease and mortality rates using empirical Bayes estimators," *J. R. Stat. Soc. Ser. C (Appl. Stat.)*, vol. 40, no. 2, pp. 283–294, 1991.
+<a id="ref-ke2017"></a>[14] G. Ke, Q. Meng, T. Finley, T. Wang, W. Chen, W. Ma, Q. Ye, and T.-Y. Liu, "LightGBM: A highly efficient gradient boosting decision tree," in *Adv. Neural Inf. Process. Syst.*, vol. 30, 2017.
 
-[15] National Centers for Environmental Information, "Global Hourly – Integrated Surface Database (ISD)," NOAA, Asheville, NC, USA. [Online]. Available: https://www.ncei.noaa.gov/products/land-based-station/integrated-surface-database
+<a id="ref-li2018"></a>[15] Y. Li, R. Yu, C. Shahabi, and Y. Liu, "Diffusion convolutional recurrent neural network: Data-driven traffic forecasting," in *Proc. Int. Conf. Learn. Represent. (ICLR)*, 2018.
 
-[16] A. Okabe, T. Satoh, and K. Sugihara, "A kernel density estimation method for networks, its computational method and a GIS-based tool," *Int. J. Geogr. Inf. Sci.*, vol. 23, no. 1, pp. 7–32, 2009.
+<a id="ref-lundberg2017"></a>[16] S. M. Lundberg and S.-I. Lee, "A unified approach to interpreting model predictions," in *Adv. Neural Inf. Process. Syst.*, vol. 30, 2017.
 
-[17] OpenStreetMap contributors, "OpenStreetMap," Florida extract distributed by Geofabrik GmbH, 2026. [Online]. Available: https://download.geofabrik.de/north-america/us/florida.html
+<a id="ref-mantel1959"></a>[17] N. Mantel and W. Haenszel, "Statistical aspects of the analysis of data from retrospective studies of disease," *J. Natl. Cancer Inst.*, vol. 22, no. 4, pp. 719–748, 1959.
 
-[18] J. K. Ord and A. Getis, "Local spatial autocorrelation statistics: Distributional issues and an application," *Geogr. Anal.*, vol. 27, no. 4, pp. 286–306, 1995.
+<a id="ref-marshall1991"></a>[18] R. J. Marshall, "Mapping disease and mortality rates using empirical Bayes estimators," *J. R. Stat. Soc. Ser. C (Appl. Stat.)*, vol. 40, no. 2, pp. 283–294, 1991.
 
-[19] C. Toregas, R. Swain, C. ReVelle, and L. Bergman, "The location of emergency service facilities," *Oper. Res.*, vol. 19, no. 6, pp. 1363–1373, 1971.
+<a id="ref-okabe2009"></a>[19] A. Okabe, T. Satoh, and K. Sugihara, "A kernel density estimation method for networks, its computational method and a GIS-based tool," *Int. J. Geogr. Inf. Sci.*, vol. 23, no. 1, pp. 7–32, 2009.
 
-[20] U.S. Census Bureau, "TIGER/Line Shapefiles 2023: Primary and secondary roads, Florida," Washington, DC, USA, 2023. [Online]. Available: https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html
+<a id="ref-ord1995"></a>[20] J. K. Ord and A. Getis, "Local spatial autocorrelation statistics: Distributional issues and an application," *Geogr. Anal.*, vol. 27, no. 4, pp. 286–306, 1995.
 
-[21] A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez, Ł. Kaiser, and I. Polosukhin, "Attention is all you need," in *Adv. Neural Inf. Process. Syst.*, vol. 30, 2017.
+<a id="ref-toregas1971"></a>[21] C. Toregas, R. Swain, C. ReVelle, and L. Bergman, "The location of emergency service facilities," *Oper. Res.*, vol. 19, no. 6, pp. 1363–1373, 1971.
 
-[22] Z. Wu, S. Pan, G. Long, J. Jiang, and C. Zhang, "Graph WaveNet for deep spatial-temporal graph modeling," in *Proc. 28th Int. Joint Conf. Artif. Intell. (IJCAI)*, 2019, pp. 1907–1913.
+<a id="ref-vaswani2017"></a>[22] A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez, Ł. Kaiser, and I. Polosukhin, "Attention is all you need," in *Adv. Neural Inf. Process. Syst.*, vol. 30, 2017.
 
-[23] Z. Xie and J. Yan, "Kernel density estimation of traffic accidents in a network space," *Comput. Environ. Urban Syst.*, vol. 32, no. 5, pp. 396–406, 2008.
+<a id="ref-wu2019"></a>[23] Z. Wu, S. Pan, G. Long, J. Jiang, and C. Zhang, "Graph WaveNet for deep spatial-temporal graph modeling," in *Proc. 28th Int. Joint Conf. Artif. Intell. (IJCAI)*, 2019, pp. 1907–1913.
 
-[24] B. Yu, H. Yin, and Z. Zhu, "Spatio-temporal graph convolutional networks: A deep learning framework for traffic forecasting," in *Proc. 27th Int. Joint Conf. Artif. Intell. (IJCAI)*, 2018, pp. 3634–3640.
+<a id="ref-xie2008"></a>[24] Z. Xie and J. Yan, "Kernel density estimation of traffic accidents in a network space," *Comput. Environ. Urban Syst.*, vol. 32, no. 5, pp. 396–406, 2008.
 
-[25] Z. Yuan, X. Zhou, and T. Yang, "Hetero-ConvLSTM: A deep learning approach to traffic accident prediction on heterogeneous spatio-temporal data," in *Proc. 24th ACM SIGKDD Int. Conf. Knowl. Discov. Data Min.*, 2018, pp. 984–992.
+<a id="ref-yu2018"></a>[25] B. Yu, H. Yin, and Z. Zhu, "Spatio-temporal graph convolutional networks: A deep learning framework for traffic forecasting," in *Proc. 27th Int. Joint Conf. Artif. Intell. (IJCAI)*, 2018, pp. 3634–3640.
+
+<a id="ref-yuan2018"></a>[26] Z. Yuan, X. Zhou, and T. Yang, "Hetero-ConvLSTM: A deep learning approach to traffic accident prediction on heterogeneous spatio-temporal data," in *Proc. 24th ACM SIGKDD Int. Conf. Knowl. Discov. Data Min.*, 2018, pp. 984–992.
 
 ---
 
