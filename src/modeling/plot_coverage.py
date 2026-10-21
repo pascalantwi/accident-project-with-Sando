@@ -25,7 +25,7 @@ def main():
         ax.fill_between(ps, dyn.min(0), dyn.max(0), color=SERIES[0], alpha=0.25, lw=0)
         ax.plot(ps, dyn.mean(0), color=SERIES[0], lw=1.6, label=f"Day-ahead staging ({len(keys)} forecasts; band = range)")
         ax.plot(ps, [r["static"][f"{T}_{p}"] for p in ps], color=SERIES[1], lw=1.6,
-                label="Static stations (MCLP, 2022–2023 demand)")
+                label="Fixed stations (optimised on 2022–2023 demand)")
         ax.plot(ps, [r["dynamic"]["oracle"][f"{T}_{p}"] for p in ps], color=INK_2, lw=1.4, ls="--",
                 label="Staging, oracle (upper bound)")
         ax.set_title(f"T = {T} min", loc="left")

@@ -8,7 +8,7 @@ from common import TABLES
 
 def table3():
     t = pd.read_csv(TABLES / "Table3_forecast_performance.csv")
-    lines = ["| Model | Runs | MAE (×10⁻²) | RMSE (×10⁻²) | Poisson deviance (×10⁻²) | Hit rate, top 5% cells (%) | PAI |",
+    lines = ["| Model | Seeds | MAE (×10⁻²) | RMSE (×10⁻²) | Poisson deviance (×10⁻²) | Hit rate, top 5% of cells (%) | PAI |",
              "| --- | ---: | --- | --- | --- | --- | --- |"]
     f = lambda m, sd, k=100, d=3: (f"{m * k:.{d}f} ± {sd * k:.{d}f}" if sd > 0 else f"{m * k:.{d}f}")  # noqa: E731
     for _, r in t.iterrows():
@@ -20,18 +20,21 @@ def table3():
 
 def table4():
     t = pd.read_csv(TABLES / "Table4_layouts.csv")
-    lines = ["| Layout (demand source) | Stations | Covered ≤ 10 min (%) | ≤ 15 min (%) | ≤ 20 min (%) | Mean travel time (min) |",
+    lines = ["| Layout | Stations or units | Covered ≤ 10 min (%) | ≤ 15 min (%) | ≤ 20 min (%) | Mean travel time (min) |",
              "| --- | ---: | ---: | ---: | ---: | ---: |"]
     for _, r in t.iterrows():
         cells = [f"{r[c]:.1f}" if pd.notna(r[c]) else "[pending]" for c in
                  ["covered_10min_pct", "covered_15min_pct", "covered_20min_pct", "mean_response_min"]]
-        lines.append(f"| {r['layout']} | {int(r['stations'])} | " + " | ".join(cells) + " |")
+        label = {"Static stations, 2022–2023 demand (MCLP)": "Fixed stations, optimised on 2022–2023 demand",
+                 "Sites nearest the busiest cells (no optimisation)": "Sites nearest the busiest cells",
+                 "Day-ahead staging, oracle (upper bound)": "Day-ahead staging, oracle (actual incidents)"}.get(r["layout"], r["layout"])
+        lines.append(f"| {label} | {int(r['stations'])} | " + " | ".join(cells) + " |")
     return "\n".join(lines)
 
 
 def table2():
     t = pd.read_csv(TABLES / "Table2_hotspot_clusters.csv")
-    lines = ["| ID | Hotspot location | Routes | Size (1 km cells) | Incidents per year | Crash share (%) | Cells hot in all 3 years | Max Gi* z | Million vehicle-km per year | Incidents per million vehicle-km |",
+    lines = ["| ID | Hotspot location | Routes | Cells | Incidents per year | Crash share (%) | Cells hot in all 3 years | Maximum Gi* z-score | Million vehicle-km per year | Incidents per million vehicle-km |",
              "| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |"]
     for _, r in t.iterrows():
         lines.append(f"| {r['id']} | {r['name']} | {r['routes']} | {r['cells']} | {r['incidents_per_year']:,.0f} | "
@@ -42,7 +45,7 @@ def table2():
 
 def table_s2():
     t = pd.read_csv(TABLES / "TableS2_rate_hotspot_clusters.csv")
-    lines = ["| ID | Hotspot location | Routes | Size (1 km cells) | Incidents per year | Million vehicle-km per year | Incidents per million vehicle-km | Crash share (%) | Max Gi* z | Overlaps a count hotspot (Table 2) |",
+    lines = ["| ID | Hotspot location | Routes | Cells | Incidents per year | Million vehicle-km per year | Incidents per million vehicle-km | Crash share (%) | Maximum Gi* z-score | Overlaps a count hotspot |",
              "| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |"]
     for _, r in t.iterrows():
         lines.append(f"| {r['id']} | {r['name']} | {r['routes']} | {r['cells']} | {r['incidents_per_year']:,.0f} | "
@@ -53,7 +56,7 @@ def table_s2():
 
 def table_s3():
     t = pd.read_csv(TABLES / "TableS3_feature_ablation.csv")
-    lines = ["| LightGBM inputs | Runs | Poisson deviance (×10⁻²) | Hit rate, top 5% cells (%) | PAI | Deviance difference vs day-ahead model (×10⁻², 95% CI) |",
+    lines = ["| LightGBM inputs | Seeds | Poisson deviance (×10⁻²) | Hit rate, top 5% of cells (%) | PAI | Deviance difference vs day-ahead model (×10⁻², 95% CI) |",
              "| --- | ---: | --- | ---: | ---: | --- |"]
     for _, r in t.iterrows():
         diff = "—" if r["key"] == "lightgbm" else \
@@ -75,13 +78,13 @@ def table5():
 
 def table6():
     t = pd.read_csv(TABLES / "Table6_simulation.csv")
-    lines = ["| Case | Stations | Units | Unit allocation | Reached ≤ 10 min (%) | ≤ 15 min (%) | ≤ 20 min (%) | ≤ 15 min, units always free (%) | Mean response (min) | 90th percentile (min) | Delayed by busy units (%) | Utilisation (%) |",
+    lines = ["| Scenario | Stations | Units | Unit allocation | Reached ≤ 10 min (%) | ≤ 15 min (%) | ≤ 20 min (%) | ≤ 15 min, units always free (%) | Mean response (min) | 90th percentile (min) | Delayed by busy units (%) | Utilisation (%) |",
              "| --- | ---: | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |"]
     for _, r in t.iterrows():
         over = r["utilisation_pct"] > 100
         mean = "overloaded" if over else f"{r['mean_response_min']:.1f}"
         p90 = "overloaded" if over else f"{r['p90_response_min']:.1f}"
-        lines.append(f"| {r['variant']} | {r['stations']} | {r['units']} | {r['allocation']} | {r['covered_10min_pct']:.1f} | "
+        lines.append(f"| {'Base case' if r['variant'] == 'Base' else r['variant']} | {r['stations']} | {r['units']} | {r['allocation']} | {r['covered_10min_pct']:.1f} | "
                      f"{r['covered_15min_pct']:.1f} | {r['covered_20min_pct']:.1f} | {r['always_free_15min_pct']:.1f} | "
                      f"{mean} | {p90} | {r['delayed_by_busy_units_pct']:.1f} | {r['utilisation_pct']:.1f} |")
     return "\n".join(lines)

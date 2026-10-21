@@ -15,7 +15,7 @@ The study area is Florida Department of Transportation (FDOT) District 2, which 
 
 ![Figure 1](../results/figures/Figure1_spatial_distribution.png)
 
-**Figure 1.** Spatial distribution of incidents in FDOT District 2, 2022–2024. (a) District overview; the dashed box marks panel (b). (b) Central Jacksonville; red circles mark 14 of the 15 busiest 1 km grid cells. Hexagon shading shows incident counts on a logarithmic scale.
+**Figure 1.** Spatial distribution of incidents in FDOT District 2, 2022–2024: (a) district overview, with the area of panel (b) outlined; (b) central Jacksonville, with circles marking 14 of the 15 busiest 1 km cells. Shading shows the number of incidents per hexagon on a logarithmic scale.
 
 ### 2.2 Data <a id="sec-2-2"></a>
 
@@ -35,7 +35,7 @@ The study follows a predict-then-optimise framework in four stages ([Figure 2](#
 
 ![Figure 2](../results/figures/Figure2_framework.png)
 
-**Figure 2.** Study framework. AADT: annual average daily traffic; NOAA: National Oceanic and Atmospheric Administration; HA: historical average; FDR: false discovery rate; MCLP: maximal covering location problem.
+**Figure 2.** Research framework. AADT = annual average daily traffic; NOAA = National Oceanic and Atmospheric Administration; LSTM = long short-term memory network; ST-Transformer = spatio-temporal Transformer; HA = historical average; FDR = false discovery rate; MCLP = maximal covering location problem.
 
 ### 2.5 Exploratory data analysis <a id="sec-2-5"></a>
 
@@ -93,9 +93,9 @@ The coverage model assumes that every unit is free when an incident occurs. A di
 
 Between 1 January 2022 and 31 December 2024, the traffic management system logged 227,196 events in District 2, of which 173,198 (76.2%) were of the four types attended by Road Rangers ([Table 1](#table-1)). Disabled vehicles were the most frequent type (101,933; 58.9%), followed by crashes (44,158; 25.5%), debris on the roadway (16,979; 9.8%) and abandoned vehicles (10,128; 5.8%). The most common events outside the analysis sample were congestion (22,053), scheduled road work (12,658) and reduced visibility (6,653) ([Figure S1](#figure-s1)). Annual totals ranged from 56,450 in 2023 to 59,981 in 2024, a difference of 6.3%. The increase in 2024 came mainly from disabled vehicles (9.2% more than in 2023) and abandoned vehicles (22.2% more), whereas annual crash counts differed by less than 5% across the three years ([Figure S2](#figure-s2)). Monthly totals ranged from 3,897 (February 2023) to 5,621 (May 2024), with a mean of 4,811. The incident types differed in how they were reported and how long they lasted. Half of all incidents (49.8%) were created through the vehicle-location subsystem, ranging from 4.9% of crashes to 67.9% of disabled vehicles and 86.8% of abandoned vehicles. The median event duration was 18.9 minutes, ranging from 4.7 minutes for abandoned vehicles to 56.7 minutes for crashes ([Section 3.4](#sec-3-4)). The shares of incidents occurring on weekdays (75.0–78.0%) were similar across types, whereas the share between 15:00 and 17:59 was about half as large for abandoned vehicles (12.5%) as for the other types (22.1–25.3%).
 
-<a id="table-1"></a>**Table 1.** Characteristics of incidents by type, FDOT District 2, 2022–2024.
+<a id="table-1"></a>**Table 1.** Characteristics of incidents by type, FDOT District 2, 2022–2024. Duration excludes 5,189 events shorter than 1 min or longer than 24 h. AVL = automatic vehicle location; IQR = interquartile range.
 
-| Incident type | n | % | 2022 | 2023 | 2024 | Median duration, min (IQR) | Weekday % | 15:00–17:59 % | AVL-created % |
+| Incident type | Incidents | Share (%) | 2022 | 2023 | 2024 | Median duration, min (IQR) | Weekday (%) | 15:00–17:59 (%) | Created via AVL (%) |
 | --- | ---: | ---: | ---: | ---: | ---: | --- | ---: | ---: | ---: |
 | Disabled vehicle | 101,933 | 58.9 | 33,260 | 32,828 | 35,845 | 13.4 (4.9–31.7) | 75.4 | 23.0 | 67.9 |
 | Crash | 44,158 | 25.5 | 14,401 | 15,013 | 14,744 | 56.7 (29.9–88.2) | 77.4 | 25.3 | 4.9 |
@@ -114,7 +114,7 @@ The timing differed by incident type ([Figure S3](#figure-s3)). Disabled vehicle
 
 ![Figure 3](../results/figures/Figure3_hour_by_weekday.png)
 
-**Figure 3.** Mean number of incidents per hour, by hour of day and day of week, 2022–2024.
+**Figure 3.** Mean number of incidents per hour by hour of day and day of week, FDOT District 2, 2022–2024.
 
 ### 3.3 Spatial distribution and concentration <a id="sec-3-3"></a>
 
@@ -128,7 +128,7 @@ The mix of incident types also differed between routes ([Figure S4](#figure-s4))
 
 ![Figure 4](../results/figures/Figure4_top_hotspot_cells.png)
 
-**Figure 4.** The 15 one-kilometre grid cells with the highest mean annual number of incidents, with incidents per year and crash share.
+**Figure 4.** The 15 one-kilometre cells with the highest mean annual number of incidents, 2022–2024. Labels give each cell's most frequent location description; values give incidents per year and the share of crashes.
 
 ### 3.4 Event duration <a id="sec-3-4"></a>
 
@@ -138,7 +138,7 @@ Event duration, measured from the first to the last logged update, differed mark
 
 ![Figure 5](../results/figures/Figure5_event_duration.png)
 
-**Figure 5.** Event duration (first to last log update) by incident type; boxes show the interquartile range, whiskers the 5th–95th percentiles; logarithmic scale. Events shorter than 1 minute or longer than 24 hours excluded (n = 5,189).
+**Figure 5.** Distribution of event duration by incident type, 2022–2024. Boxes show the median and interquartile range, and whiskers the 5th and 95th percentiles, on a logarithmic scale. Duration is the time between the first and last logged update; 5,189 events shorter than 1 min or longer than 24 h are excluded.
 
 ### 3.5 Precipitation and incident rates <a id="sec-3-5"></a>
 
@@ -156,11 +156,11 @@ Hotspots of incident rates differed from those of counts ([Figure S7](#figure-s7
 
 ![Figure 6](../results/figures/Figure6_hotspots.png)
 
-**Figure 6.** Getis-Ord Gi* hotspots of incidents on 1 km road cells, 2022–2024 (binary weights within 2 km; Benjamini–Hochberg q-values). (a) FDOT District 2; (b) Jacksonville, with hotspot cluster IDs H1–H8.
+**Figure 6.** Incident hotspots identified with the Getis-Ord Gi* statistic, 2022–2024: (a) FDOT District 2; (b) Jacksonville, with hotspot clusters H1–H8 (Table 2). Classes are based on false-discovery-rate-adjusted q-values; spatial weights are binary within 2 km.
 
-<a id="table-2"></a>**Table 2.** Incident hotspot clusters: contiguous Gi* hot cells (q < 0.05), named after their busiest cell, 2022–2024.
+<a id="table-2"></a>**Table 2.** Incident hotspot clusters (contiguous Gi* hot cells, q < 0.05), 2022–2024, named after the busiest cell in each cluster. Incidents and vehicle-kilometres are cluster totals; vehicle-kilometres are derived from FDOT annual average daily traffic (mean of 2022–2024).
 
-| ID | Hotspot location | Routes | Size (1 km cells) | Incidents per year | Crash share (%) | Cells hot in all 3 years | Max Gi* z | Million vehicle-km per year | Incidents per million vehicle-km |
+| ID | Hotspot location | Routes | Cells | Incidents per year | Crash share (%) | Cells hot in all 3 years | Maximum Gi* z-score | Million vehicle-km per year | Incidents per million vehicle-km |
 | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | H1 | I-95 at ramp to I-10 (Duval County) | Acosta Bridge, I-10, I-95 | 14 | 3,290 | 40.8 | 13 of 14 | 7.77 | 787.8 | 4.18 |
 | H2 | I-295 W at Buckman Bridge (Duval County) | I-295 W | 11 | 2,382 | 17.1 | 11 of 11 | 6.96 | 422.4 | 5.64 |
@@ -178,9 +178,9 @@ The Poisson log-linear model and LightGBM gave the lowest mean Poisson deviance 
 
 The deep models' deviance exceeded LightGBM's in all eight windows, by 0.29–0.91%, with the largest differences between 03:00 and 05:59 ([Figure 7](#figure-7)a); between midnight and 05:59, the log-linear model was 1.6–1.7% better than LightGBM. Observed and predicted 2024 totals per cell were closely related (Graph WaveNet: r = 0.969 on a logarithmic scale; [Figure 7](#figure-7)b). On the validation period, the default configuration was best or tied for each deep model ([Table S7](#table-s7)), and training ran for 4–15 epochs. In LightGBM, the historical mean accounted for 80.9% of the total split gain and the 28-day count for 11.4%; the previous year's exposure and the previous day's precipitation together accounted for 0.7%. Removing these two inputs lowered the deviance slightly (by 0.011 × 10⁻²; 0.009–0.012), whereas adding the observed precipitation in the target window lowered it by 0.014 × 10⁻² (0.012–0.016) ([Table S3](#table-s3)).
 
-<a id="table-3"></a>**Table 3.** Day-ahead forecast performance on 2024 (366 days × 8 windows × 983 cells); mean ± s.d. over five seeds where applicable.
+<a id="table-3"></a>**Table 3.** Day-ahead forecast performance on the 2024 test year (366 days × 8 windows × 983 cells). Values are means ± standard deviations over five random seeds where applicable. MAE = mean absolute error; RMSE = root mean squared error; PAI = predictive accuracy index.
 
-| Model | Runs | MAE (×10⁻²) | RMSE (×10⁻²) | Poisson deviance (×10⁻²) | Hit rate, top 5% cells (%) | PAI |
+| Model | Seeds | MAE (×10⁻²) | RMSE (×10⁻²) | Poisson deviance (×10⁻²) | Hit rate, top 5% of cells (%) | PAI |
 | --- | ---: | --- | --- | --- | --- | --- |
 | Historical average | 1 | 3.796 | 15.068 | 14.471 | 23.26 | 4.57 |
 | Poisson log-linear | 1 | 3.781 | 15.054 | 13.259 | 22.85 | 4.49 |
@@ -194,7 +194,7 @@ The deep models' deviance exceeded LightGBM's in all eight windows, by 0.29–0.
 
 ![Figure 7](../results/figures/Figure7_forecast_performance.png)
 
-**Figure 7.** Day-ahead forecast performance on 2024. (a) Mean Poisson deviance of each deep model relative to LightGBM, by three-hour window. (b) Observed vs predicted 2024 incidents per cell, Graph WaveNet (log scales; dashed line: equality).
+**Figure 7.** Day-ahead forecast performance on the 2024 test year: (a) mean Poisson deviance of the deep learning models relative to LightGBM, by three-hour window; (b) observed and predicted (Graph WaveNet) incidents per cell on logarithmic scales, with the line of equality (dashed).
 
 ### 3.8 Station locations and coverage <a id="sec-3-8"></a>
 
@@ -208,31 +208,31 @@ The recommended layout (10 stations, 15-minute standard) places four stations in
 
 ![Figure 8](../results/figures/Figure8_coverage.png)
 
-**Figure 8.** Share of 2024 incidents within 10, 15 and 20 minutes of the nearest station or staged unit, by number of stations or units: static layouts (2022–2023 demand), day-ahead staging from five forecasts (line: mean; band: range), and the oracle upper bound.
+**Figure 8.** Share of 2024 incidents reached within 10, 15 and 20 min (left to right) of the nearest station or staged unit, by number of stations or units. Fixed stations are optimised on 2022–2023 demand; day-ahead staging is shown as the mean (line) and range (band) of five forecasts; the oracle uses the actual incidents and gives an upper bound.
 
-<a id="table-4"></a>**Table 4.** Station layouts with 10 stations or units, evaluated on the 59,981 incidents of 2024.
+<a id="table-4"></a>**Table 4.** Coverage of the 59,981 incidents of 2024 by layouts of 10 stations or staged units. Comparison layouts are not optimised; fixed stations are optimised separately for each response-time standard on 2022–2023 demand, and their mean travel time refers to the 15-min layout. Travel times are computed on the directed OpenStreetMap network.
 
-| Layout (demand source) | Stations | Covered ≤ 10 min (%) | ≤ 15 min (%) | ≤ 20 min (%) | Mean travel time (min) |
+| Layout | Stations or units | Covered ≤ 10 min (%) | ≤ 15 min (%) | ≤ 20 min (%) | Mean travel time (min) |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | Current Road Ranger stations | 10 | [pending] | [pending] | [pending] | [pending] |
-| Sites nearest the busiest cells (no optimisation) | 10 | 37.9 | 47.1 | 52.2 | 40.5 |
+| Sites nearest the busiest cells | 10 | 37.9 | 47.1 | 52.2 | 40.5 |
 | Random candidate sites (mean of 200 draws) | 10 | 34.8 | 52.7 | 63.8 | 22.5 |
-| Static stations, 2022–2023 demand (MCLP) | 10 | 62.9 | 80.7 | 91.4 | 11.7 |
+| Fixed stations, optimised on 2022–2023 demand | 10 | 62.9 | 80.7 | 91.4 | 11.7 |
 | Day-ahead staging, historical average | 10 | 63.5 | 80.5 | 90.4 | 12.4 |
 | Day-ahead staging, LightGBM | 10 | 63.2 | 80.6 | 90.3 | 12.3 |
 | Day-ahead staging, LSTM | 10 | 63.5 | 80.5 | 90.4 | 12.4 |
 | Day-ahead staging, Graph WaveNet | 10 | 63.5 | 80.5 | 90.4 | 12.3 |
 | Day-ahead staging, ST-Transformer | 10 | 63.5 | 80.5 | 90.4 | 12.4 |
-| Day-ahead staging, oracle (upper bound) | 10 | 79.9 | 91.3 | 95.5 | 10.1 |
+| Day-ahead staging, oracle (actual incidents) | 10 | 79.9 | 91.3 | 95.5 | 10.1 |
 
 
 <a id="figure-9"></a>
 
 ![Figure 9](../results/figures/Figure9_stations.png)
 
-**Figure 9.** Recommended static station locations (10 stations, 15-minute standard), labelled S1–S10, and the 307 candidate sites (interchanges, rest areas and service plazas). Blue cells: at least half of the cell's 2024 incidents within 15 minutes of a station at off-peak speed. (a) FDOT District 2; (b) Jacksonville.
+**Figure 9.** Recommended fixed station sites S1–S10 (10 stations, 15-min standard) and the 307 candidate sites: (a) FDOT District 2; (b) Jacksonville. Shaded cells are those in which at least half of the 2024 incidents can be reached within 15 min at off-peak speed.
 
-<a id="table-5"></a>**Table 5.** Recommended station sites (10 stations, 15-minute standard, 2022–2023 demand), selected from 307 candidate interchanges, rest areas and service plazas.
+<a id="table-5"></a>**Table 5.** Recommended fixed station sites (10 stations, 15-min standard, 2022–2023 demand), selected from 307 candidate interchanges, rest areas and service plazas. Coordinates are WGS84; the nearest incident landmark is the location description of the closest road cell.
 
 | ID | Station site | Nearest incident landmark | Latitude | Longitude | 2024 incidents nearest to station | Share of 2024 incidents (%) | Of these, reached within 15 min (%) |
 | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
@@ -260,25 +260,25 @@ The recommended sites were reselected to different degrees ([Figure S9](#figure-
 
 When units could be busy, the share of incidents reached in time depended on fleet size ([Table 6](#table-6); [Figure 10](#figure-10)). With one unit at each of 10 stations, demand exceeded capacity (utilisation 108%) and 0.6% of incidents were reached within 15 minutes. With 20 units at the 10 stations, 52.4% were reached within 15 minutes when units were distributed equally and 57.4% when they were allocated in proportion to demand, against 80.7% if units were always free; with 30 units, the shares were 71.6% and 75.1%. For the same fleet, larger layouts reached more incidents once there were at least two units per station. With 30 units and proportional allocation, 15 stations reached 79.2% of incidents within 15 minutes (mean response 11.6 minutes) against 75.1% for 10 stations, and with 40 units, 20 stations reached 89.5%. With 60 units at 20 stations, 93.2% were reached within 15 minutes, against 94.2% if units were always free; the mean response time was 7.8 minutes, 2.1% of incidents were delayed by busy units, and utilisation was 10.4%. Proportional allocation reached 1.2–6.3 percentage points more incidents within 15 minutes than equal allocation of the same fleet. For 10 stations and 20 units, halving the on-scene time raised the share reached within 15 minutes from 57.4% to 68.6%, and excluding incidents created through the vehicle-location subsystem raised it to 69.8%.
 
-<a id="table-6"></a>**Table 6.** Discrete-event simulation of 2024 with busy units: response to the 59,981 incidents of 2024 by layout, fleet size and unit allocation.
+<a id="table-6"></a>**Table 6.** Discrete-event simulation of the response to the 59,981 incidents of 2024 with busy units, by layout, fleet size and unit allocation. A unit is busy for travel to the incident, on-scene time and return to its station; utilisation above 100% indicates that demand exceeds capacity. Sensitivity scenarios use 10 stations and 20 units allocated in proportion to demand.
 
-| Case | Stations | Units | Unit allocation | Reached ≤ 10 min (%) | ≤ 15 min (%) | ≤ 20 min (%) | ≤ 15 min, units always free (%) | Mean response (min) | 90th percentile (min) | Delayed by busy units (%) | Utilisation (%) |
+| Scenario | Stations | Units | Unit allocation | Reached ≤ 10 min (%) | ≤ 15 min (%) | ≤ 20 min (%) | ≤ 15 min, units always free (%) | Mean response (min) | 90th percentile (min) | Delayed by busy units (%) | Utilisation (%) |
 | --- | ---: | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| Base | 10 | 10 | Equal | 0.4 | 0.6 | 0.7 | 80.7 | overloaded | overloaded | 99.4 | 108.0 |
-| Base | 10 | 20 | Equal | 34.8 | 52.4 | 63.3 | 80.7 | 27.0 | 59.8 | 43.0 | 39.2 |
-| Base | 10 | 20 | Proportional | 38.8 | 57.4 | 67.7 | 80.7 | 24.9 | 54.2 | 37.4 | 38.2 |
-| Base | 10 | 30 | Equal | 49.0 | 71.6 | 82.3 | 80.7 | 14.3 | 30.6 | 16.8 | 23.8 |
-| Base | 10 | 30 | Proportional | 52.2 | 75.1 | 85.0 | 80.7 | 13.6 | 26.3 | 11.3 | 23.5 |
-| Base | 15 | 15 | Equal | 16.2 | 25.1 | 31.5 | 88.7 | 91.5 | 232.4 | 78.0 | 62.5 |
-| Base | 15 | 30 | Equal | 51.3 | 72.9 | 83.1 | 88.7 | 13.5 | 26.6 | 26.7 | 23.0 |
-| Base | 15 | 30 | Proportional | 57.7 | 79.2 | 88.4 | 88.7 | 11.6 | 21.4 | 17.2 | 22.4 |
-| Base | 15 | 45 | Equal | 61.9 | 84.5 | 93.0 | 88.7 | 9.9 | 17.5 | 9.0 | 14.5 |
-| Base | 15 | 45 | Proportional | 64.7 | 86.7 | 94.3 | 88.7 | 9.5 | 16.4 | 4.2 | 14.4 |
-| Base | 20 | 20 | Equal | 33.3 | 47.6 | 56.7 | 94.2 | 34.9 | 88.3 | 61.9 | 40.8 |
-| Base | 20 | 40 | Equal | 66.5 | 85.1 | 92.3 | 94.2 | 9.5 | 17.9 | 18.5 | 16.1 |
-| Base | 20 | 40 | Proportional | 71.8 | 89.5 | 95.1 | 94.2 | 8.6 | 15.3 | 10.1 | 15.8 |
-| Base | 20 | 60 | Equal | 74.4 | 92.0 | 96.9 | 94.2 | 7.9 | 14.2 | 5.9 | 10.4 |
-| Base | 20 | 60 | Proportional | 76.4 | 93.2 | 97.1 | 94.2 | 7.8 | 13.5 | 2.1 | 10.4 |
+| Base case | 10 | 10 | Equal | 0.4 | 0.6 | 0.7 | 80.7 | overloaded | overloaded | 99.4 | 108.0 |
+| Base case | 10 | 20 | Equal | 34.8 | 52.4 | 63.3 | 80.7 | 27.0 | 59.8 | 43.0 | 39.2 |
+| Base case | 10 | 20 | Proportional | 38.8 | 57.4 | 67.7 | 80.7 | 24.9 | 54.2 | 37.4 | 38.2 |
+| Base case | 10 | 30 | Equal | 49.0 | 71.6 | 82.3 | 80.7 | 14.3 | 30.6 | 16.8 | 23.8 |
+| Base case | 10 | 30 | Proportional | 52.2 | 75.1 | 85.0 | 80.7 | 13.6 | 26.3 | 11.3 | 23.5 |
+| Base case | 15 | 15 | Equal | 16.2 | 25.1 | 31.5 | 88.7 | 91.5 | 232.4 | 78.0 | 62.5 |
+| Base case | 15 | 30 | Equal | 51.3 | 72.9 | 83.1 | 88.7 | 13.5 | 26.6 | 26.7 | 23.0 |
+| Base case | 15 | 30 | Proportional | 57.7 | 79.2 | 88.4 | 88.7 | 11.6 | 21.4 | 17.2 | 22.4 |
+| Base case | 15 | 45 | Equal | 61.9 | 84.5 | 93.0 | 88.7 | 9.9 | 17.5 | 9.0 | 14.5 |
+| Base case | 15 | 45 | Proportional | 64.7 | 86.7 | 94.3 | 88.7 | 9.5 | 16.4 | 4.2 | 14.4 |
+| Base case | 20 | 20 | Equal | 33.3 | 47.6 | 56.7 | 94.2 | 34.9 | 88.3 | 61.9 | 40.8 |
+| Base case | 20 | 40 | Equal | 66.5 | 85.1 | 92.3 | 94.2 | 9.5 | 17.9 | 18.5 | 16.1 |
+| Base case | 20 | 40 | Proportional | 71.8 | 89.5 | 95.1 | 94.2 | 8.6 | 15.3 | 10.1 | 15.8 |
+| Base case | 20 | 60 | Equal | 74.4 | 92.0 | 96.9 | 94.2 | 7.9 | 14.2 | 5.9 | 10.4 |
+| Base case | 20 | 60 | Proportional | 76.4 | 93.2 | 97.1 | 94.2 | 7.8 | 13.5 | 2.1 | 10.4 |
 | On-scene time halved | 10 | 20 | Proportional | 47.3 | 68.6 | 79.1 | 80.7 | 15.7 | 34.8 | 22.7 | 26.5 |
 | AVL-created incidents excluded | 10 | 20 | Proportional | 48.4 | 69.8 | 79.7 | 84.4 | 17.0 | 34.9 | 22.5 | 23.1 |
 
@@ -287,7 +287,7 @@ When units could be busy, the share of incidents reached in time depended on fle
 
 ![Figure 10](../results/figures/Figure10_simulation.png)
 
-**Figure 10.** Simulated share of 2024 incidents reached within 15 minutes by fleet size, for layouts of 10, 15 and 20 stations, with equal units per station (solid) or units allocated in proportion to 2022–2023 demand (dashed). Dotted lines: coverage when units are always free.
+**Figure 10.** Simulated share of 2024 incidents reached within 15 min by fleet size, for layouts of 10, 15 and 20 stations, with units distributed equally (solid lines) or in proportion to 2022–2023 demand (dashed lines). Dotted lines show coverage when units are always available.
 
 ## 4. Discussion <a id="sec-4"></a>
 
@@ -361,66 +361,66 @@ When units could be busy, the share of incidents reached in time depended on fle
 
 ![Figure S1](../results/figures/FigureS1_event_types.png)
 
-**Figure S1.** Frequency of all recorded event types, 2022–2024; blue bars mark the four incident types analysed.
+**Figure S1.** Number of events by event type, FDOT District 2, 2022–2024. Highlighted bars indicate the four incident types analysed.
 
 
 <a id="figure-s2"></a>
 
 ![Figure S2](../results/figures/FigureS2_monthly_trend.png)
 
-**Figure S2.** Monthly number of incidents by type, January 2022 – December 2024.
+**Figure S2.** Monthly number of incidents by type, January 2022–December 2024.
 
 
 <a id="figure-s3"></a>
 
 ![Figure S3](../results/figures/FigureS3_hourly_profile_by_type.png)
 
-**Figure S3.** Hourly distribution of incidents within each type (% of the type's total).
+**Figure S3.** Distribution of incidents by hour of day within each incident type, 2022–2024 (percentage of each type's total).
 
 
 <a id="figure-s4"></a>
 
 ![Figure S4](../results/figures/FigureS4_routes_by_type.png)
 
-**Figure S4.** Incidents by route and type for the eight routes with the most incidents, 2022–2024.
+**Figure S4.** Number of incidents by route and incident type for the eight routes with the most incidents, 2022–2024.
 
 
 <a id="figure-s5"></a>
 
 ![Figure S5](../results/figures/FigureS5_hotspot_persistence.png)
 
-**Figure S5.** Number of years (2022, 2023, 2024) in which each cell was a Gi* hot spot (q < 0.05).
+**Figure S5.** Persistence of incident hotspots: number of years (2022, 2023 and 2024) in which each cell was a Gi* hot spot (q < 0.05) in the annual analyses.
 
 
 <a id="figure-s6"></a>
 
 ![Figure S6](../results/figures/FigureS6_sensitivity.png)
 
-**Figure S6.** Sensitivity of the static layout (10 stations, 15-minute standard): coverage within 15 minutes and base-case stations retained under alternative speeds, demand definitions and travel-time models; the two cell-based travel-time models use road cells as candidate sites, so shared stations are not reported for them.
+**Figure S6.** Sensitivity of the recommended layout (10 stations, 15-min standard) to travel speeds, demand definitions and travel-time models: share of 2024 incidents reached within 15 min and number of sites shared with the base case. The cell-based travel-time models use road cells as candidate sites, so shared sites are not reported for them.
 
 <a id="figure-s7"></a>
 
 ![Figure S7](../results/figures/FigureS7_rate_hotspots.png)
 
-**Figure S7.** Getis-Ord Gi* hotspots of incident rates per million vehicle-km (empirical Bayes-smoothed), 2022–2024 (binary weights within 2 km; Benjamini–Hochberg q-values). Open squares: cells without matched AADT segments. (a) FDOT District 2; (b) Jacksonville; cluster IDs R1–R4.
+**Figure S7.** Hotspots of incident rates per million vehicle-kilometres (empirical Bayes-smoothed) identified with the Getis-Ord Gi* statistic, 2022–2024: (a) FDOT District 2; (b) Jacksonville. Labels R1–R4 mark rate hotspot clusters (Table S2); open squares mark cells without traffic-volume data.
 
 
 <a id="figure-s8"></a>
 
 ![Figure S8](../results/figures/FigureS8_precipitation.png)
 
-**Figure S8.** Incident rate ratios for three-hour windows with vs without precipitation at the nearest NOAA station, by incident type and precipitation total in the window. Mantel–Haenszel estimates stratified by window of day, month and day type, with 95% confidence intervals; logarithmic scale.
+**Figure S8.** Incident rate ratios for three-hour windows with and without precipitation, by incident type and precipitation total (light, < 2.5 mm; moderate, 2.5–10 mm; heavy, ≥ 10 mm). Mantel–Haenszel estimates stratified by window of day, month and day type, with 95% confidence intervals, on a logarithmic scale.
 
 
 <a id="figure-s9"></a>
 
 ![Figure S9](../results/figures/FigureS9_site_robustness.png)
 
-**Figure S9.** Share of re-solved layouts (10 stations, 15-minute standard) that select each candidate site: 200 bootstrap resamples of 2022–2023 days, 2022 and 2023 alone, and seven speed and demand scenarios. Triangles: recommended stations S1–S10. (a) FDOT District 2; (b) Jacksonville.
+**Figure S9.** Selection frequency of candidate sites across 209 re-solved layouts (10 stations, 15-min standard): 200 bootstrap samples of 2022–2023 days, each year alone, and seven speed and demand scenarios: (a) FDOT District 2; (b) Jacksonville. Triangles mark the recommended sites S1–S10.
 
 
 
-<a id="table-s1"></a>**Table S1.** Completeness and variability of candidate explanatory variables (incidents, n = 173,198).
+<a id="table-s1"></a>**Table S1.** Completeness and variability of recorded incident attributes (n = 173,198). AVL = automatic vehicle location.
 
 | Indicator | Share of incidents (%) |
 | --- | ---: |
@@ -430,7 +430,7 @@ When units could be busy, the share of incidents reached in time depended on fle
 | Weather "Clear" in three-hour windows with NOAA-recorded precipitation (n = 17,323) | 94.9 |
 | Lighting code 16 (code meaning undocumented) | 91.7 |
 | Mile marker missing | 53.0 |
-| Created by the `avlrrsubsystem` account | 49.8 |
+| Created via the AVL subsystem (`avlrrsubsystem` account) | 49.8 |
 | Duration > 24 h (flagged) | 2.3 |
 | Duration < 1 min (flagged) | 0.7 |
 | Dark at time of incident (solar elevation below −6°) | 21.7 |
@@ -438,9 +438,9 @@ When units could be busy, the share of incidents reached in time depended on fle
 
 
 
-<a id="table-s2"></a>**Table S2.** Rate hotspot clusters: contiguous Gi* hot cells (q < 0.05) on incidents per million vehicle-km, named after their busiest cell, 2022–2024.
+<a id="table-s2"></a>**Table S2.** Rate hotspot clusters (contiguous Gi* hot cells, q < 0.05, based on empirical Bayes-smoothed incidents per million vehicle-kilometres), 2022–2024. Rates are cluster totals; the analysis covers the 944 cells with traffic-volume data.
 
-| ID | Hotspot location | Routes | Size (1 km cells) | Incidents per year | Million vehicle-km per year | Incidents per million vehicle-km | Crash share (%) | Max Gi* z | Overlaps a count hotspot (Table 2) |
+| ID | Hotspot location | Routes | Cells | Incidents per year | Million vehicle-km per year | Incidents per million vehicle-km | Crash share (%) | Maximum Gi* z-score | Overlaps a count hotspot |
 | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
 | R1 | I-295 W at Buckman Bridge (Duval County) | I-295 W | 3 | 649 | 103.4 | 6.28 | 10.4 | 3.81 | Yes |
 | R2 | I-10 at ramp from CR-229 (Baker County, MM 326) | I-10 | 1 | 59 | 10.0 | 5.94 | 10.1 | 3.62 | No |
@@ -450,9 +450,9 @@ When units could be busy, the share of incidents reached in time depended on fle
 
 
 
-<a id="table-s3"></a>**Table S3.** LightGBM input ablation, day-ahead forecasts for 2024; mean ± s.d. over five seeds.
+<a id="table-s3"></a>**Table S3.** Contribution of traffic-volume and precipitation inputs to LightGBM day-ahead forecasts on the 2024 test year (means ± standard deviations over five seeds). Differences are day-level bootstrap estimates (2,000 resamples) relative to the day-ahead model. PAI = predictive accuracy index.
 
-| LightGBM inputs | Runs | Poisson deviance (×10⁻²) | Hit rate, top 5% cells (%) | PAI | Deviance difference vs day-ahead model (×10⁻², 95% CI) |
+| LightGBM inputs | Seeds | Poisson deviance (×10⁻²) | Hit rate, top 5% of cells (%) | PAI | Deviance difference vs day-ahead model (×10⁻², 95% CI) |
 | --- | ---: | --- | ---: | ---: | --- |
 | Base inputs only (no AADT, no precipitation) | 5 | 13.256 ± 0.011 | 23.59 | 4.64 | -0.011 (-0.012 to -0.009) |
 | Base inputs + AADT exposure | 5 | 13.264 ± 0.013 | 23.58 | 4.64 | -0.002 (-0.003 to -0.001) |
@@ -462,7 +462,7 @@ When units could be busy, the share of incidents reached in time depended on fle
 
 
 
-<a id="table-s4"></a>**Table S4.** Temporal validation of the static layout (10 stations, 15-minute standard): sites selected on one period and evaluated on the following year.
+<a id="table-s4"></a>**Table S4.** Temporal validation of fixed station layouts (10 stations, 15-min standard): sites selected on one period and evaluated on the following year, compared with the layout optimised on the evaluation year itself.
 
 | Sites selected on | Evaluated on | Covered ≤ 15 min (%) | Layout optimised on the evaluation year (%) | Sites shared with that layout | Sites shared with the recommended layout |
 | --- | --- | ---: | ---: | ---: | ---: |
@@ -473,7 +473,7 @@ When units could be busy, the share of incidents reached in time depended on fle
 
 
 
-<a id="table-s5"></a>**Table S5.** Robustness of the recommended station sites: share of re-solved layouts that select the site, or any candidate site within 5 km of it.
+<a id="table-s5"></a>**Table S5.** Selection frequency of the recommended station sites across re-solved layouts: share of layouts selecting each site, or any candidate site within 5 km of it. Demand resamples are 200 bootstrap samples of 2022–2023 days; all layouts add 2022 and 2023 alone and seven speed and demand scenarios (209 layouts).
 
 | ID | Station site | Selected, demand resamples (%) | Site within 5 km selected, demand resamples (%) | Selected, all re-solved layouts (%) | Site within 5 km selected, all layouts (%) |
 | --- | --- | ---: | ---: | ---: | ---: |
@@ -491,7 +491,7 @@ When units could be busy, the share of incidents reached in time depended on fle
 
 
 
-<a id="table-s6"></a>**Table S6.** Coverage of 2024 incidents within 15 minutes under alternative travel speeds: the recommended layout compared with the layout optimised for each speed scenario.
+<a id="table-s6"></a>**Table S6.** Coverage of 2024 incidents within 15 min under alternative travel speeds: the recommended layout compared with the layout optimised for each scenario. Negative differences arise because layouts are optimised at road-link midpoints but evaluated at exact incident locations.
 
 | Travel-speed scenario | Recommended layout, covered ≤ 15 min (%) | Layout optimised for the scenario (%) | Difference (percentage points) | Sites shared |
 | --- | ---: | ---: | ---: | ---: |
@@ -504,7 +504,7 @@ When units could be busy, the share of incidents reached in time depended on fle
 
 
 
-<a id="table-s7"></a>**Table S7.** Hyperparameter tuning of the deep learning models on the validation period (1 October – 31 December 2023), one seed per configuration, at most 30 epochs with early stopping (patience 3).
+<a id="table-s7"></a>**Table S7.** Hyperparameter tuning of the deep learning models on the validation period (1 October–31 December 2023), with one seed per configuration, at most 30 epochs and early stopping (patience 3). Bold values are the lowest validation deviance for each model; differences below 0.1% were treated as ties and the smaller configuration was retained.
 
 | Model | Hidden size | Learning rate | Validation deviance (×10⁻²) | Epochs to best | Parameters |
 | --- | ---: | ---: | ---: | ---: | ---: |
