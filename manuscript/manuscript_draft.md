@@ -41,7 +41,7 @@ The raw export was cleaned in chunks. Time stamps were converted to local time a
 
 The four Road Ranger event types gave 173,198 incidents. Questionable records were flagged, not deleted: implausible durations (under 1 minute or over 24 hours; 5,189 incidents, excluded only from duration analyses), near-duplicates (same route and direction within 0.5 km and 15 minutes; 1.8%) and incidents created by the `avlrrsubsystem` account (49.8%). The last two were tested in robustness checks ([Section 2.10](#sec-2-10)). Daylight, twilight and darkness were assigned from solar elevation, with thresholds of −0.833° and −6°. Recorded condition codes varied little (99.9% minor severity) and were not used as explanatory variables ([Table S1](#table-s1)).
 
-Incidents were assigned to 1 km × 1 km grid cells in a local equirectangular projection; the 983 cells with at least one incident form the spatial units. Time was divided into 8,768 three-hour windows, giving a cell-by-window panel with a mean of 0.020 incidents, in which 98.1% of cell-windows are empty.
+Incidents were assigned to 1 km × 1 km grid cells in a local equirectangular projection; the 983 cells with incidents form the spatial units. Time was divided into 8,768 three-hour windows, giving a cell-by-window panel with a mean of 0.020 incidents, in which 98.1% of cell-windows are empty.
 
 ### 2.4 Research framework <a id="sec-2-4"></a>
 *Figures and tables: [Figure 2](#figure-2).*
