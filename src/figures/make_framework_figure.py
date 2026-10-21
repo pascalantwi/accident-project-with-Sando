@@ -1,7 +1,7 @@
 """Draw the study framework diagram (manuscript Figure 5).
 
 Usage:
-  python src/figures/make_framework_figure.py   # writes results/figures/Figure5_framework.png
+  python src/figures/make_framework_figure.py   # writes results/figures/Figure2_framework.png
 """
 import pathlib
 
@@ -18,13 +18,13 @@ FILL = "#f4f3f0"
 # name: (x centre, y centre, width, height, title, body lines, highlighted)
 BOXES = {
     "incidents": (1.45, 4.3, 2.6, 0.95, "Incident records", ["173,198 incidents", "2022–2024"], False),
-    "network": (1.45, 3.05, 2.6, 0.95, "Road network", ["OSM motorways"], False),
-    "exog": (1.45, 1.8, 2.6, 0.95, "Exposure, context", ["AADT, weather,", "calendar, road type"], False),
-    "graph": (4.5, 3.05, 2.6, 1.2, "Segment graph", ["0.5-mile segments", "× 3-hour windows"], False),
-    "hotspot": (7.55, 4.3, 2.6, 0.95, "Hotspot detection", ["network KDE, Gi*"], False),
-    "forecast": (7.55, 2.6, 2.9, 1.35, "Demand forecasting", ["spatio-temporal GNN", "vs HA, NB, LightGBM"], True),
-    "demand": (10.6, 2.6, 2.6, 1.2, "Predicted demand", ["segment × time band"], False),
-    "optim": (13.65, 2.6, 2.6, 1.2, "Station location", ["MCLP, p-median", "static + staging"], False),
+    "network": (1.45, 3.05, 2.6, 0.95, "Road cells", ["983 cells of 1 km"], False),
+    "exog": (1.45, 1.8, 2.6, 0.95, "Calendar, darkness", ["holidays,", "solar position"], False),
+    "graph": (4.5, 3.05, 2.6, 1.2, "Cell graph", ["8-neighbour links", "× 3-hour windows"], False),
+    "hotspot": (7.55, 4.3, 2.9, 0.95, "Hotspot detection", ["Gi*, FDR-adjusted"], False),
+    "forecast": (7.55, 2.55, 2.9, 1.45, "Demand forecasting", ["Graph WaveNet, LSTM,", "ST-Transformer; HA,", "log-linear, LightGBM"], True),
+    "demand": (10.6, 2.6, 2.6, 1.2, "Predicted demand", ["cell × time band"], False),
+    "optim": (13.65, 2.6, 2.6, 1.2, "Station location", ["MCLP, day-ahead", "staging"], False),
     "eval": (13.65, 4.3, 2.6, 0.95, "Evaluation (2024)", ["forecast error,", "incident coverage"], False),
 }
 ARROWS = [("incidents", "graph"), ("network", "graph"), ("exog", "graph"), ("graph", "hotspot"),
@@ -57,10 +57,10 @@ def main():
     for a, b in ARROWS:
         ax.add_patch(FancyArrowPatch(edge_point(a, b), edge_point(b, a), arrowstyle="-|>", mutation_scale=8,
                                      color=EDGE, lw=0.8, shrinkA=1, shrinkB=1))
-    ax.text(7.55, 1.7, "deep learning component", ha="center", fontsize=6.2, color=ACCENT, style="italic")
+    ax.text(7.55, 1.62, "deep learning component", ha="center", fontsize=6.2, color=ACCENT, style="italic")
     out = pathlib.Path(__file__).resolve().parents[2] / "results" / "figures"
     out.mkdir(exist_ok=True)
-    fig.savefig(out / "Figure5_framework.png", dpi=300, bbox_inches="tight", facecolor="white")
+    fig.savefig(out / "Figure2_framework.png", dpi=300, bbox_inches="tight", facecolor="white")
 
 
 if __name__ == "__main__":

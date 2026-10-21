@@ -130,7 +130,7 @@ def main():
                      "lat": cells.loc[members, "lat"].mean(), "lon": cells.loc[members, "lon"].mean()})
     clusters = pd.DataFrame(rows).sort_values("incidents_per_year", ascending=False).reset_index(drop=True)
     clusters.insert(0, "id", [f"H{i + 1}" for i in range(len(clusters))])
-    clusters.to_csv(TABLES / "Table3_hotspot_clusters.csv", index=False)
+    clusters.to_csv(TABLES / "Table2_hotspot_clusters.csv", index=False)
     summary["clusters"] = len(clusters)
     cells.sort_values("gi_z", ascending=False).to_csv(TABLES / "hotspot_cells.csv", index=False)
     (TABLES / "hotspot_summary.json").write_text(json.dumps(summary, indent=2, default=str))

@@ -29,7 +29,7 @@ Congestion, scheduled road work, visibility and bridge openings are traffic-mana
 No type shows a sustained rise or fall. Disabled vehicles vary most month to month (2,258–3,363 per month).
 
 ### When incidents happen
-![Hour by weekday](figures/Figure2_hour_by_weekday.png)
+![Hour by weekday](figures/Figure3_hour_by_weekday.png)
 
 ![Hourly profile by type](figures/FigureS3_hourly_profile_by_type.png)
 
@@ -38,7 +38,7 @@ The busiest single hour is Friday 3–4 pm, at about 14.7 incidents per hour. Ov
 ### Where incidents happen
 ![Density map](figures/Figure1_spatial_distribution.png)
 
-![Top hotspots](figures/Figure3_top_hotspot_cells.png)
+![Top hotspots](figures/Figure4_top_hotspot_cells.png)
 
 The crash share separates two kinds of hotspot:
 - **Interchanges** (I-95 at I-10, MLK Pkwy, Emerson St; I-10 at Stockton St) are 40–48% crashes. These need fast clearance.
@@ -51,7 +51,7 @@ Adjacent cells such as the two Buckman Bridge cells belong to one hotspot. The n
 I-75 is mostly disabled vehicles (76%), consistent with long-distance rural travel. I-95 has the most crashes (13,450). SR-21 / Blanding Blvd reports crashes only, which suggests that road feeds in from a different source.
 
 ### Event duration
-![Duration](figures/Figure4_event_duration.png)
+![Duration](figures/Figure5_event_duration.png)
 
 Duration is the time from an event's first to its last log update. That approximates how long it stayed open, not true clearance time. 3,932 events open more than 24 hours and 1,257 closed in under a minute are flagged and excluded here.
 

@@ -59,7 +59,7 @@ def main():
         ens[key] = np.mean(preds, 0)[test]
         daily[key] = metrics(ens[key], y)
     tab = pd.DataFrame(rows)
-    tab.to_csv(TABLES / "Table4_forecast_performance.csv", index=False)
+    tab.to_csv(TABLES / "Table3_forecast_performance.csv", index=False)
 
     # Bootstrap over test days: deviance difference vs LightGBM (seed-averaged predictions).
     rng = np.random.default_rng(0)

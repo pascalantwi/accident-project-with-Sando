@@ -1,4 +1,4 @@
-"""Print Tables 3-6 as markdown from the result files (for pasting into the manuscript)."""
+"""Print Tables 2-5 as markdown from the result files (for pasting into the manuscript)."""
 import json
 
 import pandas as pd
@@ -6,8 +6,8 @@ import pandas as pd
 from common import TABLES
 
 
-def table4():
-    t = pd.read_csv(TABLES / "Table4_forecast_performance.csv")
+def table3():
+    t = pd.read_csv(TABLES / "Table3_forecast_performance.csv")
     lines = ["| Model | Runs | MAE (×10⁻²) | RMSE (×10⁻²) | Poisson deviance (×10⁻²) | Hit rate, top 5% cells (%) | PAI |",
              "| --- | ---: | --- | --- | --- | --- | --- |"]
     f = lambda m, sd, k=100, d=3: (f"{m * k:.{d}f} ± {sd * k:.{d}f}" if sd > 0 else f"{m * k:.{d}f}")  # noqa: E731
@@ -18,8 +18,8 @@ def table4():
     return "\n".join(lines)
 
 
-def table5():
-    t = pd.read_csv(TABLES / "Table5_layouts.csv")
+def table4():
+    t = pd.read_csv(TABLES / "Table4_layouts.csv")
     lines = ["| Layout (demand source) | Stations | Covered ≤ 10 min (%) | ≤ 15 min (%) | ≤ 20 min (%) | Mean travel time (min) |",
              "| --- | ---: | ---: | ---: | ---: | ---: |"]
     for _, r in t.iterrows():
@@ -29,8 +29,8 @@ def table5():
     return "\n".join(lines)
 
 
-def table3():
-    t = pd.read_csv(TABLES / "Table3_hotspot_clusters.csv")
+def table2():
+    t = pd.read_csv(TABLES / "Table2_hotspot_clusters.csv")
     lines = ["| ID | Hotspot location | Routes | Size (1 km cells) | Incidents per year | Crash share (%) | Cells hot in all 3 years | Max Gi* z |",
              "| --- | --- | --- | ---: | ---: | ---: | ---: | ---: |"]
     for _, r in t.iterrows():
@@ -39,8 +39,8 @@ def table3():
     return "\n".join(lines)
 
 
-def table6():
-    t = pd.read_csv(TABLES / "Table6_recommended_stations.csv")
+def table5():
+    t = pd.read_csv(TABLES / "Table5_recommended_stations.csv")
     lines = ["| ID | Station location | Latitude | Longitude | 2024 incidents nearest to station | Share of 2024 incidents (%) | Of these, reached within 15 min (%) |",
              "| --- | --- | ---: | ---: | ---: | ---: | ---: |"]
     for _, r in t.iterrows():
@@ -50,7 +50,7 @@ def table6():
 
 
 if __name__ == "__main__":
-    for f in (table3, table4, table5, table6):
+    for f in (table2, table3, table4, table5):
         try:
             print(f(), "\n")
         except FileNotFoundError as e:

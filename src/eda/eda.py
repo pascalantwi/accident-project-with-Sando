@@ -141,7 +141,7 @@ def fig_hour_weekday(s, outdir):
     cb.ax.tick_params(labelsize=7.5, length=0)
     cb.set_label("Avg. incidents per hour", fontsize=8, color=INK_2)
     ax.set_title("Weekday afternoons, 3–6 pm, carry the most incidents")
-    save(fig, outdir, "Figure2_hour_by_weekday")
+    save(fig, outdir, "Figure3_hour_by_weekday")
     return table
 
 
@@ -265,7 +265,7 @@ def fig_top_hotspots(cells, outdir, n=15):
     ax.set_xlabel("Incidents per year in the 1 km cell")
     share = cells.loc[n - 1, "cum_share"]
     ax.set_title(f"The 15 busiest 1 km cells hold {share:.0%} of incidents")
-    save(fig, outdir, "Figure3_top_hotspot_cells")
+    save(fig, outdir, "Figure4_top_hotspot_cells")
 
 
 def fig_routes(s, outdir, n=8):
@@ -314,7 +314,7 @@ def fig_clearance(s, outdir):
     ax.tick_params(axis="y", length=0)
     ax.set_xlabel("Event duration, first to last update (minutes, log scale; whiskers 5th–95th pct.)")
     ax.set_title("Crash events stay open about four times longer than disabled vehicles or debris")
-    save(fig, outdir, "Figure4_event_duration")
+    save(fig, outdir, "Figure5_event_duration")
     return ok.groupby("event_type")["duration_min"].describe(percentiles=[.25, .5, .75, .9]).round(1)
 
 
@@ -376,15 +376,15 @@ def main():
     fig_routes(s, figs).to_csv(tables / "route_by_type.csv")
     fig_clearance(s, figs).to_csv(tables / "duration_by_type.csv")
     cells.head(50).rename(index=lambda i: i + 1).to_csv(
-        tables / "TableS2_top50_hotspot_cells_1km.csv", index_label="rank")
-    table_incident_characteristics(s).to_csv(tables / "Table2_incident_characteristics.csv",
+        tables / "top50_hotspot_cells_1km.csv", index_label="rank")
+    table_incident_characteristics(s).to_csv(tables / "Table1_incident_characteristics.csv",
                                              index_label="incident_type")
     table_data_quality(df, s).to_csv(tables / "TableS1_data_quality.csv", index=False)
 
     df["event_type"].value_counts().to_csv(tables / "event_type_counts.csv")
     (s.groupby("county").size().sort_values(ascending=False).rename("incidents").to_frame()
      .assign(share_pct=lambda d: (d["incidents"] / d["incidents"].sum() * 100).round(1))
-     .to_csv(tables / "TableS3_county_counts.csv"))
+     .to_csv(tables / "county_counts.csv"))
     s.groupby(["year", "event_type"]).size().unstack()[TYPES].to_csv(tables / "year_by_type.csv")
     avl = (s.assign(avl=s["created_by"] == "avlrrsubsystem")
            .groupby("route")["avl"].agg(["size", "mean"]).sort_values("size", ascending=False).head(10))

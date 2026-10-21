@@ -6,7 +6,7 @@ Static layout: maximal covering location problem (exact MILP, HiGHS) with 2022-2
 Dynamic staging: for every 2024 day and time band, greedy maximal covering on each model's
 day-ahead forecast; the oracle uses the actual incidents (upper bound).
 
-Outputs: tables/Table5_layouts.csv, tables/siting_results.json, figures/Figure8_coverage.png,
+Outputs: tables/Table4_layouts.csv, tables/siting_results.json, figures/Figure8_coverage.png,
 figures/Figure9_stations.png, figures/FigureS6_sensitivity.png
 """
 import json
@@ -171,7 +171,7 @@ def main():
         r["mean_response_min"] = dyn_times[key]
         rows.append(r)
     tab = pd.DataFrame(rows)
-    tab.to_csv(TABLES / "Table5_layouts.csv", index=False)
+    tab.to_csv(TABLES / "Table4_layouts.csv", index=False)
     print(tab.round(2).to_string())
 
     # Sensitivity of the static layout (p = 10, T = 15).
@@ -221,7 +221,7 @@ def main():
         round((near.loc[near["nearest"] == c, "t"] <= 15).mean() * 100, 1) for c in st]
     stations = stations.sort_values("incidents_2024_nearest", ascending=False).reset_index(drop=True)
     stations.insert(0, "id", [f"S{i + 1}" for i in range(len(stations))])
-    stations.to_csv(TABLES / "Table6_recommended_stations.csv", index=False)
+    stations.to_csv(TABLES / "Table5_recommended_stations.csv", index=False)
     results["static_station_cells"] = st.tolist()
     results["dynamic_mean_response_p10_T15"] = dyn_times
     results["test_incidents"] = len(test_inc)
