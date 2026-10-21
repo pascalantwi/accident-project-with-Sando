@@ -3,7 +3,7 @@
 Pascal Antwi<sup>1</sup>, Thobias Sando<sup>2,\*</sup>
 
 <sup>1</sup> Department of Mathematics and Statistics, College of Arts and Sciences, University of North Florida, Jacksonville, FL, USA<br>
-<sup>2</sup> College of Computing, Engineering and Construction, University of North Florida, Jacksonville, FL, USA<br>
+<sup>2</sup> School of Civil Engineering, College of Computing, Engineering and Construction, University of North Florida, Jacksonville, FL, USA<br>
 <sup>\*</sup> Corresponding author: Thobias Sando, t.sando@unf.edu
 
 ## 1. Introduction <a id="sec-1"></a>
