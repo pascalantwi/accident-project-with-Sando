@@ -323,33 +323,3 @@ Pascal Antwi¹, [Co-author] Sando²
 | Dark at time of incident (solar elevation below −6°) | 21.7 |
 | Near-duplicate (same route and direction, ≤ 0.5 km, ≤ 15 min) | 1.8 |
 
-*Cited in [Section 3.5](#sec-3-5).*
-
----
-
-## List of figures
-
-- [Figure 1](#figure-1). Spatial distribution of incidents in FDOT District 2, 2022–2024.
-- [Figure 2](#figure-2). Study framework.
-- [Figure 3](#figure-3). Mean number of incidents per hour, by hour of day and day of week, 2022–2024.
-- [Figure 4](#figure-4). The 15 one-kilometre grid cells with the highest mean annual number of incidents, with incidents per year and crash share.
-- [Figure 5](#figure-5). Event duration (first to last log update) by incident type; boxes show the interquartile range, whiskers the 5th–95th percentiles; logarithmic scale.
-- [Figure 6](#figure-6). Getis-Ord Gi* hotspots of incidents on 1 km road cells, 2022–2024 (binary weights within 2 km; Benjamini–Hochberg q-values).
-- [Figure 7](#figure-7). Day-ahead forecast performance on 2024.
-- [Figure 8](#figure-8). Share of 2024 incidents within 10, 15 and 20 minutes of the nearest station or staged unit, by number of stations or units: static layouts (2022–2023 demand), day-ahead staging from five forecasts (line: mean; band: range), and the oracle upper bound.
-- [Figure 9](#figure-9). Recommended static station locations (10 stations, 15-minute standard), labelled S1–S10.
-- [Figure S1](#figure-s1). Frequency of all recorded event types, 2022–2024; blue bars mark the four incident types analysed.
-- [Figure S2](#figure-s2). Monthly number of incidents by type, January 2022 – December 2024.
-- [Figure S3](#figure-s3). Hourly distribution of incidents within each type (% of the type's total).
-- [Figure S4](#figure-s4). Incidents by route and type for the eight routes with the most incidents, 2022–2024.
-- [Figure S5](#figure-s5). Number of years (2022, 2023, 2024) in which each cell was a Gi* hot spot (q < 0.05).
-- [Figure S6](#figure-s6). Sensitivity of the static layout (10 stations, 15-minute standard): coverage within 15 minutes and base-case stations retained under alternative speeds, circuity and demand definitions.
-
-## List of tables
-
-- [Table 1](#table-1). Characteristics of incidents by type, FDOT District 2, 2022–2024.
-- [Table 2](#table-2). Incident hotspot clusters: contiguous Gi* hot cells (q < 0.05), named after their busiest cell, 2022–2024.
-- [Table 3](#table-3). Day-ahead forecast performance on 2024 (366 days × 8 windows × 983 cells); mean ± s.d. over five seeds where applicable.
-- [Table 4](#table-4). Station layouts with 10 stations or units, evaluated on the 59,981 incidents of 2024.
-- [Table 5](#table-5). Recommended station locations (10 stations, 15-minute standard, 2022–2023 demand).
-- [Table S1](#table-s1). Completeness and variability of candidate explanatory variables (incidents, n = 173,198).
