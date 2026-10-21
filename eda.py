@@ -20,7 +20,7 @@ import numpy as np  # noqa: E402
 import pandas as pd  # noqa: E402
 from matplotlib.colors import LinearSegmentedColormap, LogNorm  # noqa: E402
 
-# Road Ranger incident types, in fixed categorical order (validated palette slots 1-4).
+# Incident types served by Road Rangers (the analysis sample), in fixed categorical order (validated palette slots 1-4).
 TYPES = ["Disabled Vehicle", "Crash", "Debris On Roadway", "Abandoned Vehicle"]
 TYPE_COLORS = dict(zip(TYPES, ["#2a78d6", "#eb6834", "#1baf7a", "#eda100"]))
 OUT_OF_SCOPE = "#b5b3ad"
@@ -95,7 +95,7 @@ def fig_event_types(df, outdir):
     ax.set_axisbelow(True)
     ax.set_xlabel("Incidents, 2022–2024")
     share = df["in_scope"].mean()
-    ax.set_title(f"Road Ranger incident types (blue) are {share:.0%} of all events")
+    ax.set_title(f"Patrol-served incident types (blue) are {share:.0%} of all events")
     ax.tick_params(axis="y", length=0)
     save(fig, outdir, "FigureS1_event_types")
 
@@ -138,7 +138,7 @@ def fig_hour_weekday(s, outdir):
     cb.outline.set_visible(False)
     cb.ax.tick_params(labelsize=7.5, length=0)
     cb.set_label("Avg. incidents per hour", fontsize=8, color=INK_2)
-    ax.set_title("Weekday afternoons, 3–6 pm, carry the most Road Ranger incidents")
+    ax.set_title("Weekday afternoons, 3–6 pm, carry the most incidents")
     save(fig, outdir, "Figure2_hour_by_weekday")
     return table
 
@@ -242,7 +242,7 @@ def fig_density_map(s, cells, outdir):
     cb.outline.set_visible(False)
     cb.ax.tick_params(labelsize=7)
     cb.ax.xaxis.set_major_formatter(matplotlib.ticker.StrMethodFormatter("{x:,.0f}"))
-    cb.set_label("Road Ranger incidents per hexagon, 2022–2024 (log scale)", fontsize=7.5, color=INK_2)
+    cb.set_label("Incidents per hexagon, 2022–2024 (log scale)", fontsize=7.5, color=INK_2)
     fig.suptitle("Incidents trace the interstates; the busiest spots cluster in central Jacksonville",
                  x=0.06, ha="left", fontsize=10.5, fontweight="bold")
     save(fig, outdir, "Figure1_spatial_distribution")
@@ -260,7 +260,7 @@ def fig_top_hotspots(cells, outdir, n=15):
     ax.xaxis.grid(True)
     ax.set_axisbelow(True)
     ax.tick_params(axis="y", length=0, labelsize=7.5)
-    ax.set_xlabel("Road Ranger incidents per year in the 1 km cell")
+    ax.set_xlabel("Incidents per year in the 1 km cell")
     share = cells.loc[n - 1, "cum_share"]
     ax.set_title(f"The 15 busiest 1 km cells hold {share:.0%} of incidents")
     save(fig, outdir, "Figure3_top_hotspot_cells")
@@ -282,7 +282,7 @@ def fig_routes(s, outdir, n=8):
     ax.xaxis.grid(True)
     ax.set_axisbelow(True)
     ax.tick_params(axis="y", length=0)
-    ax.set_xlabel("Road Ranger incidents, 2022–2024")
+    ax.set_xlabel("Incidents, 2022–2024")
     ax.legend(ncol=4, loc="lower left", bbox_to_anchor=(0, 1.0), handlelength=1, columnspacing=1)
     ax.set_title("I-75, I-95, I-10 and the I-295 beltway carry 90% of incidents", pad=22)
     save(fig, outdir, "FigureS4_routes_by_type")
@@ -317,7 +317,7 @@ def fig_clearance(s, outdir):
 
 
 def table_incident_characteristics(s):
-    """Table 2: characteristics of Road Ranger incidents by type."""
+    """Table 2: characteristics of incidents by type."""
     ok = s[~s["flag_duration_lt_1min"] & ~s["flag_duration_gt_24h"]]
     rows = {}
     for t in TYPES + ["All"]:
@@ -344,7 +344,7 @@ def table_data_quality(df, s):
         ("Weather 'Clear'", (s["weather"] == "Clear").mean()),
         ("Lighting code 16 (meaning undocumented)", (s["lighting_code"] == 16).mean()),
         ("Mile marker missing", s["mile_marker"].isna().mean()),
-        ("Created by Road Ranger AVL subsystem", (s["created_by"] == "avlrrsubsystem").mean()),
+        ("Created by the avlrrsubsystem account (likely patrol AVL)", (s["created_by"] == "avlrrsubsystem").mean()),
         ("Duration < 1 min (flagged)", s["flag_duration_lt_1min"].mean()),
         ("Duration > 24 h (flagged)", s["flag_duration_gt_24h"].mean()),
         ("County not parsed from roadway text", df["county"].isna().mean()),
