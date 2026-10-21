@@ -176,13 +176,62 @@ Event duration, measured from the first to the last logged update, differed mark
 **Figure 5.** Event duration (first to last log update) by incident type; boxes show the interquartile range, whiskers the 5th–95th percentiles; logarithmic scale. Events shorter than 1 minute or longer than 24 hours excluded (n = 5,189).
 
 ### 3.5 Precipitation and incident rates <a id="sec-3-5"></a>
-*Figures and tables: [Figure S8](#figure-s8).*
+
+During 2022–2024, the nearest station recorded precipitation in 8.4% of cell-windows, and 10.0% of incidents occurred in these wet windows ([Figure S8](#figure-s8)). After stratification by window of day, month and day type, the incident rate was 5.3% higher in wet than in dry windows (rate ratio 1.053; 95% confidence interval 1.036–1.070). Crashes accounted for most of this difference: the crash rate was 1.43 times as high in wet windows (1.39–1.47) and rose with the amount of precipitation, from 1.28 (1.24–1.33) for light through 1.52 (1.45–1.60) for moderate to 1.71 (1.61–1.81) for heavy precipitation. Disabled vehicles, in contrast, were 8.1% less frequent in wet windows (0.919; 0.899–0.939), with similar ratios for light and moderate precipitation and no significant difference for heavy precipitation (0.969; 0.921–1.020). Abandoned vehicles were also less frequent in wet windows (0.890; 0.825–0.961), whereas debris on the roadway showed no difference in any precipitation class (0.996; 0.946–1.049). For all incidents combined, light precipitation was not associated with a higher rate (1.007; 0.986–1.029), whereas moderate (1.072; 1.042–1.104) and heavy precipitation (1.157; 1.116–1.199) were.
 
 ### 3.6 Hotspots <a id="sec-3-6"></a>
-*Figures and tables: [Figure 6](#figure-6); [Table 2](#table-2); [Figure S5](#figure-s5); [Figure S7](#figure-s7); [Table S2](#table-s2).*
+
+Of the 983 cells, 35 (3.6%) were significant hot spots at q < 0.05, 30 of them at q < 0.01; a further 10 cells were significant at q < 0.10, and no cell was a significant cold spot ([Figure 6](#figure-6)). The hot cells contained 13.1% of incidents, all lay in Duval County and formed eight clusters ([Table 2](#table-2)). The two largest, H1 (I-95 at the ramp to I-10; 14 cells, 3,290 incidents per year) and H2 (I-295 W at the Buckman Bridge; 11 cells, 2,382 per year), contained 25 of the 35 hot cells. Crash shares across clusters ranged from 17.1% (H2) to 55.3% (H7, I-295 E at St Johns Bluff Road), and rates from 1.38 (H8) to 5.92 (H4) incidents per million vehicle-kilometres, against a district average of 2.80.
+
+Thirty-one of the 35 hot cells (88.6%) were hot in each of the three years ([Figure S5](#figure-s5)). Excluding near-duplicates changed no hot cell; excluding incidents created through the vehicle-location subsystem retained 34 of the 35 hot cells (97.1%) but added 34 others (Jaccard index 0.49); and the crash-only analysis retained 23 (65.7%) among 80 hot cells (Jaccard index 0.25).
+
+Hotspots of incident rates differed from those of counts ([Figure S7](#figure-s7); [Table S2](#table-s2)). Although cell counts and rates were correlated (Spearman's ρ = 0.83), the 15 rate hot spots (q < 0.05) held 2.7% of incidents in four clusters, and only 3 of them were also count hot spots (Jaccard index 0.06). Two rate clusters lay outside Jacksonville, on I-10 in Baker County (R2; 5.94 incidents per million vehicle-kilometres) and on I-75 in Columbia County (R3; 5.73), and one (R1; 6.28) overlapped H2 at the Buckman Bridge.
+
+<a id="figure-6"></a>
+
+![Figure 6](../results/figures/Figure6_hotspots.png)
+
+**Figure 6.** Getis-Ord Gi* hotspots of incidents on 1 km road cells, 2022–2024 (binary weights within 2 km; Benjamini–Hochberg q-values). (a) FDOT District 2; (b) Jacksonville, with hotspot cluster IDs H1–H8.
+
+<a id="table-2"></a>**Table 2.** Incident hotspot clusters: contiguous Gi* hot cells (q < 0.05), named after their busiest cell, 2022–2024.
+
+| ID | Hotspot location | Routes | Size (1 km cells) | Incidents per year | Crash share (%) | Cells hot in all 3 years | Max Gi* z | Million vehicle-km per year | Incidents per million vehicle-km |
+| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| H1 | I-95 at ramp to I-10 (Duval County) | Acosta Bridge, I-10, I-95 | 14 | 3,290 | 40.8 | 13 of 14 | 7.77 | 787.8 | 4.18 |
+| H2 | I-295 W at Buckman Bridge (Duval County) | I-295 W | 11 | 2,382 | 17.1 | 11 of 11 | 6.96 | 422.4 | 5.64 |
+| H3 | I-295 W at I-95S/I-295 E (Duval County, MM 1) | I-295 W | 3 | 554 | 23.6 | 2 of 3 | 4.25 | 216.9 | 2.56 |
+| H4 | I-295 E at Dames Point Bridge (Duval County) | I-295 E | 3 | 409 | 17.2 | 2 of 3 | 3.69 | 69.1 | 5.92 |
+| H5 | I-295 W at ramp to Normandy Blvd/SR-228 (Duval County, MM 18) | I-295 W | 1 | 287 | 32.6 | 0 of 1 | 3.37 | 56.5 | 5.08 |
+| H6 | I-295 W at I-10 (Duval County, MM 20) | I-295 W | 1 | 256 | 38.3 | 1 of 1 | 3.76 | 98.7 | 2.59 |
+| H7 | I-295 E at St Johns Bluff Rd/UNF (Duval County) | I-295 E | 1 | 203 | 55.3 | 1 of 1 | 4.15 | 65.4 | 3.10 |
+| H8 | I-295 E at ramp to Butler Blvd EB ramp (Duval County, MM 54) | I-295 E | 1 | 185 | 37.0 | 1 of 1 | 3.26 | 133.5 | 1.38 |
+
+*Note:* Incidents per year and vehicle-km are summed over the cluster's cells. Vehicle-km: FDOT AADT × segment length within the cell × days, on FDOT roadways with at least 20 matched incidents, mean of 2022–2024.
 
 ### 3.7 Forecasting performance <a id="sec-3-7"></a>
-*Figures and tables: [Table 3](#table-3); [Figure 7](#figure-7); [Table S3](#table-s3); [Table S7](#table-s7).*
+
+The Poisson log-linear model and LightGBM gave the lowest mean Poisson deviance on 2024 (13.259 and 13.266 × 10⁻²), and their difference was not significant (bootstrap mean difference −0.005 × 10⁻²; 95% confidence interval −0.029 to 0.020) ([Table 3](#table-3)). The three deep learning models had higher deviance than LightGBM: Graph WaveNet by 0.46% (13.327 × 10⁻²; bootstrap difference 0.057, 0.050–0.066), the LSTM by 0.47% (13.329; 0.060, 0.053–0.069) and the ST-Transformer by 0.58% (13.343; 0.074, 0.065–0.083); the historical average was 9.1% higher (14.471). LightGBM had the highest daily hit rate (23.59% of incidents in the top 5% of cells; predictive accuracy index 4.64), followed by Graph WaveNet (23.49%), the LSTM (23.48%), the ST-Transformer (23.37%), the historical average (23.26%) and the log-linear model (22.85%).
+
+The deep models' deviance exceeded LightGBM's in all eight windows, by 0.29–0.91%, with the largest differences between 03:00 and 05:59 ([Figure 7](#figure-7)a); between midnight and 05:59, the log-linear model was 1.6–1.7% better than LightGBM. Observed and predicted 2024 totals per cell were closely related (Graph WaveNet: r = 0.969 on a logarithmic scale; [Figure 7](#figure-7)b). On the validation period, the default configuration was best or tied for each deep model ([Table S7](#table-s7)), and training ran for 4–15 epochs. In LightGBM, the historical mean accounted for 80.9% of the total split gain and the 28-day count for 11.4%; the previous year's exposure and the previous day's precipitation together accounted for 0.7%. Removing these two inputs lowered the deviance slightly (by 0.011 × 10⁻²; 0.009–0.012), whereas adding the observed precipitation in the target window lowered it by 0.014 × 10⁻² (0.012–0.016) ([Table S3](#table-s3)).
+
+<a id="table-3"></a>**Table 3.** Day-ahead forecast performance on 2024 (366 days × 8 windows × 983 cells); mean ± s.d. over five seeds where applicable.
+
+| Model | Runs | MAE (×10⁻²) | RMSE (×10⁻²) | Poisson deviance (×10⁻²) | Hit rate, top 5% cells (%) | PAI |
+| --- | ---: | --- | --- | --- | --- | --- |
+| Historical average | 1 | 3.796 | 15.068 | 14.471 | 23.26 | 4.57 |
+| Poisson log-linear | 1 | 3.781 | 15.054 | 13.259 | 22.85 | 4.49 |
+| LightGBM | 5 | 3.801 ± 0.002 | 15.044 ± 0.001 | 13.266 ± 0.006 | 23.59 ± 0.04 | 4.64 ± 0.01 |
+| LSTM (no graph) | 5 | 3.832 ± 0.029 | 15.054 ± 0.005 | 13.329 ± 0.018 | 23.48 ± 0.12 | 4.62 ± 0.02 |
+| Graph WaveNet | 5 | 3.838 ± 0.020 | 15.054 ± 0.005 | 13.327 ± 0.022 | 23.49 ± 0.10 | 4.62 ± 0.02 |
+| ST-Transformer | 5 | 3.866 ± 0.052 | 15.058 ± 0.005 | 13.343 ± 0.017 | 23.37 ± 0.12 | 4.59 ± 0.02 |
+
+*Note:* PAI: predictive accuracy index.
+
+<a id="figure-7"></a>
+
+![Figure 7](../results/figures/Figure7_forecast_performance.png)
+
+**Figure 7.** Day-ahead forecast performance on 2024. (a) Mean Poisson deviance of each deep model relative to LightGBM, by three-hour window. (b) Observed vs predicted 2024 incidents per cell, Graph WaveNet (log scales; dashed line: equality).
 
 ### 3.8 Station locations and coverage <a id="sec-3-8"></a>
 *Figures and tables: [Figure 8](#figure-8); [Table 4](#table-4); [Figure 9](#figure-9); [Table 5](#table-5).*
@@ -261,22 +310,6 @@ Event duration, measured from the first to the last logged update, differed mark
 
 ## Appendix A. Figures
 
-<a id="figure-6"></a>
-
-![Figure 6](../results/figures/Figure6_hotspots.png)
-
-**Figure 6.** Getis-Ord Gi* hotspots of incidents on 1 km road cells, 2022–2024 (binary weights within 2 km; Benjamini–Hochberg q-values). (a) FDOT District 2; (b) Jacksonville, with hotspot cluster IDs H1–H8.
-
-*Cited in [Section 3.6](#sec-3-6).*
-
-<a id="figure-7"></a>
-
-![Figure 7](../results/figures/Figure7_forecast_performance.png)
-
-**Figure 7.** Day-ahead forecast performance on 2024. (a) Mean Poisson deviance of each deep model relative to LightGBM, by three-hour window. (b) Observed vs predicted 2024 incidents per cell, Graph WaveNet (log scales; dashed line: equality).
-
-*Cited in [Section 3.7](#sec-3-7).*
-
 <a id="figure-8"></a>
 
 ![Figure 8](../results/figures/Figure8_coverage.png)
@@ -303,36 +336,6 @@ Event duration, measured from the first to the last logged update, differed mark
 
 
 ## Appendix B. Tables
-
-<a id="table-2"></a>**Table 2.** Incident hotspot clusters: contiguous Gi* hot cells (q < 0.05), named after their busiest cell, 2022–2024.
-
-| ID | Hotspot location | Routes | Size (1 km cells) | Incidents per year | Crash share (%) | Cells hot in all 3 years | Max Gi* z | Million vehicle-km per year | Incidents per million vehicle-km |
-| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| H1 | I-95 at ramp to I-10 (Duval County) | Acosta Bridge, I-10, I-95 | 14 | 3,290 | 40.8 | 13 of 14 | 7.77 | 787.8 | 4.18 |
-| H2 | I-295 W at Buckman Bridge (Duval County) | I-295 W | 11 | 2,382 | 17.1 | 11 of 11 | 6.96 | 422.4 | 5.64 |
-| H3 | I-295 W at I-95S/I-295 E (Duval County, MM 1) | I-295 W | 3 | 554 | 23.6 | 2 of 3 | 4.25 | 216.9 | 2.56 |
-| H4 | I-295 E at Dames Point Bridge (Duval County) | I-295 E | 3 | 409 | 17.2 | 2 of 3 | 3.69 | 69.1 | 5.92 |
-| H5 | I-295 W at ramp to Normandy Blvd/SR-228 (Duval County, MM 18) | I-295 W | 1 | 287 | 32.6 | 0 of 1 | 3.37 | 56.5 | 5.08 |
-| H6 | I-295 W at I-10 (Duval County, MM 20) | I-295 W | 1 | 256 | 38.3 | 1 of 1 | 3.76 | 98.7 | 2.59 |
-| H7 | I-295 E at St Johns Bluff Rd/UNF (Duval County) | I-295 E | 1 | 203 | 55.3 | 1 of 1 | 4.15 | 65.4 | 3.10 |
-| H8 | I-295 E at ramp to Butler Blvd EB ramp (Duval County, MM 54) | I-295 E | 1 | 185 | 37.0 | 1 of 1 | 3.26 | 133.5 | 1.38 |
-
-*Note:* Incidents per year and vehicle-km are summed over the cluster's cells. Vehicle-km: FDOT AADT × segment length within the cell × days, on FDOT roadways with at least 20 matched incidents, mean of 2022–2024.
-
-
-<a id="table-3"></a>**Table 3.** Day-ahead forecast performance on 2024 (366 days × 8 windows × 983 cells); mean ± s.d. over five seeds where applicable.
-
-| Model | Runs | MAE (×10⁻²) | RMSE (×10⁻²) | Poisson deviance (×10⁻²) | Hit rate, top 5% cells (%) | PAI |
-| --- | ---: | --- | --- | --- | --- | --- |
-| Historical average | 1 | 3.796 | 15.068 | 14.471 | 23.26 | 4.57 |
-| Poisson log-linear | 1 | 3.781 | 15.054 | 13.259 | 22.85 | 4.49 |
-| LightGBM | 5 | 3.801 ± 0.002 | 15.044 ± 0.001 | 13.266 ± 0.006 | 23.59 ± 0.04 | 4.64 ± 0.01 |
-| LSTM (no graph) | 5 | 3.832 ± 0.029 | 15.054 ± 0.005 | 13.329 ± 0.018 | 23.48 ± 0.12 | 4.62 ± 0.02 |
-| Graph WaveNet | 5 | 3.838 ± 0.020 | 15.054 ± 0.005 | 13.327 ± 0.022 | 23.49 ± 0.10 | 4.62 ± 0.02 |
-| ST-Transformer | 5 | 3.866 ± 0.052 | 15.058 ± 0.005 | 13.343 ± 0.017 | 23.37 ± 0.12 | 4.59 ± 0.02 |
-
-*Note:* PAI: predictive accuracy index.
-
 
 <a id="table-4"></a>**Table 4.** Station layouts with 10 stations or units, evaluated on the 59,981 incidents of 2024.
 
