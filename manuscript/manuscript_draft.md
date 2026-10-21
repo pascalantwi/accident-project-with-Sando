@@ -152,10 +152,28 @@ The timing differed by incident type ([Figure S3](#figure-s3)). Disabled vehicle
 **Figure 3.** Mean number of incidents per hour, by hour of day and day of week, 2022–2024.
 
 ### 3.3 Spatial distribution and concentration <a id="sec-3-3"></a>
-*Figures and tables: [Figure 1](#figure-1); [Figure 4](#figure-4); [Figure S4](#figure-s4).*
+
+Incidents were concentrated in Duval County, which accounted for 53.2% of the total, followed by Alachua (12.8%), Columbia (10.6%), St. Johns (5.5%) and Hamilton (5.0%) counties ([Figure 1](#figure-1)). Interstates carried 91.3% of incidents: I-75 (26.3%), I-295 (23.2%; 14.4% on the western and 8.8% on the eastern half), I-95 (22.3%) and I-10 (18.5%).
+
+Within the network, incidents were concentrated in a small share of the 983 cells. The busiest 145 cells (14.8%) contained half of all incidents and 333 cells (33.9%) contained 80%, whereas 195 cells (19.8%) recorded on average no more than one incident per year; the median cell recorded 35.3 incidents per year. The 15 busiest cells held 9.9% of incidents, and 14 of them lay in central Jacksonville ([Figure 4](#figure-4)). The busiest cell, on I-295 W between San Jose Boulevard and the Buckman Bridge, recorded 531 incidents per year, followed by I-95 at the ramp to I-10 (480) and two further Buckman Bridge cells (429 and 408); the only busiest-15 cell outside Duval County was on I-75 near mile marker 386 in Alachua County (313 per year). The crash share in these cells ranged from 6.3% at the western end of the Buckman Bridge to 48.3% on I-95 at the Martin Luther King Jr. Parkway.
+
+The mix of incident types also differed between routes ([Figure S4](#figure-s4)). Crashes made up 8.9% of incidents on I-75, 19.7% on I-10, 27.5% on I-295 W, 34.8% on I-95 and 36.3% on I-295 E, and 96.4% on SR-21 (Blanding Boulevard), where disabled vehicles made up 2.7%.
+
+<a id="figure-4"></a>
+
+![Figure 4](../results/figures/Figure4_top_hotspot_cells.png)
+
+**Figure 4.** The 15 one-kilometre grid cells with the highest mean annual number of incidents, with incidents per year and crash share.
 
 ### 3.4 Event duration <a id="sec-3-4"></a>
-*Figures and tables: [Figure 5](#figure-5).*
+
+Event duration, measured from the first to the last logged update, differed markedly between incident types ([Figure 5](#figure-5); [Table 1](#table-1)). After excluding 5,189 flagged durations, the median was 18.9 minutes, the 95th percentile 108.3 minutes, and 17.6% of incidents lasted more than one hour. Crashes lasted longest, with a median of 56.7 minutes (interquartile range 29.9–88.2; 95th percentile 158.2); 47.0% of crashes lasted more than one hour and 11.3% more than two hours. Disabled vehicles (median 13.4 minutes; interquartile range 4.9–31.7) and debris on the roadway (12.8; 3.8–28.6) had similar distributions, with 8.5% and 6.2%, respectively, lasting more than one hour. Abandoned vehicles had the shortest events (median 4.7 minutes; interquartile range 3.0–9.9), although their 95th percentile reached 50.3 minutes.
+
+<a id="figure-5"></a>
+
+![Figure 5](../results/figures/Figure5_event_duration.png)
+
+**Figure 5.** Event duration (first to last log update) by incident type; boxes show the interquartile range, whiskers the 5th–95th percentiles; logarithmic scale. Events shorter than 1 minute or longer than 24 hours excluded (n = 5,189).
 
 ### 3.5 Data quality <a id="sec-3-5"></a>
 *Figures and tables: [Table S1](#table-s1).*
@@ -245,22 +263,6 @@ The timing differed by incident type ([Figure S3](#figure-s3)). Disabled vehicle
 ---
 
 ## Appendix A. Figures
-
-<a id="figure-4"></a>
-
-![Figure 4](../results/figures/Figure4_top_hotspot_cells.png)
-
-**Figure 4.** The 15 one-kilometre grid cells with the highest mean annual number of incidents, with incidents per year and crash share.
-
-*Cited in [Section 3.3](#sec-3-3).*
-
-<a id="figure-5"></a>
-
-![Figure 5](../results/figures/Figure5_event_duration.png)
-
-**Figure 5.** Event duration (first to last log update) by incident type; boxes show the interquartile range, whiskers the 5th–95th percentiles; logarithmic scale. Events shorter than 1 minute or longer than 24 hours excluded (n = 5,189).
-
-*Cited in [Section 3.4](#sec-3-4).*
 
 <a id="figure-6"></a>
 
