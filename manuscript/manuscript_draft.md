@@ -330,6 +330,18 @@ Some limitations qualify these findings. First, the optimised layouts could not 
 
 ## 5. Conclusion <a id="sec-5"></a>
 
+This study developed a data-driven decision-support framework for freeway service patrol deployment that combines network screening, deep learning forecasting, station location optimisation and simulation, and applied it to the Road Ranger programme in FDOT District 2. Four conclusions follow.
+
+First, incident demand is spatially concentrated and stable. A small number of interchanges and bridges in Jacksonville generate a disproportionate share of incidents, and these hotspots persisted from year to year, which supports planning fixed staging locations from historical records. Screening on traffic-exposure rates highlights different, largely rural segments that are better candidates for engineering countermeasures than for additional patrol resources. Precipitation raises crash rates markedly, by about 70% in heavy rain, whereas the weather recorded in incident logs is unreliable and should be replaced by observed weather data.
+
+Second, for day-ahead planning, deep spatio-temporal neural networks did not outperform well-specified statistical and gradient-boosting models, and forecast-driven daily staging offered no advantage over well-placed fixed stations. Agencies can therefore plan patrol deployment with established statistical models and direct investment in deep learning towards real-time operations.
+
+Third, optimised siting on a direction-aware road network clearly outperforms intuitive placement: ten optimised stations reached about 81% of incidents within 15 minutes, compared with about half for stations placed at the busiest locations or at random. Stations on the rural interstates are firm recommendations, whereas in Jacksonville the analysis identifies station areas within which specific sites can be chosen on practical grounds.
+
+Fourth, fleet size is as decisive as station location. When units can be busy, coverage falls well below what location models promise unless stations have two to three units each, and units should be allocated in proportion to demand.
+
+The performance of a freeway service patrol programme therefore depends on planning station locations and fleet size together, using multi-year incident records and realistic network travel times. The next steps are to compare the optimised layouts with current Road Ranger operations, to calibrate travel times with probe-vehicle speed data and to extend the framework to other districts and to real-time dispatching.
+
 ## References
 
 <a id="ref-fhwa2010"></a>[1] Federal Highway Administration, "Traffic incident management handbook," U.S. Dept. of Transportation, Washington, DC, USA, Rep. FHWA-HOP-10-013, 2010.
