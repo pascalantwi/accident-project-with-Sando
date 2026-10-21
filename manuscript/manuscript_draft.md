@@ -9,11 +9,7 @@ Pascal Antwi¹, Thobias Sando²,
 
 ### 2.1 Study area <a id="sec-2-1"></a>
 
-The study area is Florida Department of Transportation (FDOT) District 2, which covers 18 counties of Northeast and North Central Florida: Alachua, Baker, Bradford, Clay, Columbia, Dixie, Duval, Gilchrist, Hamilton, Lafayette, Levy, Madison, Nassau, Putnam, St. Johns, Suwannee, Taylor and Union ([Figure 1](#figure-1)a). It combines the Jacksonville metropolitan area (Duval County), a second urban centre at Gainesville (Alachua County) and large rural areas.
-
-The limited-access network comprises three interstates and an urban beltway. I-95 follows the Atlantic coast through Nassau, Duval and St. Johns counties; I-10 runs west from Jacksonville through Baker, Columbia, Suwannee and Madison counties; and I-75 crosses Hamilton, Columbia and Alachua counties, meeting I-10 near Lake City. I-295 encircles Jacksonville, and limited-access state roads such as SR-202 (J. Turner Butler Boulevard), SR-9B and SR-115 (Arlington Expressway) link it with the city centre and the beaches ([Figure 1](#figure-1)b). These roads are patrolled by FDOT's Road Ranger freeway service patrol, which provides free roadside assistance and incident support as part of the state's traffic incident management programme.
-
-The incidents analysed ([Section 2.2](#sec-2-2)) lie in 15 of the 18 counties; Gilchrist, Lafayette and Union counties, which have no interstate highway, recorded none. The region's humid subtropical climate, with frequent warm-season storms, motivates the inclusion of precipitation ([Section 2.6](#sec-2-6)).
+The study area is Florida Department of Transportation (FDOT) District 2, which covers 18 counties of Northeast and North Central Florida: Alachua, Baker, Bradford, Clay, Columbia, Dixie, Duval, Gilchrist, Hamilton, Lafayette, Levy, Madison, Nassau, Putnam, St. Johns, Suwannee, Taylor and Union ([Figure 1](#figure-1)a). It combines the Jacksonville metropolitan area (Duval County), a second urban centre at Gainesville (Alachua County) and large rural areas. The limited-access network comprises three interstates and an urban beltway. I-95 follows the Atlantic coast through Nassau, Duval and St. Johns counties; I-10 runs west from Jacksonville through Baker, Columbia, Suwannee and Madison counties; and I-75 crosses Hamilton, Columbia and Alachua counties, meeting I-10 near Lake City. I-295 encircles Jacksonville, and limited-access state roads such as SR-202 (J. Turner Butler Boulevard), SR-9B and SR-115 (Arlington Expressway) link it with the city centre and the beaches ([Figure 1](#figure-1)b). These roads are patrolled by FDOT's Road Ranger freeway service patrol, which provides free roadside assistance and incident support as part of the state's traffic incident management programme. The incidents analysed ([Section 2.2](#sec-2-2)) lie in 15 of the 18 counties; Gilchrist, Lafayette and Union counties, which have no interstate highway, recorded none. The region's humid subtropical climate, with frequent warm-season storms, motivates the inclusion of precipitation ([Section 2.6](#sec-2-6)).
 
 <a id="figure-1"></a>
 
@@ -25,31 +21,15 @@ The incidents analysed ([Section 2.2](#sec-2-2)) lie in 15 of the 18 counties; G
 
 Five data sources were combined.
 
-**Incident records.** Incident data for 1 January 2022 to 31 December 2024 were obtained from the event chronology of the FDOT District 2 traffic management system [Author note: confirm the system name and data-use permission]. The export holds 9,206,764 records for 227,196 events; each record is one update to an event and gives the event type, time stamp, creating account, roadway description (county, route, direction and landmark or mile marker), coordinates and coded severity, surface, weather and lighting conditions. The four event types attended by Road Rangers (disabled vehicles, crashes, debris and abandoned vehicles) form the analysis sample of 173,198 incidents ([Section 2.3](#sec-2-3)).
-
-**Traffic volumes.** Segment-level annual average daily traffic (AADT) for 2021–2024 was taken from FDOT's historical AADT data [[1]](#ref-fdot-aadt).
-
-**Weather.** Hourly precipitation for 2022–2024 was obtained from NOAA's Integrated Surface Database [[2]](#ref-noaa-isd) for the 11 stations in or near the district with sufficient records ([Section 2.6](#sec-2-6)).
-
-**Road network and candidate sites.** Motorways, trunk and primary roads and their ramps were extracted from OpenStreetMap [[3]](#ref-osm) and converted with OSMnx [[4]](#ref-boeing2017) to a directed graph of 8,944 nodes and 14,483 links with length, travel direction and, where tagged, speed limit. Its interchanges, rest areas and service plazas provided candidate station sites. U.S. Census TIGER/Line county boundaries and primary and secondary roads [[5]](#ref-census-tiger) were used to assign sites to counties and as an alternative network in the sensitivity analysis.
-
-**Calendar and daylight.** Federal holidays were taken from the U.S. federal holiday calendar, and solar elevation was computed from standard solar position equations [[6]](#ref-spencer1971).
+**Incident records.** Incident data for 1 January 2022 to 31 December 2024 were obtained from the event chronology of the FDOT District 2 traffic management system [Author note: confirm the system name and data-use permission]. The export holds 9,206,764 records for 227,196 events; each record is one update to an event and gives the event type, time stamp, creating account, roadway description (county, route, direction and landmark or mile marker), coordinates and coded severity, surface, weather and lighting conditions. The four event types attended by Road Rangers (disabled vehicles, crashes, debris and abandoned vehicles) form the analysis sample of 173,198 incidents ([Section 2.3](#sec-2-3)). **Traffic volumes.** Segment-level annual average daily traffic (AADT) for 2021–2024 was taken from FDOT's historical AADT data [[1]](#ref-fdot-aadt). **Weather.** Hourly precipitation for 2022–2024 was obtained from NOAA's Integrated Surface Database [[2]](#ref-noaa-isd) for the 11 stations in or near the district with sufficient records ([Section 2.6](#sec-2-6)). **Road network and candidate sites.** Motorways, trunk and primary roads and their ramps were extracted from OpenStreetMap [[3]](#ref-osm) and converted with OSMnx [[4]](#ref-boeing2017) to a directed graph of 8,944 nodes and 14,483 links with length, travel direction and, where tagged, speed limit. Its interchanges, rest areas and service plazas provided candidate station sites. U.S. Census TIGER/Line county boundaries and primary and secondary roads [[5]](#ref-census-tiger) were used to assign sites to counties and as an alternative network in the sensitivity analysis. **Calendar and daylight.** Federal holidays were taken from the U.S. federal holiday calendar, and solar elevation was computed from standard solar position equations [[6]](#ref-spencer1971).
 
 ### 2.3 Data processing <a id="sec-2-3"></a>
 
-Time stamps were converted to local time and coordinates from micro-degrees to decimal degrees. Five records with an invalid time stamp and 458 with missing or out-of-state coordinates were removed, leaving 9,206,301; none were duplicated, and four fields missing in more than half of the records were dropped. Records were grouped into 227,196 events: event type, creation time, creating account and condition codes were taken from the first record, location from the latest record, and duration as the time between the first and last update. The roadway description was parsed into county, route, direction and mile marker.
-
-The four Road Ranger event types gave 173,198 incidents. Questionable records were flagged: implausible durations (under 1 minute or over 24 hours; 5,189 incidents, excluded only from duration analyses), near-duplicates (same route and direction within 0.5 km and 15 minutes; 1.8%) and incidents created by the `avlrrsubsystem` account (49.8%). The last two were tested in robustness checks ([Section 2.10](#sec-2-10)). Daylight, twilight and darkness were assigned from solar elevation (thresholds −0.833° and −6°). Recorded condition codes varied little (99.9% minor severity; lighting code undocumented) and contradicted independent data: 94.9% of incidents logged during NOAA-recorded precipitation were coded as clear weather. Precipitation and darkness were therefore taken from NOAA and solar position ([Table S1](#table-s1)).
-
-Incidents were assigned to 1 km × 1 km grid cells in a local equirectangular projection; the 983 cells with incidents form the spatial units. Time was divided into 8,768 three-hour windows, giving a cell-by-window panel (mean 0.020 incidents; 98.1% of cell-windows empty).
+Time stamps were converted to local time and coordinates from micro-degrees to decimal degrees. Five records with an invalid time stamp and 458 with missing or out-of-state coordinates were removed, leaving 9,206,301; none were duplicated, and four fields missing in more than half of the records were dropped. Records were grouped into 227,196 events: event type, creation time, creating account and condition codes were taken from the first record, location from the latest record, and duration as the time between the first and last update. The roadway description was parsed into county, route, direction and mile marker. The four Road Ranger event types gave 173,198 incidents. Questionable records were flagged: implausible durations (under 1 minute or over 24 hours; 5,189 incidents, excluded only from duration analyses), near-duplicates (same route and direction within 0.5 km and 15 minutes; 1.8%) and incidents created by the `avlrrsubsystem` account (49.8%). The last two were tested in robustness checks ([Section 2.10](#sec-2-10)). Daylight, twilight and darkness were assigned from solar elevation (thresholds −0.833° and −6°). Recorded condition codes varied little (99.9% minor severity; lighting code undocumented) and contradicted independent data: 94.9% of incidents logged during NOAA-recorded precipitation were coded as clear weather. Precipitation and darkness were therefore taken from NOAA and solar position ([Table S1](#table-s1)). Incidents were assigned to 1 km × 1 km grid cells in a local equirectangular projection; the 983 cells with incidents form the spatial units. Time was divided into 8,768 three-hour windows, giving a cell-by-window panel (mean 0.020 incidents; 98.1% of cell-windows empty).
 
 ### 2.4 Research framework <a id="sec-2-4"></a>
 
-The study follows a predict-then-optimise framework in four stages ([Figure 2](#figure-2)). The incident records, road cells, traffic and weather data, and calendar and daylight variables are first combined into a cell graph, in which neighbouring 1 km cells are linked and each cell carries incident counts for consecutive three-hour windows ([Sections 2.3](#sec-2-3) and [2.6](#sec-2-6)).
-
-In the first stage, persistent concentrations of incidents are identified with the Getis-Ord Gi\* statistic [[7]](#ref-getis1992) on incident counts and on traffic-adjusted incident rates, with significance adjusted for multiple testing by the false discovery rate [[8]](#ref-benjamini1995) ([Section 2.7](#sec-2-7)). In the second stage, incidents are forecast one day ahead for every cell and window. Three baselines, a historical average, a Poisson log-linear model and gradient-boosted trees (LightGBM [[9]](#ref-ke2017)), are compared with three deep learning models: a long short-term memory network [[10]](#ref-hochreiter1997), Graph WaveNet [[11]](#ref-wu2019) and a spatio-temporal Transformer [[12]](#ref-vaswani2017) ([Section 2.8](#sec-2-8)). In the third stage, the observed and predicted demand is used to locate Road Ranger stations at candidate interchanges, rest areas and service plazas with the maximal covering location problem [[13]](#ref-church1974), as fixed stations and as day-ahead staging of units ([Section 2.9](#sec-2-9)).
-
-In the fourth stage, all models are fitted on data up to 30 September 2023, tuned on October–December 2023 and evaluated on the unseen incidents of 2024. Evaluation covers forecast error and the share of incidents reached within 10, 15 and 20 minutes, followed by sensitivity analyses, temporal validation and a simulation in which units can be busy ([Sections 2.10](#sec-2-10) and [2.11](#sec-2-11)).
+The study follows a predict-then-optimise framework in four stages ([Figure 2](#figure-2)). The incident records, road cells, traffic and weather data, and calendar and daylight variables are first combined into a cell graph, in which neighbouring 1 km cells are linked and each cell carries incident counts for consecutive three-hour windows ([Sections 2.3](#sec-2-3) and [2.6](#sec-2-6)). In the first stage, persistent concentrations of incidents are identified with the Getis-Ord Gi\* statistic [[7]](#ref-getis1992) on incident counts and on traffic-adjusted incident rates, with significance adjusted for multiple testing by the false discovery rate [[8]](#ref-benjamini1995) ([Section 2.7](#sec-2-7)). In the second stage, incidents are forecast one day ahead for every cell and window. Three baselines, a historical average, a Poisson log-linear model and gradient-boosted trees (LightGBM [[9]](#ref-ke2017)), are compared with three deep learning models: a long short-term memory network [[10]](#ref-hochreiter1997), Graph WaveNet [[11]](#ref-wu2019) and a spatio-temporal Transformer [[12]](#ref-vaswani2017) ([Section 2.8](#sec-2-8)). In the third stage, the observed and predicted demand is used to locate Road Ranger stations at candidate interchanges, rest areas and service plazas with the maximal covering location problem [[13]](#ref-church1974), as fixed stations and as day-ahead staging of units ([Section 2.9](#sec-2-9)). In the fourth stage, all models are fitted on data up to 30 September 2023, tuned on October–December 2023 and evaluated on the unseen incidents of 2024. Evaluation covers forecast error and the share of incidents reached within 10, 15 and 20 minutes, followed by sensitivity analyses, temporal validation and a simulation in which units can be busy ([Sections 2.10](#sec-2-10) and [2.11](#sec-2-11)).
 
 <a id="figure-2"></a>
 
@@ -63,11 +43,7 @@ Exploratory analysis described the composition, timing, location and duration of
 
 ### 2.6 Traffic exposure, precipitation and road network <a id="sec-2-6"></a>
 
-**Traffic exposure.** Each incident was matched to the nearest AADT segment of its own year within 150 m (96.9% matched). FDOT roadways with at least 20 matched incidents (594 roadway identifiers) were taken as the patrolled network, and the vehicle-kilometres travelled in each cell and year were computed as the sum, over these segments, of AADT × segment length within the cell × days in the year. Exposure was available for 944 cells holding 99.1% of incidents. Rates per million vehicle-kilometres were smoothed with a global empirical Bayes estimator [[14]](#ref-marshall1991) for hotspot analysis ([Section 2.7](#sec-2-7)); the forecasting models use the previous year's exposure, the latest available at forecast time.
-
-**Precipitation.** Hourly totals were taken from each station's routine hourly report; special reports, which carry partial accumulations, were not added. Totals were summed to three-hour windows and assigned to each cell from its nearest station (median distance 15.3 km). Incident rates in wet and dry windows were compared by incident type and precipitation class (light, < 2.5 mm; moderate, 2.5–10 mm; heavy, ≥ 10 mm per window) with Mantel–Haenszel rate ratios [[15]](#ref-mantel1959) stratified by window of day, month and day type, with Greenland–Robins confidence intervals [[16]](#ref-greenland1985).
-
-**Road network and sites.** Two-way OpenStreetMap links were represented in both directions, and the largest strongly connected component was retained (92.5% of links). Off-peak speeds were the posted limits (56.0% of links) or class defaults (motorway 65, trunk 55, primary 45 and ramps 30–35 mph); peak speeds (weekdays 06:00–08:59 and 15:00–17:59) were set to two-thirds of off-peak. Incidents were snapped to the nearest link within 200 m whose heading matched their recorded direction (95.1% of incidents), otherwise to the nearest link. Candidate sites in District 2 within 0.5 km of each other were merged, giving 307 sites (275 interchanges, 19 service plazas and 13 rest areas); a unit leaves a site from any network node within 300 m.
+**Traffic exposure.** Each incident was matched to the nearest AADT segment of its own year within 150 m (96.9% matched). FDOT roadways with at least 20 matched incidents (594 roadway identifiers) were taken as the patrolled network, and the vehicle-kilometres travelled in each cell and year were computed as the sum, over these segments, of AADT × segment length within the cell × days in the year. Exposure was available for 944 cells holding 99.1% of incidents. Rates per million vehicle-kilometres were smoothed with a global empirical Bayes estimator [[14]](#ref-marshall1991) for hotspot analysis ([Section 2.7](#sec-2-7)); the forecasting models use the previous year's exposure, the latest available at forecast time. **Precipitation.** Hourly totals were taken from each station's routine hourly report; special reports, which carry partial accumulations, were not added. Totals were summed to three-hour windows and assigned to each cell from its nearest station (median distance 15.3 km). Incident rates in wet and dry windows were compared by incident type and precipitation class (light, < 2.5 mm; moderate, 2.5–10 mm; heavy, ≥ 10 mm per window) with Mantel–Haenszel rate ratios [[15]](#ref-mantel1959) stratified by window of day, month and day type, with Greenland–Robins confidence intervals [[16]](#ref-greenland1985). **Road network and sites.** Two-way OpenStreetMap links were represented in both directions, and the largest strongly connected component was retained (92.5% of links). Off-peak speeds were the posted limits (56.0% of links) or class defaults (motorway 65, trunk 55, primary 45 and ramps 30–35 mph); peak speeds (weekdays 06:00–08:59 and 15:00–17:59) were set to two-thirds of off-peak. Incidents were snapped to the nearest link within 200 m whose heading matched their recorded direction (95.1% of incidents), otherwise to the nearest link. Candidate sites in District 2 within 0.5 km of each other were merged, giving 307 sites (275 interchanges, 19 service plazas and 13 rest areas); a unit leaves a site from any network node within 300 m.
 
 ### 2.7 Hotspot detection <a id="sec-2-7"></a>
 
@@ -81,13 +57,7 @@ where *x̄* and *s* are the mean and standard deviation of *x*. Two-sided p-valu
 
 ### 2.8 Demand forecasting <a id="sec-2-8"></a>
 
-**Task and data split.** At the start of each day, incidents are forecast for each of the eight three-hour windows in every cell, using only data up to the end of the previous day. Models were trained on 29 January 2022 – 30 September 2023 (610 days; the first 28 days of 2022 supply lagged inputs), tuned and early-stopped on 1 October – 31 December 2023 (92 days) and tested on 2024 (366 days).
-
-**Inputs.** The historical mean for each cell, window and day type (weekday, or weekend and federal holiday) over the training days; counts in the same window one and seven days earlier; cell totals over the previous 1, 7 and 28 days; the neighbouring cells' 7-day total; the district total on the previous day; window, weekday, month and holiday indicators; the share of the window in darkness; cell coordinates; the previous year's traffic exposure; and the previous day's precipitation.
-
-**Baselines.** (i) The historical mean; (ii) a Poisson log-linear model with cell, window × day type and month main effects, fitted by iterative proportional fitting; and (iii) LightGBM [[9]](#ref-ke2017) with a Poisson objective (learning rate 0.05, 63 leaves, at least 500 observations per leaf, early stopping after 100 rounds without improvement). An ablation refitted LightGBM without the exposure and precipitation inputs, and with the observed precipitation in the target window as a perfect-forecast bound.
-
-**Deep learning models.** Each model encodes the last 16 windows (two days) of counts and precipitation in every cell, with time-of-day and weekend indicators, into a cell representation; a shared output layer combines it with the inputs above and predicts the log-rate, offset by the log historical mean, under a Poisson likelihood. The LSTM [[10]](#ref-hochreiter1997) encodes each cell separately, without spatial information; Graph WaveNet [[11]](#ref-wu2019) combines gated dilated temporal convolutions with diffusion convolution over the cell graph and a learned adjacency matrix; and the spatio-temporal Transformer [[12]](#ref-vaswani2017) applies attention over time within each cell and then across cells. Models were trained with Adam [[18]](#ref-kingma2015) on batches of eight days with early stopping (patience 3). Hidden size (32 or 64) and learning rate (10⁻³ or 3 × 10⁻⁴) were tuned on the validation period; differences in validation deviance below 0.1% were treated as ties, and the smaller configuration was retained ([Table S7](#table-s7)). LightGBM and each deep model were trained with five random seeds.
+**Task and data split.** At the start of each day, incidents are forecast for each of the eight three-hour windows in every cell, using only data up to the end of the previous day. Models were trained on 29 January 2022 – 30 September 2023 (610 days; the first 28 days of 2022 supply lagged inputs), tuned and early-stopped on 1 October – 31 December 2023 (92 days) and tested on 2024 (366 days). **Inputs.** The historical mean for each cell, window and day type (weekday, or weekend and federal holiday) over the training days; counts in the same window one and seven days earlier; cell totals over the previous 1, 7 and 28 days; the neighbouring cells' 7-day total; the district total on the previous day; window, weekday, month and holiday indicators; the share of the window in darkness; cell coordinates; the previous year's traffic exposure; and the previous day's precipitation. **Baselines.** (i) The historical mean; (ii) a Poisson log-linear model with cell, window × day type and month main effects, fitted by iterative proportional fitting; and (iii) LightGBM [[9]](#ref-ke2017) with a Poisson objective (learning rate 0.05, 63 leaves, at least 500 observations per leaf, early stopping after 100 rounds without improvement). An ablation refitted LightGBM without the exposure and precipitation inputs, and with the observed precipitation in the target window as a perfect-forecast bound. **Deep learning models.** Each model encodes the last 16 windows (two days) of counts and precipitation in every cell, with time-of-day and weekend indicators, into a cell representation; a shared output layer combines it with the inputs above and predicts the log-rate, offset by the log historical mean, under a Poisson likelihood. The LSTM [[10]](#ref-hochreiter1997) encodes each cell separately, without spatial information; Graph WaveNet [[11]](#ref-wu2019) combines gated dilated temporal convolutions with diffusion convolution over the cell graph and a learned adjacency matrix; and the spatio-temporal Transformer [[12]](#ref-vaswani2017) applies attention over time within each cell and then across cells. Models were trained with Adam [[18]](#ref-kingma2015) on batches of eight days with early stopping (patience 3). Hidden size (32 or 64) and learning rate (10⁻³ or 3 × 10⁻⁴) were tuned on the validation period; differences in validation deviance below 0.1% were treated as ties, and the smaller configuration was retained ([Table S7](#table-s7)). LightGBM and each deep model were trained with five random seeds.
 
 ### 2.9 Station location optimisation <a id="sec-2-9"></a>
 
@@ -121,11 +91,7 @@ The coverage model assumes that every unit is free when an incident occurs. A di
 
 ### 3.1 Incident characteristics <a id="sec-3-1"></a>
 
-Between 1 January 2022 and 31 December 2024, the traffic management system logged 227,196 events in District 2, of which 173,198 (76.2%) were of the four types attended by Road Rangers ([Table 1](#table-1)). Disabled vehicles were the most frequent type (101,933; 58.9%), followed by crashes (44,158; 25.5%), debris on the roadway (16,979; 9.8%) and abandoned vehicles (10,128; 5.8%). The most common events outside the analysis sample were congestion (22,053), scheduled road work (12,658) and reduced visibility (6,653) ([Figure S1](#figure-s1)).
-
-Annual totals ranged from 56,450 in 2023 to 59,981 in 2024, a difference of 6.3%. The increase in 2024 came mainly from disabled vehicles (9.2% more than in 2023) and abandoned vehicles (22.2% more), whereas annual crash counts differed by less than 5% across the three years ([Figure S2](#figure-s2)). Monthly totals ranged from 3,897 (February 2023) to 5,621 (May 2024), with a mean of 4,811.
-
-The incident types differed in how they were reported and how long they lasted. Half of all incidents (49.8%) were created through the vehicle-location subsystem, ranging from 4.9% of crashes to 67.9% of disabled vehicles and 86.8% of abandoned vehicles. The median event duration was 18.9 minutes, ranging from 4.7 minutes for abandoned vehicles to 56.7 minutes for crashes ([Section 3.4](#sec-3-4)). The shares of incidents occurring on weekdays (75.0–78.0%) were similar across types, whereas the share between 15:00 and 17:59 was about half as large for abandoned vehicles (12.5%) as for the other types (22.1–25.3%).
+Between 1 January 2022 and 31 December 2024, the traffic management system logged 227,196 events in District 2, of which 173,198 (76.2%) were of the four types attended by Road Rangers ([Table 1](#table-1)). Disabled vehicles were the most frequent type (101,933; 58.9%), followed by crashes (44,158; 25.5%), debris on the roadway (16,979; 9.8%) and abandoned vehicles (10,128; 5.8%). The most common events outside the analysis sample were congestion (22,053), scheduled road work (12,658) and reduced visibility (6,653) ([Figure S1](#figure-s1)). Annual totals ranged from 56,450 in 2023 to 59,981 in 2024, a difference of 6.3%. The increase in 2024 came mainly from disabled vehicles (9.2% more than in 2023) and abandoned vehicles (22.2% more), whereas annual crash counts differed by less than 5% across the three years ([Figure S2](#figure-s2)). Monthly totals ranged from 3,897 (February 2023) to 5,621 (May 2024), with a mean of 4,811. The incident types differed in how they were reported and how long they lasted. Half of all incidents (49.8%) were created through the vehicle-location subsystem, ranging from 4.9% of crashes to 67.9% of disabled vehicles and 86.8% of abandoned vehicles. The median event duration was 18.9 minutes, ranging from 4.7 minutes for abandoned vehicles to 56.7 minutes for crashes ([Section 3.4](#sec-3-4)). The shares of incidents occurring on weekdays (75.0–78.0%) were similar across types, whereas the share between 15:00 and 17:59 was about half as large for abandoned vehicles (12.5%) as for the other types (22.1–25.3%).
 
 <a id="table-1"></a>**Table 1.** Characteristics of incidents by type, FDOT District 2, 2022–2024.
 
@@ -137,7 +103,6 @@ The incident types differed in how they were reported and how long they lasted. 
 | Abandoned vehicle | 10,128 | 5.8 | 3,284 | 3,080 | 3,764 | 4.7 (3.0–9.9) | 75.0 | 12.5 | 86.8 |
 | **All** | **173,198** | **100.0** | **56,767** | **56,450** | **59,981** | **18.9 (5.7–45.6)** | **76.2** | **22.9** | **49.8** |
 
-*Note:* Duration excludes 5,189 flagged events (< 1 min or > 24 h). AVL-created: event created by the `avlrrsubsystem` account. IQR: interquartile range.
 
 ### 3.2 Temporal patterns <a id="sec-3-2"></a>
 
@@ -206,7 +171,6 @@ Hotspots of incident rates differed from those of counts ([Figure S7](#figure-s7
 | H7 | I-295 E at St Johns Bluff Rd/UNF (Duval County) | I-295 E | 1 | 203 | 55.3 | 1 of 1 | 4.15 | 65.4 | 3.10 |
 | H8 | I-295 E at ramp to Butler Blvd EB ramp (Duval County, MM 54) | I-295 E | 1 | 185 | 37.0 | 1 of 1 | 3.26 | 133.5 | 1.38 |
 
-*Note:* Incidents per year and vehicle-km are summed over the cluster's cells. Vehicle-km: FDOT AADT × segment length within the cell × days, on FDOT roadways with at least 20 matched incidents, mean of 2022–2024.
 
 ### 3.7 Forecasting performance <a id="sec-3-7"></a>
 
@@ -225,7 +189,6 @@ The deep models' deviance exceeded LightGBM's in all eight windows, by 0.29–0.
 | Graph WaveNet | 5 | 3.838 ± 0.020 | 15.054 ± 0.005 | 13.327 ± 0.022 | 23.49 ± 0.10 | 4.62 ± 0.02 |
 | ST-Transformer | 5 | 3.866 ± 0.052 | 15.058 ± 0.005 | 13.343 ± 0.017 | 23.37 ± 0.12 | 4.59 ± 0.02 |
 
-*Note:* PAI: predictive accuracy index.
 
 <a id="figure-7"></a>
 
@@ -262,7 +225,6 @@ The recommended layout (10 stations, 15-minute standard) places four stations in
 | Day-ahead staging, ST-Transformer | 10 | 63.5 | 80.5 | 90.4 | 12.4 |
 | Day-ahead staging, oracle (upper bound) | 10 | 79.9 | 91.3 | 95.5 | 10.1 |
 
-*Note:* Comparison layouts are not optimised: the candidate site nearest each of the busiest 2022–2023 cells (distinct sites), and random candidate sites (mean of 200 draws). Static layouts are solved separately for each response-time standard; their mean travel time refers to the 15-minute layout. Travel times: shortest paths on the directed OpenStreetMap network (motorway, trunk and primary roads with ramps), with incidents matched to their recorded direction of travel.
 
 <a id="figure-9"></a>
 
@@ -285,7 +247,6 @@ The recommended layout (10 stations, 15-minute standard) places four stations in
 | S9 | I-95 Exit 318, St. Johns County | I-95 at SR-16 | 29.9221 | -81.4139 | 3,384 | 5.6 | 77.7 |
 | S10 | I-10 Exit 333, Baker County | I-10 at CR-125 | 30.2615 | -82.1657 | 2,987 | 5.0 | 68.9 |
 
-*Note:* Coordinates are OpenStreetMap site locations (WGS84). Nearest incident landmark: name of the closest 1 km road cell, from the incident location descriptions.
 
 ### 3.9 Sensitivity analysis and temporal validation <a id="sec-3-9"></a>
 
@@ -297,11 +258,7 @@ The recommended sites were reselected to different degrees ([Figure S9](#figure-
 
 ### 3.10 Fleet size with busy units <a id="sec-3-10"></a>
 
-When units could be busy, the share of incidents reached in time depended on fleet size ([Table 6](#table-6); [Figure 10](#figure-10)). With one unit at each of 10 stations, demand exceeded capacity (utilisation 108%) and 0.6% of incidents were reached within 15 minutes. With 20 units at the 10 stations, 52.4% were reached within 15 minutes when units were distributed equally and 57.4% when they were allocated in proportion to demand, against 80.7% if units were always free; with 30 units, the shares were 71.6% and 75.1%.
-
-For the same fleet, larger layouts reached more incidents once there were at least two units per station. With 30 units and proportional allocation, 15 stations reached 79.2% of incidents within 15 minutes (mean response 11.6 minutes) against 75.1% for 10 stations, and with 40 units, 20 stations reached 89.5%. With 60 units at 20 stations, 93.2% were reached within 15 minutes, against 94.2% if units were always free; the mean response time was 7.8 minutes, 2.1% of incidents were delayed by busy units, and utilisation was 10.4%.
-
-Proportional allocation reached 1.2–6.3 percentage points more incidents within 15 minutes than equal allocation of the same fleet. For 10 stations and 20 units, halving the on-scene time raised the share reached within 15 minutes from 57.4% to 68.6%, and excluding incidents created through the vehicle-location subsystem raised it to 69.8%.
+When units could be busy, the share of incidents reached in time depended on fleet size ([Table 6](#table-6); [Figure 10](#figure-10)). With one unit at each of 10 stations, demand exceeded capacity (utilisation 108%) and 0.6% of incidents were reached within 15 minutes. With 20 units at the 10 stations, 52.4% were reached within 15 minutes when units were distributed equally and 57.4% when they were allocated in proportion to demand, against 80.7% if units were always free; with 30 units, the shares were 71.6% and 75.1%. For the same fleet, larger layouts reached more incidents once there were at least two units per station. With 30 units and proportional allocation, 15 stations reached 79.2% of incidents within 15 minutes (mean response 11.6 minutes) against 75.1% for 10 stations, and with 40 units, 20 stations reached 89.5%. With 60 units at 20 stations, 93.2% were reached within 15 minutes, against 94.2% if units were always free; the mean response time was 7.8 minutes, 2.1% of incidents were delayed by busy units, and utilisation was 10.4%. Proportional allocation reached 1.2–6.3 percentage points more incidents within 15 minutes than equal allocation of the same fleet. For 10 stations and 20 units, halving the on-scene time raised the share reached within 15 minutes from 57.4% to 68.6%, and excluding incidents created through the vehicle-location subsystem raised it to 69.8%.
 
 <a id="table-6"></a>**Table 6.** Discrete-event simulation of 2024 with busy units: response to the 59,981 incidents of 2024 by layout, fleet size and unit allocation.
 
@@ -325,7 +282,6 @@ Proportional allocation reached 1.2–6.3 percentage points more incidents withi
 | On-scene time halved | 10 | 20 | Proportional | 47.3 | 68.6 | 79.1 | 80.7 | 15.7 | 34.8 | 22.7 | 26.5 |
 | AVL-created incidents excluded | 10 | 20 | Proportional | 48.4 | 69.8 | 79.7 | 84.4 | 17.0 | 34.9 | 22.5 | 23.1 |
 
-*Note:* Each incident is assigned to the unit that can reach it first; a unit is busy for travel, on-scene time (logged event duration; type median where flagged) and return to its station. Utilisation above 100%: demand exceeds capacity and the queue grows through the year. Sensitivity rows: 10 stations, 20 units, proportional allocation.
 
 <a id="figure-10"></a>
 
@@ -407,7 +363,6 @@ Proportional allocation reached 1.2–6.3 percentage points more incidents withi
 
 **Figure S1.** Frequency of all recorded event types, 2022–2024; blue bars mark the four incident types analysed.
 
-*Cited in [Section 3.1](#sec-3-1).*
 
 <a id="figure-s2"></a>
 
@@ -415,7 +370,6 @@ Proportional allocation reached 1.2–6.3 percentage points more incidents withi
 
 **Figure S2.** Monthly number of incidents by type, January 2022 – December 2024.
 
-*Cited in [Section 3.1](#sec-3-1).*
 
 <a id="figure-s3"></a>
 
@@ -423,7 +377,6 @@ Proportional allocation reached 1.2–6.3 percentage points more incidents withi
 
 **Figure S3.** Hourly distribution of incidents within each type (% of the type's total).
 
-*Cited in [Section 3.2](#sec-3-2).*
 
 <a id="figure-s4"></a>
 
@@ -438,7 +391,6 @@ Proportional allocation reached 1.2–6.3 percentage points more incidents withi
 
 **Figure S5.** Number of years (2022, 2023, 2024) in which each cell was a Gi* hot spot (q < 0.05).
 
-*Cited in [Section 3.6](#sec-3-6).*
 
 <a id="figure-s6"></a>
 
@@ -452,7 +404,6 @@ Proportional allocation reached 1.2–6.3 percentage points more incidents withi
 
 **Figure S7.** Getis-Ord Gi* hotspots of incident rates per million vehicle-km (empirical Bayes-smoothed), 2022–2024 (binary weights within 2 km; Benjamini–Hochberg q-values). Open squares: cells without matched AADT segments. (a) FDOT District 2; (b) Jacksonville; cluster IDs R1–R4.
 
-*Cited in [Section 3.6](#sec-3-6).*
 
 <a id="figure-s8"></a>
 
@@ -460,7 +411,6 @@ Proportional allocation reached 1.2–6.3 percentage points more incidents withi
 
 **Figure S8.** Incident rate ratios for three-hour windows with vs without precipitation at the nearest NOAA station, by incident type and precipitation total in the window. Mantel–Haenszel estimates stratified by window of day, month and day type, with 95% confidence intervals; logarithmic scale.
 
-*Cited in [Section 3.5](#sec-3-5).*
 
 <a id="figure-s9"></a>
 
@@ -468,7 +418,6 @@ Proportional allocation reached 1.2–6.3 percentage points more incidents withi
 
 **Figure S9.** Share of re-solved layouts (10 stations, 15-minute standard) that select each candidate site: 200 bootstrap resamples of 2022–2023 days, 2022 and 2023 alone, and seven speed and demand scenarios. Triangles: recommended stations S1–S10. (a) FDOT District 2; (b) Jacksonville.
 
-*Cited in [Section 3.9](#sec-3-9).*
 
 
 <a id="table-s1"></a>**Table S1.** Completeness and variability of candidate explanatory variables (incidents, n = 173,198).
@@ -487,7 +436,6 @@ Proportional allocation reached 1.2–6.3 percentage points more incidents withi
 | Dark at time of incident (solar elevation below −6°) | 21.7 |
 | Near-duplicate (same route and direction, ≤ 0.5 km, ≤ 15 min) | 1.8 |
 
-*Cited in [Section 2.3](#sec-2-3), [Section 2.5](#sec-2-5).*
 
 
 <a id="table-s2"></a>**Table S2.** Rate hotspot clusters: contiguous Gi* hot cells (q < 0.05) on incidents per million vehicle-km, named after their busiest cell, 2022–2024.
@@ -499,9 +447,7 @@ Proportional allocation reached 1.2–6.3 percentage points more incidents withi
 | R3 | I-75 (Columbia County, MM 417) | I-75 | 5 | 511 | 89.1 | 5.73 | 7.6 | 10.45 | No |
 | R4 | I-295 E at Baymeadows Rd (Duval County, MM 57) | 295 East Express, I-295 E | 6 | 356 | 170.1 | 2.09 | 27.1 | 5.35 | No |
 
-*Note:* Rates are cluster totals (incidents ÷ vehicle-km). Gi* used empirical Bayes-smoothed cell rates for the 944 cells with exposure data.
 
-*Cited in [Section 3.6](#sec-3-6).*
 
 
 <a id="table-s3"></a>**Table S3.** LightGBM input ablation, day-ahead forecasts for 2024; mean ± s.d. over five seeds.
@@ -513,9 +459,7 @@ Proportional allocation reached 1.2–6.3 percentage points more incidents withi
 | Base inputs + AADT exposure + previous-day precipitation (day-ahead model) | 5 | 13.266 ± 0.006 | 23.59 | 4.64 | — |
 | As above + observed precipitation in the target window (perfect-forecast bound) | 5 | 13.253 ± 0.007 | 23.63 | 4.65 | -0.014 (-0.016 to -0.012) |
 
-*Note:* Differences: day-level bootstrap (2,000 resamples) of mean daily deviance, seed-averaged predictions.
 
-*Cited in [Section 3.7](#sec-3-7).*
 
 
 <a id="table-s4"></a>**Table S4.** Temporal validation of the static layout (10 stations, 15-minute standard): sites selected on one period and evaluated on the following year.
@@ -526,9 +470,7 @@ Proportional allocation reached 1.2–6.3 percentage points more incidents withi
 | 2023 | 2024 | 80.5 | 80.6 | 6 of 10 | 5 of 10 |
 | 2022–2023 | 2024 | 80.7 | 80.6 | 7 of 10 | 10 of 10 |
 
-*Note:* The layout optimised on the evaluation year uses that year's incidents and is shown for reference.
 
-*Cited in [Section 3.9](#sec-3-9).*
 
 
 <a id="table-s5"></a>**Table S5.** Robustness of the recommended station sites: share of re-solved layouts that select the site, or any candidate site within 5 km of it.
@@ -546,9 +488,7 @@ Proportional allocation reached 1.2–6.3 percentage points more incidents withi
 | S9 | I-95 Exit 318, St. Johns County | 82.5 | 82.5 | 80.9 | 81.3 |
 | S10 | I-10 Exit 333, Baker County | 67.5 | 68.5 | 66.0 | 67.9 |
 
-*Note:* Demand resamples: 200 bootstrap samples of 2022–2023 days. All re-solved layouts: the 200 resamples, 2022 and 2023 alone, four speed scenarios and three demand definitions (209 layouts).
 
-*Cited in [Section 3.9](#sec-3-9).*
 
 
 <a id="table-s6"></a>**Table S6.** Coverage of 2024 incidents within 15 minutes under alternative travel speeds: the recommended layout compared with the layout optimised for each speed scenario.
@@ -561,9 +501,7 @@ Proportional allocation reached 1.2–6.3 percentage points more incidents withi
 | Off-peak speeds −15% | 72.7 | 73.2 | 0.6 | 3 of 10 |
 | Off-peak speeds +15% | 86.5 | 85.9 | -0.6 | 4 of 10 |
 
-*Note:* Layouts are optimised on road-edge midpoints and evaluated at exact incident locations, so a scenario-optimised layout can score slightly below the recommended layout (negative difference).
 
-*Cited in [Section 3.9](#sec-3-9).*
 
 
 <a id="table-s7"></a>**Table S7.** Hyperparameter tuning of the deep learning models on the validation period (1 October – 31 December 2023), one seed per configuration, at most 30 epochs with early stopping (patience 3).
@@ -583,5 +521,4 @@ Proportional allocation reached 1.2–6.3 percentage points more incidents withi
 | ST-Transformer | 32 | 0.0003 | 13.6374 | 4 | 53,409 |
 | ST-Transformer | 64 | 0.0003 | 13.6357 | 1 | 137,473 |
 
-*Note:* Bold: lowest validation deviance for each model. Differences below 0.1% were treated as ties and the smaller configuration (hidden size 32, learning rate 10⁻³) was retained for all three models.
 
