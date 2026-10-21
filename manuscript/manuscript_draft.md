@@ -234,13 +234,104 @@ The deep models' deviance exceeded LightGBM's in all eight windows, by 0.29–0.
 **Figure 7.** Day-ahead forecast performance on 2024. (a) Mean Poisson deviance of each deep model relative to LightGBM, by three-hour window. (b) Observed vs predicted 2024 incidents per cell, Graph WaveNet (log scales; dashed line: equality).
 
 ### 3.8 Station locations and coverage <a id="sec-3-8"></a>
-*Figures and tables: [Figure 8](#figure-8); [Table 4](#table-4); [Figure 9](#figure-9); [Table 5](#table-5).*
+
+Coverage of 2024 incidents by fixed stations optimised on 2022–2023 demand increased with the number of stations and the response-time standard ([Figure 8](#figure-8)). Within 15 minutes, one station covered 24.6% of incidents, five 64.5%, ten 80.7%, fifteen 88.7% and twenty 94.2%; 10 stations were needed to cover 80% and 16 to cover 90%. Within 10 minutes, 20 stations covered 81.8%, and within 20 minutes, 10 stations covered 91.4%.
+
+With 10 stations ([Table 4](#table-4)), the optimised layout covered 80.7% of incidents within 15 minutes, with a mean travel time of 11.7 minutes, against 52.7% (22.5 minutes) for randomly drawn sites and 47.1% (40.5 minutes) for the sites nearest the busiest cells. Day-ahead staging covered 80.5–80.6% within 15 minutes, whichever forecast was used. Across all numbers of stations and response-time standards, the five forecasts differed by at most 0.5 percentage points, and staging differed from fixed stations by −2.3 to +4.5 points. Staging with perfect knowledge of each band's incidents covered 91.3% within 15 minutes, with a mean travel time of 10.1 minutes.
+
+The recommended layout (10 stations, 15-minute standard) places four stations in Duval County (S1–S3, S6), two in Alachua (S7, S8) and one each in Columbia (S4), Suwannee (S5), St. Johns (S9) and Baker (S10) ([Figure 9](#figure-9); [Table 5](#table-5)). S1 (I-295 Exit 54) and S2 (I-10 Exit 358) were the nearest station for 17.1% and 16.0% of 2024 incidents, respectively. The share of each station's incidents reached within 15 minutes ranged from 32.3% (S5, I-10 Exit 283) to 97.7% (S3, I-295 Exit 10). [Author note: comparison with current Road Ranger stations pending FDOT data.]
+
+<a id="figure-8"></a>
+
+![Figure 8](../results/figures/Figure8_coverage.png)
+
+**Figure 8.** Share of 2024 incidents within 10, 15 and 20 minutes of the nearest station or staged unit, by number of stations or units: static layouts (2022–2023 demand), day-ahead staging from five forecasts (line: mean; band: range), and the oracle upper bound.
+
+<a id="table-4"></a>**Table 4.** Station layouts with 10 stations or units, evaluated on the 59,981 incidents of 2024.
+
+| Layout (demand source) | Stations | Covered ≤ 10 min (%) | ≤ 15 min (%) | ≤ 20 min (%) | Mean travel time (min) |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Current Road Ranger stations | 10 | [pending] | [pending] | [pending] | [pending] |
+| Sites nearest the busiest cells (no optimisation) | 10 | 37.9 | 47.1 | 52.2 | 40.5 |
+| Random candidate sites (mean of 200 draws) | 10 | 34.8 | 52.7 | 63.8 | 22.5 |
+| Static stations, 2022–2023 demand (MCLP) | 10 | 62.9 | 80.7 | 91.4 | 11.7 |
+| Day-ahead staging, historical average | 10 | 63.5 | 80.5 | 90.4 | 12.4 |
+| Day-ahead staging, LightGBM | 10 | 63.2 | 80.6 | 90.3 | 12.3 |
+| Day-ahead staging, LSTM | 10 | 63.5 | 80.5 | 90.4 | 12.4 |
+| Day-ahead staging, Graph WaveNet | 10 | 63.5 | 80.5 | 90.4 | 12.3 |
+| Day-ahead staging, ST-Transformer | 10 | 63.5 | 80.5 | 90.4 | 12.4 |
+| Day-ahead staging, oracle (upper bound) | 10 | 79.9 | 91.3 | 95.5 | 10.1 |
+
+*Note:* Comparison layouts are not optimised: the candidate site nearest each of the busiest 2022–2023 cells (distinct sites), and random candidate sites (mean of 200 draws). Static layouts are solved separately for each response-time standard; their mean travel time refers to the 15-minute layout. Travel times: shortest paths on the directed OpenStreetMap network (motorway, trunk and primary roads with ramps), with incidents matched to their recorded direction of travel.
+
+<a id="figure-9"></a>
+
+![Figure 9](../results/figures/Figure9_stations.png)
+
+**Figure 9.** Recommended static station locations (10 stations, 15-minute standard), labelled S1–S10, and the 307 candidate sites (interchanges, rest areas and service plazas). Blue cells: at least half of the cell's 2024 incidents within 15 minutes of a station at off-peak speed. (a) FDOT District 2; (b) Jacksonville.
+
+<a id="table-5"></a>**Table 5.** Recommended station sites (10 stations, 15-minute standard, 2022–2023 demand), selected from 307 candidate interchanges, rest areas and service plazas.
+
+| ID | Station site | Nearest incident landmark | Latitude | Longitude | 2024 incidents nearest to station | Share of 2024 incidents (%) | Of these, reached within 15 min (%) |
+| --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
+| S1 | I-295 Exit 54, Duval County | I-295 E at Gate Parkway | 30.2425 | -81.5146 | 10,274 | 17.1 | 89.2 |
+| S2 | I-10 Exit 358, Duval County | I-10 at Cassat Ave | 30.3182 | -81.7278 | 9,580 | 16.0 | 92.2 |
+| S3 | I-295 Exit 10, Duval County | I-295 W between Buckman Bridge and US-17 | 30.1918 | -81.6975 | 6,849 | 11.4 | 97.7 |
+| S4 | I-75 Exit 435, Columbia County | I-75 at ramp to I-10 | 30.2733 | -82.7582 | 6,411 | 10.7 | 77.5 |
+| S5 | I-10 Exit 283, Suwannee County | I-10 at US-129 | 30.3332 | -82.9664 | 5,757 | 9.6 | 32.3 |
+| S6 | I-95 Exit 366, Duval County | I-95 at ramp from Pecan Park Rd | 30.5222 | -81.6357 | 5,478 | 9.1 | 86.2 |
+| S7 | I-75 Exit 384, Alachua County | I-75 at ramp from SR-24/Archer Rd | 29.6220 | -82.3895 | 5,038 | 8.4 | 77.3 |
+| S8 | I-75 Exit 404, Alachua County | I-75 at ramp to CR-236 | 29.8729 | -82.5424 | 4,223 | 7.0 | 85.5 |
+| S9 | I-95 Exit 318, St. Johns County | I-95 at SR-16 | 29.9221 | -81.4139 | 3,384 | 5.6 | 77.7 |
+| S10 | I-10 Exit 333, Baker County | I-10 at CR-125 | 30.2615 | -82.1657 | 2,987 | 5.0 | 68.9 |
+
+*Note:* Coordinates are OpenStreetMap site locations (WGS84). Nearest incident landmark: name of the closest 1 km road cell, from the incident location descriptions.
 
 ### 3.9 Sensitivity analysis and temporal validation <a id="sec-3-9"></a>
-*Figures and tables: [Figure S6](#figure-s6); [Table S4](#table-s4); [Figure S9](#figure-s9); [Table S5](#table-s5); [Table S6](#table-s6).*
+
+With 10 stations and a 15-minute standard, coverage of 2024 incidents ranged from 73.2% to 85.9% across speed scenarios, against 80.7% in the base case ([Figure S6](#figure-s6)): 75.1% and 85.3% with peak speeds of 50% and 83% of off-peak, and 73.2% and 85.9% with off-peak speeds 15% lower and higher. Alternative demand definitions gave 79.5% (excluding incidents created through the vehicle-location subsystem), 80.6% (excluding near-duplicates) and 79.3% (crashes only). The two cell-based travel-time models gave higher coverage: 93.2% for the undirected Census network and 90.8% for the road-cell graph.
+
+Coverage was stable over time ([Table S4](#table-s4)). Sites selected on 2022 covered 81.4% of 2023 incidents, and sites selected on 2023 covered 80.5% of 2024 incidents, against 81.3% and 80.6% for layouts optimised on the evaluation year itself.
+
+The recommended sites were reselected to different degrees ([Figure S9](#figure-s9); [Table S5](#table-s5)). Layouts re-solved on bootstrap samples shared on average 7.1 of the 10 sites, and 49 distinct sites were selected across all 209 re-solved layouts. The four stations on I-75 and western I-10 (S4, S5, S7 and S8) were selected in 97.6–100% of layouts, S9 in 80.9%, S6 in 70.3% and S10 in 66.0%. In Duval County, S2 itself was selected in 33.5% of layouts but a site within 5 km of it in 91.9%; S1 was selected in 20.1% (within 5 km, 59.3%) and S3 in 33.5% (34.0%). Under each speed scenario, the recommended layout covered at most 0.55 percentage points fewer incidents than the layout optimised for that scenario, while sharing only 3–5 of its sites ([Table S6](#table-s6)).
 
 ### 3.10 Fleet size with busy units <a id="sec-3-10"></a>
-*Figures and tables: [Table 6](#table-6); [Figure 10](#figure-10).*
+
+When units could be busy, the share of incidents reached in time depended on fleet size ([Table 6](#table-6); [Figure 10](#figure-10)). With one unit at each of 10 stations, demand exceeded capacity (utilisation 108%) and 0.6% of incidents were reached within 15 minutes. With 20 units at the 10 stations, 52.4% were reached within 15 minutes when units were distributed equally and 57.4% when they were allocated in proportion to demand, against 80.7% if units were always free; with 30 units, the shares were 71.6% and 75.1%.
+
+For the same fleet, larger layouts reached more incidents once there were at least two units per station. With 30 units and proportional allocation, 15 stations reached 79.2% of incidents within 15 minutes (mean response 11.6 minutes) against 75.1% for 10 stations, and with 40 units, 20 stations reached 89.5%. With 60 units at 20 stations, 93.2% were reached within 15 minutes, against 94.2% if units were always free; the mean response time was 7.8 minutes, 2.1% of incidents were delayed by busy units, and utilisation was 10.4%.
+
+Proportional allocation reached 1.2–6.3 percentage points more incidents within 15 minutes than equal allocation of the same fleet. For 10 stations and 20 units, halving the on-scene time raised the share reached within 15 minutes from 57.4% to 68.6%, and excluding incidents created through the vehicle-location subsystem raised it to 69.8%.
+
+<a id="table-6"></a>**Table 6.** Discrete-event simulation of 2024 with busy units: response to the 59,981 incidents of 2024 by layout, fleet size and unit allocation.
+
+| Case | Stations | Units | Unit allocation | Reached ≤ 10 min (%) | ≤ 15 min (%) | ≤ 20 min (%) | ≤ 15 min, units always free (%) | Mean response (min) | 90th percentile (min) | Delayed by busy units (%) | Utilisation (%) |
+| --- | ---: | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Base | 10 | 10 | Equal | 0.4 | 0.6 | 0.7 | 80.7 | overloaded | overloaded | 99.4 | 108.0 |
+| Base | 10 | 20 | Equal | 34.8 | 52.4 | 63.3 | 80.7 | 27.0 | 59.8 | 43.0 | 39.2 |
+| Base | 10 | 20 | Proportional | 38.8 | 57.4 | 67.7 | 80.7 | 24.9 | 54.2 | 37.4 | 38.2 |
+| Base | 10 | 30 | Equal | 49.0 | 71.6 | 82.3 | 80.7 | 14.3 | 30.6 | 16.8 | 23.8 |
+| Base | 10 | 30 | Proportional | 52.2 | 75.1 | 85.0 | 80.7 | 13.6 | 26.3 | 11.3 | 23.5 |
+| Base | 15 | 15 | Equal | 16.2 | 25.1 | 31.5 | 88.7 | 91.5 | 232.4 | 78.0 | 62.5 |
+| Base | 15 | 30 | Equal | 51.3 | 72.9 | 83.1 | 88.7 | 13.5 | 26.6 | 26.7 | 23.0 |
+| Base | 15 | 30 | Proportional | 57.7 | 79.2 | 88.4 | 88.7 | 11.6 | 21.4 | 17.2 | 22.4 |
+| Base | 15 | 45 | Equal | 61.9 | 84.5 | 93.0 | 88.7 | 9.9 | 17.5 | 9.0 | 14.5 |
+| Base | 15 | 45 | Proportional | 64.7 | 86.7 | 94.3 | 88.7 | 9.5 | 16.4 | 4.2 | 14.4 |
+| Base | 20 | 20 | Equal | 33.3 | 47.6 | 56.7 | 94.2 | 34.9 | 88.3 | 61.9 | 40.8 |
+| Base | 20 | 40 | Equal | 66.5 | 85.1 | 92.3 | 94.2 | 9.5 | 17.9 | 18.5 | 16.1 |
+| Base | 20 | 40 | Proportional | 71.8 | 89.5 | 95.1 | 94.2 | 8.6 | 15.3 | 10.1 | 15.8 |
+| Base | 20 | 60 | Equal | 74.4 | 92.0 | 96.9 | 94.2 | 7.9 | 14.2 | 5.9 | 10.4 |
+| Base | 20 | 60 | Proportional | 76.4 | 93.2 | 97.1 | 94.2 | 7.8 | 13.5 | 2.1 | 10.4 |
+| On-scene time halved | 10 | 20 | Proportional | 47.3 | 68.6 | 79.1 | 80.7 | 15.7 | 34.8 | 22.7 | 26.5 |
+| AVL-created incidents excluded | 10 | 20 | Proportional | 48.4 | 69.8 | 79.7 | 84.4 | 17.0 | 34.9 | 22.5 | 23.1 |
+
+*Note:* Each incident is assigned to the unit that can reach it first; a unit is busy for travel, on-scene time (logged event duration; type median where flagged) and return to its station. Utilisation above 100%: demand exceeds capacity and the queue grows through the year. Sensitivity rows: 10 stations, 20 units, proportional allocation.
+
+<a id="figure-10"></a>
+
+![Figure 10](../results/figures/Figure10_simulation.png)
+
+**Figure 10.** Simulated share of 2024 incidents reached within 15 minutes by fleet size, for layouts of 10, 15 and 20 stations, with equal units per station (solid) or units allocated in proportion to 2022–2023 demand (dashed). Dotted lines: coverage when units are always free.
 
 ## 4. Discussion <a id="sec-4"></a>
 
@@ -308,99 +399,7 @@ The deep models' deviance exceeded LightGBM's in all eight windows, by 0.29–0.
 
 ---
 
-## Appendix A. Figures
-
-<a id="figure-8"></a>
-
-![Figure 8](../results/figures/Figure8_coverage.png)
-
-**Figure 8.** Share of 2024 incidents within 10, 15 and 20 minutes of the nearest station or staged unit, by number of stations or units: static layouts (2022–2023 demand), day-ahead staging from five forecasts (line: mean; band: range), and the oracle upper bound.
-
-*Cited in [Section 3.8](#sec-3-8).*
-
-<a id="figure-9"></a>
-
-![Figure 9](../results/figures/Figure9_stations.png)
-
-**Figure 9.** Recommended static station locations (10 stations, 15-minute standard), labelled S1–S10, and the 307 candidate sites (interchanges, rest areas and service plazas). Blue cells: at least half of the cell's 2024 incidents within 15 minutes of a station at off-peak speed. (a) FDOT District 2; (b) Jacksonville.
-
-*Cited in [Section 3.8](#sec-3-8).*
-
-<a id="figure-10"></a>
-
-![Figure 10](../results/figures/Figure10_simulation.png)
-
-**Figure 10.** Simulated share of 2024 incidents reached within 15 minutes by fleet size, for layouts of 10, 15 and 20 stations, with equal units per station (solid) or units allocated in proportion to 2022–2023 demand (dashed). Dotted lines: coverage when units are always free.
-
-*Cited in [Section 3.10](#sec-3-10).*
-
-
-## Appendix B. Tables
-
-<a id="table-4"></a>**Table 4.** Station layouts with 10 stations or units, evaluated on the 59,981 incidents of 2024.
-
-| Layout (demand source) | Stations | Covered ≤ 10 min (%) | ≤ 15 min (%) | ≤ 20 min (%) | Mean travel time (min) |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| Current Road Ranger stations | 10 | [pending] | [pending] | [pending] | [pending] |
-| Sites nearest the busiest cells (no optimisation) | 10 | 37.9 | 47.1 | 52.2 | 40.5 |
-| Random candidate sites (mean of 200 draws) | 10 | 34.8 | 52.7 | 63.8 | 22.5 |
-| Static stations, 2022–2023 demand (MCLP) | 10 | 62.9 | 80.7 | 91.4 | 11.7 |
-| Day-ahead staging, historical average | 10 | 63.5 | 80.5 | 90.4 | 12.4 |
-| Day-ahead staging, LightGBM | 10 | 63.2 | 80.6 | 90.3 | 12.3 |
-| Day-ahead staging, LSTM | 10 | 63.5 | 80.5 | 90.4 | 12.4 |
-| Day-ahead staging, Graph WaveNet | 10 | 63.5 | 80.5 | 90.4 | 12.3 |
-| Day-ahead staging, ST-Transformer | 10 | 63.5 | 80.5 | 90.4 | 12.4 |
-| Day-ahead staging, oracle (upper bound) | 10 | 79.9 | 91.3 | 95.5 | 10.1 |
-
-*Note:* Comparison layouts are not optimised: the candidate site nearest each of the busiest 2022–2023 cells (distinct sites), and random candidate sites (mean of 200 draws). Static layouts are solved separately for each response-time standard; their mean travel time refers to the 15-minute layout. Travel times: shortest paths on the directed OpenStreetMap network (motorway, trunk and primary roads with ramps), with incidents matched to their recorded direction of travel.
-
-
-<a id="table-5"></a>**Table 5.** Recommended station sites (10 stations, 15-minute standard, 2022–2023 demand), selected from 307 candidate interchanges, rest areas and service plazas.
-
-| ID | Station site | Nearest incident landmark | Latitude | Longitude | 2024 incidents nearest to station | Share of 2024 incidents (%) | Of these, reached within 15 min (%) |
-| --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
-| S1 | I-295 Exit 54, Duval County | I-295 E at Gate Parkway | 30.2425 | -81.5146 | 10,274 | 17.1 | 89.2 |
-| S2 | I-10 Exit 358, Duval County | I-10 at Cassat Ave | 30.3182 | -81.7278 | 9,580 | 16.0 | 92.2 |
-| S3 | I-295 Exit 10, Duval County | I-295 W between Buckman Bridge and US-17 | 30.1918 | -81.6975 | 6,849 | 11.4 | 97.7 |
-| S4 | I-75 Exit 435, Columbia County | I-75 at ramp to I-10 | 30.2733 | -82.7582 | 6,411 | 10.7 | 77.5 |
-| S5 | I-10 Exit 283, Suwannee County | I-10 at US-129 | 30.3332 | -82.9664 | 5,757 | 9.6 | 32.3 |
-| S6 | I-95 Exit 366, Duval County | I-95 at ramp from Pecan Park Rd | 30.5222 | -81.6357 | 5,478 | 9.1 | 86.2 |
-| S7 | I-75 Exit 384, Alachua County | I-75 at ramp from SR-24/Archer Rd | 29.6220 | -82.3895 | 5,038 | 8.4 | 77.3 |
-| S8 | I-75 Exit 404, Alachua County | I-75 at ramp to CR-236 | 29.8729 | -82.5424 | 4,223 | 7.0 | 85.5 |
-| S9 | I-95 Exit 318, St. Johns County | I-95 at SR-16 | 29.9221 | -81.4139 | 3,384 | 5.6 | 77.7 |
-| S10 | I-10 Exit 333, Baker County | I-10 at CR-125 | 30.2615 | -82.1657 | 2,987 | 5.0 | 68.9 |
-
-*Note:* Coordinates are OpenStreetMap site locations (WGS84). Nearest incident landmark: name of the closest 1 km road cell, from the incident location descriptions.
-
-
-<a id="table-6"></a>**Table 6.** Discrete-event simulation of 2024 with busy units: response to the 59,981 incidents of 2024 by layout, fleet size and unit allocation.
-
-| Case | Stations | Units | Unit allocation | Reached ≤ 10 min (%) | ≤ 15 min (%) | ≤ 20 min (%) | ≤ 15 min, units always free (%) | Mean response (min) | 90th percentile (min) | Delayed by busy units (%) | Utilisation (%) |
-| --- | ---: | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| Base | 10 | 10 | Equal | 0.4 | 0.6 | 0.7 | 80.7 | overloaded | overloaded | 99.4 | 108.0 |
-| Base | 10 | 20 | Equal | 34.8 | 52.4 | 63.3 | 80.7 | 27.0 | 59.8 | 43.0 | 39.2 |
-| Base | 10 | 20 | Proportional | 38.8 | 57.4 | 67.7 | 80.7 | 24.9 | 54.2 | 37.4 | 38.2 |
-| Base | 10 | 30 | Equal | 49.0 | 71.6 | 82.3 | 80.7 | 14.3 | 30.6 | 16.8 | 23.8 |
-| Base | 10 | 30 | Proportional | 52.2 | 75.1 | 85.0 | 80.7 | 13.6 | 26.3 | 11.3 | 23.5 |
-| Base | 15 | 15 | Equal | 16.2 | 25.1 | 31.5 | 88.7 | 91.5 | 232.4 | 78.0 | 62.5 |
-| Base | 15 | 30 | Equal | 51.3 | 72.9 | 83.1 | 88.7 | 13.5 | 26.6 | 26.7 | 23.0 |
-| Base | 15 | 30 | Proportional | 57.7 | 79.2 | 88.4 | 88.7 | 11.6 | 21.4 | 17.2 | 22.4 |
-| Base | 15 | 45 | Equal | 61.9 | 84.5 | 93.0 | 88.7 | 9.9 | 17.5 | 9.0 | 14.5 |
-| Base | 15 | 45 | Proportional | 64.7 | 86.7 | 94.3 | 88.7 | 9.5 | 16.4 | 4.2 | 14.4 |
-| Base | 20 | 20 | Equal | 33.3 | 47.6 | 56.7 | 94.2 | 34.9 | 88.3 | 61.9 | 40.8 |
-| Base | 20 | 40 | Equal | 66.5 | 85.1 | 92.3 | 94.2 | 9.5 | 17.9 | 18.5 | 16.1 |
-| Base | 20 | 40 | Proportional | 71.8 | 89.5 | 95.1 | 94.2 | 8.6 | 15.3 | 10.1 | 15.8 |
-| Base | 20 | 60 | Equal | 74.4 | 92.0 | 96.9 | 94.2 | 7.9 | 14.2 | 5.9 | 10.4 |
-| Base | 20 | 60 | Proportional | 76.4 | 93.2 | 97.1 | 94.2 | 7.8 | 13.5 | 2.1 | 10.4 |
-| On-scene time halved | 10 | 20 | Proportional | 47.3 | 68.6 | 79.1 | 80.7 | 15.7 | 34.8 | 22.7 | 26.5 |
-| AVL-created incidents excluded | 10 | 20 | Proportional | 48.4 | 69.8 | 79.7 | 84.4 | 17.0 | 34.9 | 22.5 | 23.1 |
-
-*Note:* Each incident is assigned to the unit that can reach it first; a unit is busy for travel, on-scene time (logged event duration; type median where flagged) and return to its station. Utilisation above 100%: demand exceeds capacity and the queue grows through the year. Sensitivity rows: 10 stations, 20 units, proportional allocation.
-
-*Cited in [Section 3.10](#sec-3-10).*
-
-
-## Appendix C. Supplementary material
+## Appendix. Supplementary material
 
 <a id="figure-s1"></a>
 
