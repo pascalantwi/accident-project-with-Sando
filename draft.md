@@ -109,6 +109,8 @@ Tools: Python with pandas, geopandas, osmnx, networkx, spaghetti / esda (PySAL) 
 
 ## 6. Results
 
+The full manuscript text, with figures and tables in the appendices, is in [`manuscript_draft.md`](manuscript_draft.md).
+
 Sections 6.3.1 to 6.3.5 are drafted from the exploratory analysis (`eda.py`); sections 6.3.6 to 6.3.8 are placeholders for the network hotspot and station-location work. Figures are in `eda/figures/`; the data behind each table is in `eda/tables/`.
 
 ### 6.1 Figures
