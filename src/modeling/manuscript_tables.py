@@ -1,4 +1,4 @@
-"""Print Tables 2-6 and S2-S6 as markdown from the result files (for pasting into the manuscript)."""
+"""Print Tables 2-6 and S2-S7 as markdown from the result files (for pasting into the manuscript)."""
 import json
 
 import pandas as pd
@@ -118,8 +118,23 @@ def table_s6():
     return "\n".join(lines)
 
 
+def table_s7():
+    d = json.loads((TABLES / "deep_tuning_log.json").read_text())
+    names = {"lstm": "LSTM (no graph)", "gwn": "Graph WaveNet", "transformer": "ST-Transformer"}
+    lines = ["| Model | Hidden size | Learning rate | Validation deviance (×10⁻²) | Epochs to best | Parameters |",
+             "| --- | ---: | ---: | ---: | ---: | ---: |"]
+    for m in ["lstm", "gwn", "transformer"]:
+        best = min(d[m].values(), key=lambda v: v["best_val_deviance"])["best_val_deviance"]
+        for v in d[m].values():
+            c = v["config"]
+            dev = f"{v['best_val_deviance'] * 100:.4f}"
+            dev = f"**{dev}**" if v["best_val_deviance"] == best else dev
+            lines.append(f"| {names[m]} | {c['hidden']} | {c['lr']:g} | {dev} | {v['epochs'] - 3 if v['epochs'] < c['max_epochs'] else v['epochs']} | {v['parameters']:,} |")
+    return "\n".join(lines)
+
+
 if __name__ == "__main__":
-    for f in (table2, table3, table4, table5, table6, table_s2, table_s3, table_s4, table_s5, table_s6):
+    for f in (table2, table3, table4, table5, table6, table_s2, table_s3, table_s4, table_s5, table_s6, table_s7):
         try:
             print(f(), "\n")
         except FileNotFoundError as e:

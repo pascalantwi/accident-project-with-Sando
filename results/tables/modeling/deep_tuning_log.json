@@ -1,0 +1,128 @@
+{
+  "gwn": {
+    "h32_lr0.001": {
+      "best_val_deviance": 0.13601375129170248,
+      "epochs": 11,
+      "parameters": 61645,
+      "config": {
+        "hidden": 32,
+        "lr": 0.001,
+        "max_epochs": 30
+      }
+    },
+    "h64_lr0.001": {
+      "best_val_deviance": 0.13600910326302923,
+      "epochs": 11,
+      "parameters": 175245,
+      "config": {
+        "hidden": 64,
+        "lr": 0.001,
+        "max_epochs": 30
+      }
+    },
+    "h32_lr0.0003": {
+      "best_val_deviance": 0.13625624516340457,
+      "epochs": 15,
+      "parameters": 61645,
+      "config": {
+        "hidden": 32,
+        "lr": 0.0003,
+        "max_epochs": 30
+      }
+    },
+    "h64_lr0.0003": {
+      "best_val_deviance": 0.13633303178490866,
+      "epochs": 7,
+      "parameters": 175245,
+      "config": {
+        "hidden": 64,
+        "lr": 0.0003,
+        "max_epochs": 30
+      }
+    }
+  },
+  "lstm": {
+    "h32_lr0.001": {
+      "best_val_deviance": 0.13603653182892286,
+      "epochs": 11,
+      "parameters": 40609,
+      "config": {
+        "hidden": 32,
+        "lr": 0.001,
+        "max_epochs": 30
+      }
+    },
+    "h64_lr0.001": {
+      "best_val_deviance": 0.13605994744600117,
+      "epochs": 13,
+      "parameters": 87297,
+      "config": {
+        "hidden": 64,
+        "lr": 0.001,
+        "max_epochs": 30
+      }
+    },
+    "h32_lr0.0003": {
+      "best_val_deviance": 0.13648396549834793,
+      "epochs": 4,
+      "parameters": 40609,
+      "config": {
+        "hidden": 32,
+        "lr": 0.0003,
+        "max_epochs": 30
+      }
+    },
+    "h64_lr0.0003": {
+      "best_val_deviance": 0.13657119280572033,
+      "epochs": 7,
+      "parameters": 87297,
+      "config": {
+        "hidden": 64,
+        "lr": 0.0003,
+        "max_epochs": 30
+      }
+    }
+  },
+  "transformer": {
+    "h32_lr0.001": {
+      "best_val_deviance": 0.13605644202115308,
+      "epochs": 11,
+      "parameters": 53409,
+      "config": {
+        "hidden": 32,
+        "lr": 0.001,
+        "max_epochs": 30
+      }
+    },
+    "h64_lr0.001": {
+      "best_val_deviance": 0.13612486259598466,
+      "epochs": 11,
+      "parameters": 137473,
+      "config": {
+        "hidden": 64,
+        "lr": 0.001,
+        "max_epochs": 30
+      }
+    },
+    "h32_lr0.0003": {
+      "best_val_deviance": 0.13637395630395735,
+      "epochs": 7,
+      "parameters": 53409,
+      "config": {
+        "hidden": 32,
+        "lr": 0.0003,
+        "max_epochs": 30
+      }
+    },
+    "h64_lr0.0003": {
+      "best_val_deviance": 0.136357081806946,
+      "epochs": 4,
+      "parameters": 137473,
+      "config": {
+        "hidden": 64,
+        "lr": 0.0003,
+        "max_epochs": 30
+      }
+    }
+  }
+}

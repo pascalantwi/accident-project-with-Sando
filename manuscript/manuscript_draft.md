@@ -87,7 +87,7 @@ where *x̄* and *s* are the mean and standard deviation of *x*. Two-sided p-valu
 
 **Baselines.** (i) The historical mean; (ii) a Poisson log-linear model with cell, window × day type and month main effects, fitted by iterative proportional fitting; and (iii) LightGBM [[9]](#ref-ke2017) with a Poisson objective (learning rate 0.05, 63 leaves, at least 500 observations per leaf, early stopping after 100 rounds without improvement). An ablation refitted LightGBM without the exposure and precipitation inputs, and with the observed precipitation in the target window as a perfect-forecast bound.
 
-**Deep learning models.** Each model encodes the last 16 windows (two days) of counts and precipitation in every cell, with time-of-day and weekend indicators, into a cell representation; a shared output layer combines it with the inputs above and predicts the log-rate, offset by the log historical mean, under a Poisson likelihood. The LSTM [[10]](#ref-hochreiter1997) encodes each cell separately, without spatial information; Graph WaveNet [[11]](#ref-wu2019) combines gated dilated temporal convolutions with diffusion convolution over the cell graph and a learned adjacency matrix; and the spatio-temporal Transformer [[12]](#ref-vaswani2017) applies attention over time within each cell and then across cells. Models were trained with Adam [[18]](#ref-kingma2015) on batches of eight days with early stopping (patience 3). Hidden size (32 or 64) and learning rate (10⁻³ or 3 × 10⁻⁴) were tuned on the validation period; differences in validation deviance below 0.1% were treated as ties, and the smaller configuration was retained. LightGBM and each deep model were trained with five random seeds.
+**Deep learning models.** Each model encodes the last 16 windows (two days) of counts and precipitation in every cell, with time-of-day and weekend indicators, into a cell representation; a shared output layer combines it with the inputs above and predicts the log-rate, offset by the log historical mean, under a Poisson likelihood. The LSTM [[10]](#ref-hochreiter1997) encodes each cell separately, without spatial information; Graph WaveNet [[11]](#ref-wu2019) combines gated dilated temporal convolutions with diffusion convolution over the cell graph and a learned adjacency matrix; and the spatio-temporal Transformer [[12]](#ref-vaswani2017) applies attention over time within each cell and then across cells. Models were trained with Adam [[18]](#ref-kingma2015) on batches of eight days with early stopping (patience 3). Hidden size (32 or 64) and learning rate (10⁻³ or 3 × 10⁻⁴) were tuned on the validation period; differences in validation deviance below 0.1% were treated as ties, and the smaller configuration was retained ([Table S7](#table-s7)). LightGBM and each deep model were trained with five random seeds.
 
 ### 2.9 Station location optimisation <a id="sec-2-9"></a>
 
@@ -141,7 +141,7 @@ The coverage model assumes that every unit is free when an incident occurs. A di
 *Figures and tables: [Figure 6](#figure-6); [Table 2](#table-2); [Figure S5](#figure-s5); [Figure S7](#figure-s7); [Table S2](#table-s2).*
 
 ### 3.8 Forecasting performance <a id="sec-3-8"></a>
-*Figures and tables: [Table 3](#table-3); [Figure 7](#figure-7); [Table S3](#table-s3).*
+*Figures and tables: [Table 3](#table-3); [Figure 7](#figure-7); [Table S3](#table-s3); [Table S7](#table-s7).*
 
 ### 3.9 Station locations and coverage <a id="sec-3-9"></a>
 *Figures and tables: [Figure 8](#figure-8); [Table 4](#table-4); [Figure 9](#figure-9); [Table 5](#table-5).*
@@ -556,3 +556,25 @@ The coverage model assumes that every unit is free when an incident occurs. A di
 *Note:* Layouts are optimised on road-edge midpoints and evaluated at exact incident locations, so a scenario-optimised layout can score slightly below the recommended layout (negative difference).
 
 *Cited in [Section 3.10](#sec-3-10).*
+
+
+<a id="table-s7"></a>**Table S7.** Hyperparameter tuning of the deep learning models on the validation period (1 October – 31 December 2023), one seed per configuration, at most 30 epochs with early stopping (patience 3).
+
+| Model | Hidden size | Learning rate | Validation deviance (×10⁻²) | Epochs to best | Parameters |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| LSTM (no graph) | 32 | 0.001 | **13.6037** | 8 | 40,609 |
+| LSTM (no graph) | 64 | 0.001 | 13.6060 | 10 | 87,297 |
+| LSTM (no graph) | 32 | 0.0003 | 13.6484 | 1 | 40,609 |
+| LSTM (no graph) | 64 | 0.0003 | 13.6571 | 4 | 87,297 |
+| Graph WaveNet | 32 | 0.001 | 13.6014 | 8 | 61,645 |
+| Graph WaveNet | 64 | 0.001 | **13.6009** | 8 | 175,245 |
+| Graph WaveNet | 32 | 0.0003 | 13.6256 | 12 | 61,645 |
+| Graph WaveNet | 64 | 0.0003 | 13.6333 | 4 | 175,245 |
+| ST-Transformer | 32 | 0.001 | **13.6056** | 8 | 53,409 |
+| ST-Transformer | 64 | 0.001 | 13.6125 | 8 | 137,473 |
+| ST-Transformer | 32 | 0.0003 | 13.6374 | 4 | 53,409 |
+| ST-Transformer | 64 | 0.0003 | 13.6357 | 1 | 137,473 |
+
+*Note:* Bold: lowest validation deviance for each model. Differences below 0.1% were treated as ties and the smaller configuration (hidden size 32, learning rate 10⁻³) was retained for all three models.
+
+*Cited in [Section 2.8](#sec-2-8), [Section 3.8](#sec-3-8).*
