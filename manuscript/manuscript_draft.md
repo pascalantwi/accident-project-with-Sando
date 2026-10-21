@@ -15,6 +15,12 @@ The limited-access network comprises three interstate corridors and an urban bel
 
 The incident records analysed in this study (Section 2.2) lie between 29.0° and 30.7° N and between 81.3° and 83.7° W, in 15 of the district's 18 counties; Gilchrist, Lafayette and Union counties, which contain no interstate highway, recorded none. The region has a humid subtropical climate with frequent warm-season convective storms, which is why precipitation is included as an explanatory variable (Section 2.6).
 
+<a id="figure-1"></a>
+
+![Figure 1](../results/figures/Figure1_spatial_distribution.png)
+
+**Figure 1.** Spatial distribution of incidents in FDOT District 2, 2022–2024. (a) District overview; the dashed box marks panel (b). (b) Central Jacksonville; red circles mark 14 of the 15 busiest 1 km grid cells. Hexagon shading shows incident counts on a logarithmic scale.
+
 ### 2.2 Data <a id="sec-2-2"></a>
 
 ### 2.3 Data processing <a id="sec-2-3"></a>
@@ -130,14 +136,6 @@ The incident records analysed in this study (Section 2.2) lie between 29.0° and
 ---
 
 ## Appendix A. Figures
-
-<a id="figure-1"></a>
-
-![Figure 1](../results/figures/Figure1_spatial_distribution.png)
-
-**Figure 1.** Spatial distribution of incidents in FDOT District 2, 2022–2024. (a) District overview; the dashed box marks panel (b). (b) Central Jacksonville; red circles mark 14 of the 15 busiest 1 km grid cells. Hexagon shading shows incident counts on a logarithmic scale.
-
-*Cited in [Section 2.1](#sec-2-1), [Section 3.3](#sec-3-3).*
 
 <a id="figure-2"></a>
 
