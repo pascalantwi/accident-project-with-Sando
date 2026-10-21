@@ -1,0 +1,5 @@
+id,name,county,routes,cells,incidents_per_year,crash_share_pct,max_gi_z,lat,lon,mvkt_per_year,incidents_per_mvkt,overlaps_count_hotspot
+R1,I-295 W at Buckman Bridge (Duval County),Duval,I-295 W,3,649.3,10.4,3.81,30.190337195240016,-81.6553839229066,103.4,6.28,True
+R2,"I-10 at ramp from CR-229 (Baker County, MM 326)",Baker,I-10,1,59.3,10.1,3.62,30.23805154494382,-82.26745255617978,10.0,5.94,False
+R3,"I-75 (Columbia County, MM 417)",Columbia,I-75,5,511.0,7.6,10.45,30.035329707944225,-82.61559540146027,89.1,5.73,False
+R4,"I-295 E at Baymeadows Rd (Duval County, MM 57)",Duval,"295 East Express, I-295 E",6,356.0,27.1,5.35,30.22400893040758,-81.51384751642973,170.1,2.09,False

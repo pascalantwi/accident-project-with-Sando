@@ -6,6 +6,7 @@ import pandas as pd
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 EVENTS = ROOT / "data" / "processed" / "incidents_events.csv.gz"
+EXTERNAL = ROOT / "data" / "external"     # AADT, NOAA, Census roads (see sources.json)
 WORK = ROOT / "data" / "interim"           # intermediate arrays (git-ignored)
 FIGURES = ROOT / "results" / "figures"
 TABLES = ROOT / "results" / "tables" / "modeling"
@@ -24,7 +25,10 @@ SEEDS = [11, 23, 37, 41, 59]
 BANDS = {"night": [0, 1, 6, 7], "am_peak": [2], "midday": [3, 4], "pm_peak": [5]}
 PEAK_WINDOWS = {2, 5}                     # 06:00-08:59 and 15:00-17:59 on weekdays
 SPEED_MPH = {"offpeak": 60.0, "peak": 40.0}
-CIRCUITY = 1.2                            # grid-graph distance to road distance
+CIRCUITY = 1.2                            # grid-graph distance to road distance (sensitivity only)
+# Road-network travel speeds (Census primary roads S1100 = limited access; secondary S1200).
+NETWORK_SPEED_MPH = {"offpeak": {"S1100": 60.0, "S1200": 45.0}, "peak": {"S1100": 40.0, "S1200": 30.0}}
+ACCESS_MPH = 25.0                         # from a cell's incident centroid to the nearest network node
 KM_PER_MILE = 1.609344
 
 

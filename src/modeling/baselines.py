@@ -4,6 +4,7 @@ Writes day-ahead predictions for validation and test days to modeling/work/pred_
 (shape: days x 8 windows x cells).
 """
 import json
+import sys
 import time
 
 import lightgbm as lgb
@@ -47,20 +48,25 @@ def poisson_loglinear(ds, days, iters=200):
     return (a[None, None, :] * b[kd][:, :, None] * g[md][:, None, None]).astype(np.float32)
 
 
-FEATURES = ["hist_mean", "lag1_same_window", "lag7_same_window", "sum_1d", "sum_7d", "sum_28d",
-            "nbr_sum_7d", "district_1d", "window", "weekday", "month", "holiday", "dark_share", "lat", "lon"]
+BASE_FEATURES = ["hist_mean", "lag1_same_window", "lag7_same_window", "sum_1d", "sum_7d", "sum_28d",
+                 "nbr_sum_7d", "district_1d", "window", "weekday", "month", "holiday", "dark_share", "lat", "lon"]
+FEATURES = BASE_FEATURES + ["exposure_prev_year", "precip_prev_day"]
+# Ablation (LightGBM only): feature sets with and without the external inputs.
+ABLATION = {"lightgbm_noexternal": BASE_FEATURES,
+            "lightgbm_aadt": BASE_FEATURES + ["exposure_prev_year"],
+            "lightgbm_precipwindow": FEATURES + ["precip_window"]}
 
 
-def to_matrix(ds, days):
+def to_matrix(ds, days, features=FEATURES):
     f = ds.window_features(days)
-    return np.column_stack([np.asarray(f[c], dtype=np.float32).ravel() for c in FEATURES])
+    return np.column_stack([np.asarray(f[c], dtype=np.float32).ravel() for c in features])
 
 
-def lightgbm_model(ds, seed, X_tr, y_tr, X_va, y_va):
+def lightgbm_model(ds, seed, X_tr, y_tr, X_va, y_va, features=FEATURES):
     params = dict(objective="poisson", learning_rate=0.05, num_leaves=63, min_data_in_leaf=500,
                   feature_fraction=0.8, bagging_fraction=0.8, bagging_freq=1, lambda_l2=1.0,
                   seed=seed, verbose=-1, num_threads=4)
-    dtr = lgb.Dataset(X_tr, y_tr, feature_name=FEATURES, categorical_feature=["window", "weekday", "month"],
+    dtr = lgb.Dataset(X_tr, y_tr, feature_name=features, categorical_feature=["window", "weekday", "month"],
                       free_raw_data=False)
     dva = lgb.Dataset(X_va, y_va, reference=dtr)
     return lgb.train(params, dtr, num_boost_round=3000, valid_sets=[dva],
@@ -75,20 +81,26 @@ def main():
     np.save(WORK / "eval_days.npy", eval_days)
 
     t0 = time.time()
-    X_tr, y_tr = to_matrix(ds, ds.train_days), ds.target(ds.train_days).ravel()
-    X_va, y_va = to_matrix(ds, ds.val_days), ds.target(ds.val_days).ravel()
-    X_ev = to_matrix(ds, eval_days)
+    y_tr, y_va = ds.target(ds.train_days).ravel(), ds.target(ds.val_days).ravel()
     info = {"train_rows": len(y_tr), "features": FEATURES, "seeds": {}}
-    importance = np.zeros(len(FEATURES))
-    for seed in SEEDS:
-        model = lightgbm_model(ds, seed, X_tr, y_tr, X_va, y_va)
-        pred = model.predict(X_ev, num_iteration=model.best_iteration).reshape(len(eval_days), 8, ds.n_cells)
-        np.save(WORK / f"pred_lightgbm_{seed}.npy", pred.astype(np.float32))
-        importance += model.feature_importance("gain")
-        info["seeds"][seed] = {"best_iteration": model.best_iteration}
-        print(f"lightgbm seed {seed}: {model.best_iteration} rounds, {time.time() - t0:.0f}s", flush=True)
-    info["gain_importance_pct"] = dict(zip(FEATURES, (importance / importance.sum() * 100).round(2)))
-    (WORK / "lightgbm_info.json").write_text(json.dumps(info, indent=2, default=int))
+    for key, feats in {"lightgbm": FEATURES, **ABLATION}.items():
+        if key != "lightgbm" and len(sys.argv) > 1 and sys.argv[1] == "--main-only":
+            continue
+        X_tr, X_va, X_ev = (to_matrix(ds, d, feats) for d in (ds.train_days, ds.val_days, eval_days))
+        importance = np.zeros(len(feats))
+        for seed in SEEDS:
+            model = lightgbm_model(ds, seed, X_tr, y_tr, X_va, y_va, feats)
+            pred = model.predict(X_ev, num_iteration=model.best_iteration).reshape(len(eval_days), 8, ds.n_cells)
+            np.save(WORK / f"pred_{key}_{seed}.npy", pred.astype(np.float32))
+            importance += model.feature_importance("gain")
+            if key == "lightgbm":
+                info["seeds"][seed] = {"best_iteration": model.best_iteration}
+            print(f"{key} seed {seed}: {model.best_iteration} rounds, {time.time() - t0:.0f}s", flush=True)
+        if key == "lightgbm":
+            info["gain_importance_pct"] = dict(zip(feats, (importance / importance.sum() * 100).round(2)))
+        else:
+            info.setdefault("ablation", {})[key] = {"features": feats}
+        (WORK / "lightgbm_info.json").write_text(json.dumps(info, indent=2, default=int))
 
 
 if __name__ == "__main__":

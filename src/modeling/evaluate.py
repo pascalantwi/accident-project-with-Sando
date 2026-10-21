@@ -1,4 +1,5 @@
-"""Forecast evaluation on 2024 (test) days: Table 3, Figure 7, bootstrap comparison.
+"""Forecast evaluation on 2024 (test) days: Table 3, Figure 7, bootstrap comparison and the
+LightGBM input ablation (Table S3).
 
 Metrics per cell-window: MAE, RMSE, mean Poisson deviance. Daily hotspot metrics: share of the
 day's incidents falling in the 5% of cells with the highest predicted daily demand (hit rate) and
@@ -15,6 +16,10 @@ from plots import INK, SERIES, plt
 
 MODELS = [("ha", "Historical average"), ("loglinear", "Poisson log-linear"), ("lightgbm", "LightGBM"),
           ("lstm", "LSTM (no graph)"), ("gwn", "Graph WaveNet"), ("transformer", "ST-Transformer")]
+ABLATION = [("lightgbm_noexternal", "Base inputs only (no AADT, no precipitation)"),
+            ("lightgbm_aadt", "Base inputs + AADT exposure"),
+            ("lightgbm", "Base inputs + AADT exposure + previous-day precipitation (day-ahead model)"),
+            ("lightgbm_precipwindow", "As above + observed precipitation in the target window (perfect-forecast bound)")]
 TOP_SHARE = 0.05
 N_BOOT = 2000
 
@@ -72,6 +77,26 @@ def main():
             boot[key] = {"mean_diff": float(diff.mean()), "ci95": [float(np.percentile(samples, 2.5)),
                                                                     float(np.percentile(samples, 97.5))]}
     (TABLES / "forecast_bootstrap.json").write_text(json.dumps(boot, indent=2))
+
+    # Table S3: LightGBM input ablation (5 seeds each), with day-level bootstrap vs the day-ahead model.
+    abl = []
+    for key, label in ABLATION:
+        preds = load(key)
+        if not preds or "lightgbm" not in daily:
+            continue
+        per = [metrics(p[test], y) for p in preds]
+        mean_dev = metrics(np.mean(preds, 0)[test], y)
+        diff = mean_dev["_daily_dev"] - daily["lightgbm"]["_daily_dev"]
+        samples = np.array([diff[rng.integers(0, n_days, n_days)].mean() for _ in range(N_BOOT)])
+        abl.append({"inputs": label, "key": key, "runs": len(per),
+                    "Deviance": np.mean([r["Deviance"] for r in per]),
+                    "Deviance_sd": np.std([r["Deviance"] for r in per], ddof=1),
+                    "HitRate": np.mean([r["HitRate"] for r in per]), "PAI": np.mean([r["PAI"] for r in per]),
+                    "diff_vs_dayahead": diff.mean(), "ci_low": np.percentile(samples, 2.5),
+                    "ci_high": np.percentile(samples, 97.5)})
+    if abl:
+        pd.DataFrame(abl).to_csv(TABLES / "TableS3_feature_ablation.csv", index=False)
+        print(pd.DataFrame(abl).drop(columns="inputs").round(6).to_string())
     print(tab.round(5).to_string())
     print(json.dumps(boot, indent=2))
 

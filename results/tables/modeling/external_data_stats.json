@@ -1,0 +1,40 @@
+{
+  "aadt_match_km": 0.15,
+  "incidents_matched_pct": 96.9,
+  "patrolled_roadway_ids": 594,
+  "incidents_on_patrolled_roadways_pct": 96.1,
+  "cells_with_exposure": 944,
+  "incidents_in_cells_with_exposure_pct": 99.1,
+  "total_mvkt_by_year": {
+    "2021": 18429.9,
+    "2022": 21119.9,
+    "2023": 19918.5,
+    "2024": 20274.5
+  },
+  "stations_used": [
+    "OCALA INTERNATIONAL AIRPORT-JIM TAYLOR FIELD",
+    "JACKSONVILLE INTERNATIONAL AIRPORT",
+    "JACKSONVILLE NAS",
+    "MAYPORT NAF",
+    "VALDOSTA REGIONAL AIRPORT",
+    "ST AUGUSTINE AIRPORT",
+    "GAINESVILLE REGIONAL AIRPORT",
+    "CRAIG MUNICIPAL AIRPORT",
+    "DAYTONA BEACH INTERNATIONAL AIRPORT",
+    "BRUNSWICK 23 S",
+    "WHITEHOUSE NAVAL OUTLYING FIELD"
+  ],
+  "stations_used_n": 11,
+  "cell_to_station_km_median": 15.3,
+  "cell_to_station_km_max": 83.5,
+  "wet_window_share_pct": 8.43,
+  "network_links_s1100": 146,
+  "network_links_s1200": 2140,
+  "network_nodes": 105060,
+  "network_km": 17617.0,
+  "network_km_s1100": 3453.0,
+  "largest_component_node_share_pct": 99.36,
+  "cell_snap_km_median": 0.042,
+  "cell_snap_km_p95": 0.241,
+  "cell_snap_km_max": 10.126
+}

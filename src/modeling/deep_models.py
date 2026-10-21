@@ -21,6 +21,7 @@ from common import SEEDS, WORK
 from features import Dataset
 
 SEQ = 16           # input windows (2 days)
+N_IN = 5           # sequence channels: count, precipitation, window sin/cos, weekend
 C = 32             # hidden channels
 BATCH = 8          # days per batch
 MAX_EPOCHS = 20
@@ -43,12 +44,14 @@ class Batcher:
     def __call__(self, days):
         ds, n = self.ds, self.ds.n_cells
         days = np.asarray(days)
-        # sequence: (B, 4, N, SEQ)
+        # sequence: (B, N_IN, N, SEQ)
         idx = (days[:, None] * 8 - SEQ + np.arange(SEQ)[None, :])          # window indices
         cnt = np.log1p(ds.windows[idx])                                    # (B, SEQ, N)
+        rain = np.log1p(ds.precip_w[idx])                                  # (B, SEQ, N)
         ctx = np.stack([self.win_sin[idx], self.win_cos[idx], self.weekend_w[idx]], 1)  # (B, 3, SEQ)
-        seq = np.concatenate([cnt[:, None], np.broadcast_to(ctx[..., None], (len(days), 3, SEQ, n))], 1)
-        seq = seq.transpose(0, 1, 3, 2)                                     # (B, 4, N, SEQ)
+        seq = np.concatenate([cnt[:, None], rain[:, None],
+                              np.broadcast_to(ctx[..., None], (len(days), 3, SEQ, n))], 1)
+        seq = seq.transpose(0, 1, 3, 2)                                     # (B, N_IN, N, SEQ)
         # head features: (B, 8, N, F)
         f = ds.window_features(days)
         lg = lambda x: np.log1p(np.asarray(x, dtype=np.float32))  # noqa: E731
@@ -64,7 +67,8 @@ class Batcher:
                          lg(np.asarray(f["nbr_sum_7d"]) / 7), lg(np.asarray(f["district_1d"]) / 100),
                          np.asarray(f["holiday"], np.float32), np.asarray(f["dark_share"], np.float32),
                          np.broadcast_to(self.latn[None, None, :], (B, 8, n)).astype(np.float32),
-                         np.broadcast_to(self.lonn[None, None, :], (B, 8, n)).astype(np.float32)], -1)
+                         np.broadcast_to(self.lonn[None, None, :], (B, 8, n)).astype(np.float32),
+                         lg(f["exposure_prev_year"]) / 5, lg(f["precip_prev_day"])], -1)
         head = np.concatenate([scal, onehot_w, onehot_d, cyc], -1)
         offset = np.log(np.asarray(f["hist_mean"], np.float32) + 1e-3)
         y = ds.target(days)
@@ -72,17 +76,17 @@ class Batcher:
         return t(seq), t(head), t(offset), t(y)
 
 
-N_HEAD = 12 + 8 + 7 + 2
+N_HEAD = 14 + 8 + 7 + 2
 
 
 # ----------------------------------------------------------------------------- encoders
 class LSTMEncoder(nn.Module):
     def __init__(self, n):
         super().__init__()
-        self.lstm = nn.LSTM(4, C, batch_first=True)
+        self.lstm = nn.LSTM(N_IN, C, batch_first=True)
         self.node = nn.Parameter(torch.randn(n, C) * 0.1)
 
-    def forward(self, seq):                       # seq (B, 4, N, T)
+    def forward(self, seq):                       # seq (B, N_IN, N, T)
         B, F, N, T = seq.shape
         x = seq.permute(0, 2, 3, 1).reshape(B * N, T, F)
         _, (h, _) = self.lstm(x)
@@ -103,7 +107,7 @@ class GraphWaveNet(nn.Module):
         self.register_buffer("A", A.to_dense().to_sparse_csr())
         self.e1 = nn.Parameter(torch.randn(n, emb) * 0.1)
         self.e2 = nn.Parameter(torch.randn(emb, n) * 0.1)
-        self.start = nn.Conv2d(4, C, 1)
+        self.start = nn.Conv2d(N_IN, C, 1)
         self.filt = nn.ModuleList([nn.Conv2d(C, C, (1, 2), dilation=(1, d)) for d in dilations])
         self.gate = nn.ModuleList([nn.Conv2d(C, C, (1, 2), dilation=(1, d)) for d in dilations])
         self.gconv = nn.ModuleList([nn.Conv2d(C * 4, C, 1) for _ in dilations])
@@ -137,7 +141,7 @@ class STTransformer(nn.Module):
 
     def __init__(self, n, heads=4, layers=1):
         super().__init__()
-        self.inp = nn.Linear(4, C)
+        self.inp = nn.Linear(N_IN, C)
         self.pos = nn.Parameter(torch.randn(SEQ, C) * 0.1)
         self.node = nn.Parameter(torch.randn(n, C) * 0.1)
         enc = lambda: nn.TransformerEncoderLayer(C, heads, 2 * C, dropout=0.1, batch_first=True)  # noqa: E731

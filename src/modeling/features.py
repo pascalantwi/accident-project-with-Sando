@@ -43,6 +43,15 @@ class Dataset:
         wk = self.weekend[self.train_days]
         self.hist = np.stack([tr[~wk].mean(0), tr[wk].mean(0)])     # (2, 8, N)
 
+        # External inputs (external.py): exposure from the previous year's AADT (the current year's
+        # is published only afterwards) and precipitation at the nearest NOAA station.
+        ex = pd.read_csv(WORK / "cell_exposure.csv").set_index("cell").reindex(np.arange(n))
+        year = (day0 + pd.to_timedelta(np.arange(self.n_days), unit="D")).year
+        mv = np.stack([ex[f"mvkt_{y - 1}"].fillna(0).to_numpy() for y in year])     # (D, N)
+        self.exposure = (mv * 1e6 / 365 / 1e3).astype(np.float32)   # thousand vehicle-km per day
+        self.precip_w = np.load(WORK / "precip.npz")["precip"].astype(np.float32)   # (windows, N)
+        self.precip = self.precip_w.reshape(self.n_days, WINDOWS_PER_DAY, n)
+
         csum = np.concatenate([np.zeros((1, n), np.float32), np.cumsum(self.daily.sum(1), 0)])
         self.day_totals_cum = csum                                  # cumulative daily totals per cell
 
@@ -73,6 +82,11 @@ class Dataset:
             "dark_share": np.broadcast_to(self.dark[days][:, :, None], (len(days), W, n)),
             "lat": np.broadcast_to(self.lat[None, None, :], (len(days), W, n)),
             "lon": np.broadcast_to(self.lon[None, None, :], (len(days), W, n)),
+            "exposure_prev_year": b(self.exposure[days]),
+            "precip_prev_day": b(self.precip[days - 1].sum(1)),
+            # observed precipitation in the target window: stands in for a perfect precipitation
+            # forecast; used only in the ablation, not in the day-ahead models
+            "precip_window": self.precip[days],
         }
 
     def target(self, days):

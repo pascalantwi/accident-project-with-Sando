@@ -1,7 +1,9 @@
 """Station location and day-ahead staging, evaluated on actual 2024 incidents.
 
-Travel times: shortest paths over the road-cell graph (cells within 3 km linked), distance x
-circuity factor, at peak (weekday 06-09 and 15-18) or off-peak speed.
+Travel times: shortest paths over the Census primary and secondary road network (external.py),
+at peak (weekday 06-09 and 15-18) or off-peak speeds by road class, plus the access distance from
+each cell to its nearest network node. The earlier road-cell graph (cells within 3 km linked,
+distance x circuity factor) is kept as a sensitivity case.
 Static layout: maximal covering location problem (exact MILP, HiGHS) with 2022-2023 demand.
 Dynamic staging: for every 2024 day and time band, greedy maximal covering on each model's
 day-ahead forecast; the oracle uses the actual incidents (upper bound).
@@ -17,7 +19,8 @@ from scipy.optimize import LinearConstraint, Bounds, milp
 from scipy.sparse import coo_matrix, csr_matrix, hstack, vstack
 from scipy.sparse.csgraph import dijkstra
 
-from common import (BANDS, CIRCUITY, FIGURES, KM_PER_MILE, PEAK_WINDOWS, SPEED_MPH, TABLES, WORK)
+from common import (ACCESS_MPH, BANDS, CIRCUITY, FIGURES, KM_PER_MILE, NETWORK_SPEED_MPH, PEAK_WINDOWS,
+                    SPEED_MPH, TABLES, WORK)
 from evaluate import load
 from features import Dataset
 from naming import cell_names
@@ -28,10 +31,37 @@ P_MAX = 20
 P_TABLE = 10
 
 
-def travel_minutes(p, n, circuity=CIRCUITY, speeds=SPEED_MPH):
+def cell_graph_minutes(p, n, circuity=CIRCUITY, speeds=SPEED_MPH):
+    """Sensitivity case: road-cell graph (cells within 3 km linked), distance x circuity."""
     g = coo_matrix((p["tr_dist"] * circuity, (p["tr_row"], p["tr_col"])), shape=(n, n)).tocsr()
     km = dijkstra(g, directed=False)
     return {r: km / (v * KM_PER_MILE) * 60 for r, v in speeds.items()}
+
+
+def network_minutes(speeds=NETWORK_SPEED_MPH, access_mph=ACCESS_MPH):
+    """Cell-to-cell travel minutes on the Census road network (undirected), per speed regime."""
+    net = np.load(WORK / "road_network.npz")
+    a, b, km, prim = net["edge_a"], net["edge_b"], net["edge_km"], net["edge_primary"]
+    nodes, snap = net["cell_node"], net["snap_km"]
+    keep = a != b
+    lo, hi = np.minimum(a, b)[keep], np.maximum(a, b)[keep]
+    access = snap / (access_mph * KM_PER_MILE) * 60
+    out = {}
+    for r, sp in speeds.items():
+        w = km[keep] / (np.where(prim[keep], sp["S1100"], sp["S1200"]) * KM_PER_MILE) * 60
+        e = pd.DataFrame({"lo": lo, "hi": hi, "w": w}).groupby(["lo", "hi"])["w"].min().reset_index()
+        g = coo_matrix((e["w"] + 1e-9, (e["lo"], e["hi"])), shape=(int(net["n_nodes"]),) * 2).tocsr()
+        uniq, inv = np.unique(nodes, return_inverse=True)
+        d = np.vstack([dijkstra(g, directed=False, indices=uniq[i:i + 200])[:, uniq]
+                       for i in range(0, len(uniq), 200)])
+        t = d[inv][:, inv] + access[:, None] + access[None, :]
+        np.fill_diagonal(t, 0.0)
+        out[r] = t
+    return out
+
+
+def travel_minutes(p, n):
+    return network_minutes()
 
 
 def regime(weekend, window):
@@ -177,13 +207,18 @@ def main():
     # Sensitivity of the static layout (p = 10, T = 15).
     sens = []
     base_pct = results["static"][f"15_{P_TABLE}"]
-    variants = [("Base case", CIRCUITY, SPEED_MPH, hist_demand)]
+    nsp = NETWORK_SPEED_MPH
+    variants = [("Base case", lambda: times, hist_demand)]
     for v in (30, 50):
-        variants.append((f"Peak speed {v} mph", CIRCUITY, {**SPEED_MPH, "peak": float(v)}, hist_demand))
+        sp = {**nsp, "peak": {"S1100": float(v), "S1200": nsp["peak"]["S1200"]}}
+        variants.append((f"Peak speed, limited access {v} mph", lambda sp=sp: network_minutes(sp), hist_demand))
     for v in (50, 70):
-        variants.append((f"Off-peak speed {v} mph", CIRCUITY, {**SPEED_MPH, "offpeak": float(v)}, hist_demand))
-    for cfac in (1.1, 1.4):
-        variants.append((f"Circuity {cfac}", cfac, SPEED_MPH, hist_demand))
+        sp = {**nsp, "offpeak": {"S1100": float(v), "S1200": nsp["offpeak"]["S1200"]}}
+        variants.append((f"Off-peak speed, limited access {v} mph", lambda sp=sp: network_minutes(sp), hist_demand))
+    for f in (0.75, 1.25):
+        sp = {r: {"S1100": v["S1100"], "S1200": v["S1200"] * f} for r, v in nsp.items()}
+        variants.append((f"Other road speeds {'−' if f < 1 else '+'}25%", lambda sp=sp: network_minutes(sp), hist_demand))
+    variants.append((f"Road-cell graph, circuity {CIRCUITY}", lambda: cell_graph_minutes(p, n), hist_demand))
     for label, mask in [("Demand without AVL-created incidents", ~inc["is_avl"]),
                         ("Demand without near-duplicates", ~inc["is_near_duplicate"]),
                         ("Crash-only demand", inc["is_crash"])]:
@@ -191,9 +226,9 @@ def main():
         cnt = np.zeros((ds.val_end, 8, n))
         np.add.at(cnt, (sub["day"], sub["window"] % 8, sub["cell"]), 1)
         dem = {r: v / years for r, v in demand_by_regime(ds, train_days, cnt[train_days]).items()}
-        variants.append((label, CIRCUITY, SPEED_MPH, dem))
-    for label, cfac, speeds, dem in variants:
-        tm = travel_minutes(p, n, cfac, speeds)
+        variants.append((label, lambda: times, dem))
+    for label, tfun, dem in variants:
+        tm = tfun()
         st, _ = solve_mclp(dem, tm, 15, P_TABLE)
         t = nearest_time(st, test_inc, tm)
         overlap = len(set(st) & set(static_layouts[(15, P_TABLE)]))

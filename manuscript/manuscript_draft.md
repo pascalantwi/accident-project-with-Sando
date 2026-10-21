@@ -19,13 +19,15 @@ Pascal Antwi¹, Thobias Sando²,
 
 ### 2.5 Exploratory data analysis <a id="sec-2-5"></a>
 
-### 2.6 Hotspot detection <a id="sec-2-6"></a>
+### 2.6 Traffic exposure, precipitation and road network <a id="sec-2-6"></a>
 
-### 2.7 Demand forecasting <a id="sec-2-7"></a>
+### 2.7 Hotspot detection <a id="sec-2-7"></a>
 
-### 2.8 Station location optimisation <a id="sec-2-8"></a>
+### 2.8 Demand forecasting <a id="sec-2-8"></a>
 
-### 2.9 Evaluation and sensitivity analysis <a id="sec-2-9"></a>
+### 2.9 Station location optimisation <a id="sec-2-9"></a>
+
+### 2.10 Evaluation and sensitivity analysis <a id="sec-2-10"></a>
 
 ## 3. Results <a id="sec-3"></a>
 
@@ -44,16 +46,19 @@ Pascal Antwi¹, Thobias Sando²,
 ### 3.5 Data quality <a id="sec-3-5"></a>
 *Figures and tables: [Table S1](#table-s1).*
 
-### 3.6 Hotspots <a id="sec-3-6"></a>
-*Figures and tables: [Figure 6](#figure-6); [Table 2](#table-2); [Figure S5](#figure-s5).*
+### 3.6 Precipitation and incident rates <a id="sec-3-6"></a>
+*Figures and tables: [Figure S8](#figure-s8).*
 
-### 3.7 Forecasting performance <a id="sec-3-7"></a>
-*Figures and tables: [Table 3](#table-3); [Figure 7](#figure-7).*
+### 3.7 Hotspots <a id="sec-3-7"></a>
+*Figures and tables: [Figure 6](#figure-6); [Table 2](#table-2); [Figure S5](#figure-s5); [Figure S7](#figure-s7); [Table S2](#table-s2).*
 
-### 3.8 Station locations and coverage <a id="sec-3-8"></a>
+### 3.8 Forecasting performance <a id="sec-3-8"></a>
+*Figures and tables: [Table 3](#table-3); [Figure 7](#figure-7); [Table S3](#table-s3).*
+
+### 3.9 Station locations and coverage <a id="sec-3-9"></a>
 *Figures and tables: [Figure 8](#figure-8); [Table 4](#table-4); [Figure 9](#figure-9); [Table 5](#table-5).*
 
-### 3.9 Sensitivity analysis <a id="sec-3-9"></a>
+### 3.10 Sensitivity analysis <a id="sec-3-10"></a>
 *Figures and tables: [Figure S6](#figure-s6).*
 
 ## 4. Discussion <a id="sec-4"></a>
@@ -70,33 +75,45 @@ Pascal Antwi¹, Thobias Sando²,
 
 [4] R. Church and C. ReVelle, "The maximal covering location problem," *Pap. Reg. Sci. Assoc.*, vol. 32, pp. 101–118, 1974.
 
-[5] A. Getis and J. K. Ord, "The analysis of spatial association by use of distance statistics," *Geogr. Anal.*, vol. 24, no. 3, pp. 189–206, 1992.
+[5] Florida Department of Transportation, "Annual Average Daily Traffic (historical), 2021–2025," Transportation Data and Analytics Office, Tallahassee, FL, USA. [Online]. Available: https://gis-fdot.opendata.arcgis.com
 
-[6] S. L. Hakimi, "Optimum locations of switching centers and the absolute centers and medians of a graph," *Oper. Res.*, vol. 12, no. 3, pp. 450–459, 1964.
+[6] A. Getis and J. K. Ord, "The analysis of spatial association by use of distance statistics," *Geogr. Anal.*, vol. 24, no. 3, pp. 189–206, 1992.
 
-[7] S. Hochreiter and J. Schmidhuber, "Long short-term memory," *Neural Comput.*, vol. 9, no. 8, pp. 1735–1780, 1997.
+[7] S. Greenland and J. M. Robins, "Estimation of a common effect parameter from sparse follow-up data," *Biometrics*, vol. 41, no. 1, pp. 55–68, 1985.
 
-[8] G. Ke, Q. Meng, T. Finley, T. Wang, W. Chen, W. Ma, Q. Ye, and T.-Y. Liu, "LightGBM: A highly efficient gradient boosting decision tree," in *Adv. Neural Inf. Process. Syst.*, vol. 30, 2017.
+[8] S. L. Hakimi, "Optimum locations of switching centers and the absolute centers and medians of a graph," *Oper. Res.*, vol. 12, no. 3, pp. 450–459, 1964.
 
-[9] Y. Li, R. Yu, C. Shahabi, and Y. Liu, "Diffusion convolutional recurrent neural network: Data-driven traffic forecasting," in *Proc. Int. Conf. Learn. Represent. (ICLR)*, 2018.
+[9] S. Hochreiter and J. Schmidhuber, "Long short-term memory," *Neural Comput.*, vol. 9, no. 8, pp. 1735–1780, 1997.
 
-[10] S. M. Lundberg and S.-I. Lee, "A unified approach to interpreting model predictions," in *Adv. Neural Inf. Process. Syst.*, vol. 30, 2017.
+[10] G. Ke, Q. Meng, T. Finley, T. Wang, W. Chen, W. Ma, Q. Ye, and T.-Y. Liu, "LightGBM: A highly efficient gradient boosting decision tree," in *Adv. Neural Inf. Process. Syst.*, vol. 30, 2017.
 
-[11] A. Okabe, T. Satoh, and K. Sugihara, "A kernel density estimation method for networks, its computational method and a GIS-based tool," *Int. J. Geogr. Inf. Sci.*, vol. 23, no. 1, pp. 7–32, 2009.
+[11] Y. Li, R. Yu, C. Shahabi, and Y. Liu, "Diffusion convolutional recurrent neural network: Data-driven traffic forecasting," in *Proc. Int. Conf. Learn. Represent. (ICLR)*, 2018.
 
-[12] J. K. Ord and A. Getis, "Local spatial autocorrelation statistics: Distributional issues and an application," *Geogr. Anal.*, vol. 27, no. 4, pp. 286–306, 1995.
+[12] S. M. Lundberg and S.-I. Lee, "A unified approach to interpreting model predictions," in *Adv. Neural Inf. Process. Syst.*, vol. 30, 2017.
 
-[13] C. Toregas, R. Swain, C. ReVelle, and L. Bergman, "The location of emergency service facilities," *Oper. Res.*, vol. 19, no. 6, pp. 1363–1373, 1971.
+[13] N. Mantel and W. Haenszel, "Statistical aspects of the analysis of data from retrospective studies of disease," *J. Natl. Cancer Inst.*, vol. 22, no. 4, pp. 719–748, 1959.
 
-[14] A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez, Ł. Kaiser, and I. Polosukhin, "Attention is all you need," in *Adv. Neural Inf. Process. Syst.*, vol. 30, 2017.
+[14] R. J. Marshall, "Mapping disease and mortality rates using empirical Bayes estimators," *J. R. Stat. Soc. Ser. C (Appl. Stat.)*, vol. 40, no. 2, pp. 283–294, 1991.
 
-[15] Z. Wu, S. Pan, G. Long, J. Jiang, and C. Zhang, "Graph WaveNet for deep spatial-temporal graph modeling," in *Proc. 28th Int. Joint Conf. Artif. Intell. (IJCAI)*, 2019, pp. 1907–1913.
+[15] National Centers for Environmental Information, "Global Hourly – Integrated Surface Database (ISD)," NOAA, Asheville, NC, USA. [Online]. Available: https://www.ncei.noaa.gov/products/land-based-station/integrated-surface-database
 
-[16] Z. Xie and J. Yan, "Kernel density estimation of traffic accidents in a network space," *Comput. Environ. Urban Syst.*, vol. 32, no. 5, pp. 396–406, 2008.
+[16] A. Okabe, T. Satoh, and K. Sugihara, "A kernel density estimation method for networks, its computational method and a GIS-based tool," *Int. J. Geogr. Inf. Sci.*, vol. 23, no. 1, pp. 7–32, 2009.
 
-[17] B. Yu, H. Yin, and Z. Zhu, "Spatio-temporal graph convolutional networks: A deep learning framework for traffic forecasting," in *Proc. 27th Int. Joint Conf. Artif. Intell. (IJCAI)*, 2018, pp. 3634–3640.
+[17] J. K. Ord and A. Getis, "Local spatial autocorrelation statistics: Distributional issues and an application," *Geogr. Anal.*, vol. 27, no. 4, pp. 286–306, 1995.
 
-[18] Z. Yuan, X. Zhou, and T. Yang, "Hetero-ConvLSTM: A deep learning approach to traffic accident prediction on heterogeneous spatio-temporal data," in *Proc. 24th ACM SIGKDD Int. Conf. Knowl. Discov. Data Min.*, 2018, pp. 984–992.
+[18] C. Toregas, R. Swain, C. ReVelle, and L. Bergman, "The location of emergency service facilities," *Oper. Res.*, vol. 19, no. 6, pp. 1363–1373, 1971.
+
+[19] U.S. Census Bureau, "TIGER/Line Shapefiles 2023: Primary and secondary roads, Florida," Washington, DC, USA, 2023. [Online]. Available: https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html
+
+[20] A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez, Ł. Kaiser, and I. Polosukhin, "Attention is all you need," in *Adv. Neural Inf. Process. Syst.*, vol. 30, 2017.
+
+[21] Z. Wu, S. Pan, G. Long, J. Jiang, and C. Zhang, "Graph WaveNet for deep spatial-temporal graph modeling," in *Proc. 28th Int. Joint Conf. Artif. Intell. (IJCAI)*, 2019, pp. 1907–1913.
+
+[22] Z. Xie and J. Yan, "Kernel density estimation of traffic accidents in a network space," *Comput. Environ. Urban Syst.*, vol. 32, no. 5, pp. 396–406, 2008.
+
+[23] B. Yu, H. Yin, and Z. Zhu, "Spatio-temporal graph convolutional networks: A deep learning framework for traffic forecasting," in *Proc. 27th Int. Joint Conf. Artif. Intell. (IJCAI)*, 2018, pp. 3634–3640.
+
+[24] Z. Yuan, X. Zhou, and T. Yang, "Hetero-ConvLSTM: A deep learning approach to traffic accident prediction on heterogeneous spatio-temporal data," in *Proc. 24th ACM SIGKDD Int. Conf. Knowl. Discov. Data Min.*, 2018, pp. 984–992.
 
 ---
 
@@ -114,7 +131,7 @@ Pascal Antwi¹, Thobias Sando²,
 
 ![Figure 2](../results/figures/Figure2_framework.png)
 
-**Figure 2.** Study framework. HA: historical average; FDR: false discovery rate; MCLP: maximal covering location problem.
+**Figure 2.** Study framework. AADT: annual average daily traffic; NOAA: National Oceanic and Atmospheric Administration; HA: historical average; FDR: false discovery rate; MCLP: maximal covering location problem.
 
 *Cited in [Section 2.4](#sec-2-4).*
 
@@ -148,7 +165,7 @@ Pascal Antwi¹, Thobias Sando²,
 
 **Figure 6.** Getis-Ord Gi* hotspots of incidents on 1 km road cells, 2022–2024 (binary weights within 2 km; Benjamini–Hochberg q-values). (a) FDOT District 2; (b) Jacksonville, with hotspot cluster IDs H1–H8.
 
-*Cited in [Section 3.6](#sec-3-6).*
+*Cited in [Section 3.7](#sec-3-7).*
 
 <a id="figure-7"></a>
 
@@ -156,7 +173,7 @@ Pascal Antwi¹, Thobias Sando²,
 
 **Figure 7.** Day-ahead forecast performance on 2024. (a) Mean Poisson deviance of each deep model relative to LightGBM, by three-hour window. (b) Observed vs predicted 2024 incidents per cell, Graph WaveNet (log scales; dashed line: equality).
 
-*Cited in [Section 3.7](#sec-3-7).*
+*Cited in [Section 3.8](#sec-3-8).*
 
 <a id="figure-8"></a>
 
@@ -164,7 +181,7 @@ Pascal Antwi¹, Thobias Sando²,
 
 **Figure 8.** Share of 2024 incidents within 10, 15 and 20 minutes of the nearest station or staged unit, by number of stations or units: static layouts (2022–2023 demand), day-ahead staging from five forecasts (line: mean; band: range), and the oracle upper bound.
 
-*Cited in [Section 3.8](#sec-3-8).*
+*Cited in [Section 3.9](#sec-3-9).*
 
 <a id="figure-9"></a>
 
@@ -190,18 +207,18 @@ Pascal Antwi¹, Thobias Sando²,
 
 <a id="table-2"></a>**Table 2.** Incident hotspot clusters: contiguous Gi* hot cells (q < 0.05), named after their busiest cell, 2022–2024.
 
-| ID | Hotspot location | Routes | Size (1 km cells) | Incidents per year | Crash share (%) | Cells hot in all 3 years | Max Gi* z |
-| --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
-| H1 | I-95 at ramp to I-10 (Duval County) | Acosta Bridge, I-10, I-95 | 14 | 3,290 | 40.8 | 13 of 14 | 7.77 |
-| H2 | I-295 W at Buckman Bridge (Duval County) | I-295 W | 11 | 2,382 | 17.1 | 11 of 11 | 6.96 |
-| H3 | I-295 W at I-95S/I-295 E (Duval County, MM 1) | I-295 W | 3 | 554 | 23.6 | 2 of 3 | 4.25 |
-| H4 | I-295 E at Dames Point Bridge (Duval County) | I-295 E | 3 | 409 | 17.2 | 2 of 3 | 3.69 |
-| H5 | I-295 W at ramp to Normandy Blvd/SR-228 (Duval County, MM 18) | I-295 W | 1 | 287 | 32.6 | 0 of 1 | 3.37 |
-| H6 | I-295 W at I-10 (Duval County, MM 20) | I-295 W | 1 | 256 | 38.3 | 1 of 1 | 3.76 |
-| H7 | I-295 E at St Johns Bluff Rd/UNF (Duval County) | I-295 E | 1 | 203 | 55.3 | 1 of 1 | 4.15 |
-| H8 | I-295 E at ramp to Butler Blvd EB ramp (Duval County, MM 54) | I-295 E | 1 | 185 | 37.0 | 1 of 1 | 3.26 |
+| ID | Hotspot location | Routes | Size (1 km cells) | Incidents per year | Crash share (%) | Cells hot in all 3 years | Max Gi* z | Million vehicle-km per year | Incidents per million vehicle-km |
+| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| H1 | I-95 at ramp to I-10 (Duval County) | Acosta Bridge, I-10, I-95 | 14 | 3,290 | 40.8 | 13 of 14 | 7.77 | 787.8 | 4.18 |
+| H2 | I-295 W at Buckman Bridge (Duval County) | I-295 W | 11 | 2,382 | 17.1 | 11 of 11 | 6.96 | 422.4 | 5.64 |
+| H3 | I-295 W at I-95S/I-295 E (Duval County, MM 1) | I-295 W | 3 | 554 | 23.6 | 2 of 3 | 4.25 | 216.9 | 2.56 |
+| H4 | I-295 E at Dames Point Bridge (Duval County) | I-295 E | 3 | 409 | 17.2 | 2 of 3 | 3.69 | 69.1 | 5.92 |
+| H5 | I-295 W at ramp to Normandy Blvd/SR-228 (Duval County, MM 18) | I-295 W | 1 | 287 | 32.6 | 0 of 1 | 3.37 | 56.5 | 5.08 |
+| H6 | I-295 W at I-10 (Duval County, MM 20) | I-295 W | 1 | 256 | 38.3 | 1 of 1 | 3.76 | 98.7 | 2.59 |
+| H7 | I-295 E at St Johns Bluff Rd/UNF (Duval County) | I-295 E | 1 | 203 | 55.3 | 1 of 1 | 4.15 | 65.4 | 3.10 |
+| H8 | I-295 E at ramp to Butler Blvd EB ramp (Duval County, MM 54) | I-295 E | 1 | 185 | 37.0 | 1 of 1 | 3.26 | 133.5 | 1.38 |
 
-*Note:* Incidents per year are summed over the cluster's cells.
+*Note:* Incidents per year and vehicle-km are summed over the cluster's cells. Vehicle-km: FDOT AADT × segment length within the cell × days, on FDOT roadways with at least 20 matched incidents, mean of 2022–2024.
 
 
 <a id="table-3"></a>**Table 3.** Day-ahead forecast performance on 2024 (366 days × 8 windows × 983 cells); mean ± s.d. over five seeds where applicable.
@@ -231,7 +248,7 @@ Pascal Antwi¹, Thobias Sando²,
 | Day-ahead staging, ST-Transformer | 10 | 77.2 | 91.6 | 97.0 | 9.4 |
 | Day-ahead staging, oracle (upper bound) | 10 | 93.9 | 99.1 | 99.9 | 9.1 |
 
-*Note:* Static layouts are solved separately for each response-time standard; their mean travel time refers to the 15-minute layout.
+*Note:* Static layouts are solved separately for each response-time standard; their mean travel time refers to the 15-minute layout. Travel times: shortest paths on the Census primary and secondary road network.
 
 
 <a id="table-5"></a>**Table 5.** Recommended station locations (10 stations, 15-minute standard, 2022–2023 demand).
@@ -291,13 +308,29 @@ Pascal Antwi¹, Thobias Sando²,
 
 **Figure S5.** Number of years (2022, 2023, 2024) in which each cell was a Gi* hot spot (q < 0.05).
 
-*Cited in [Section 3.6](#sec-3-6).*
+*Cited in [Section 3.7](#sec-3-7).*
 
 <a id="figure-s6"></a>
 
 ![Figure S6](../results/figures/FigureS6_sensitivity.png)
 
-**Figure S6.** Sensitivity of the static layout (10 stations, 15-minute standard): coverage within 15 minutes and base-case stations retained under alternative speeds, circuity and demand definitions.
+**Figure S6.** Sensitivity of the static layout (10 stations, 15-minute standard): coverage within 15 minutes and base-case stations retained under alternative speeds, travel-time models and demand definitions.
+
+<a id="figure-s7"></a>
+
+![Figure S7](../results/figures/FigureS7_rate_hotspots.png)
+
+**Figure S7.** Getis-Ord Gi* hotspots of incident rates per million vehicle-km (empirical Bayes-smoothed), 2022–2024 (binary weights within 2 km; Benjamini–Hochberg q-values). Open squares: cells without matched AADT segments. (a) FDOT District 2; (b) Jacksonville; cluster IDs R1–R4.
+
+*Cited in [Section 3.7](#sec-3-7).*
+
+<a id="figure-s8"></a>
+
+![Figure S8](../results/figures/FigureS8_precipitation.png)
+
+**Figure S8.** Incident rate ratios for three-hour windows with vs without precipitation at the nearest NOAA station, by incident type and precipitation total in the window. Mantel–Haenszel estimates stratified by window of day, month and day type, with 95% confidence intervals; logarithmic scale.
+
+*Cited in [Section 3.6](#sec-3-6).*
 
 
 <a id="table-s1"></a>**Table S1.** Completeness and variability of candidate explanatory variables (incidents, n = 173,198).
@@ -307,6 +340,7 @@ Pascal Antwi¹, Thobias Sando²,
 | Severity recorded as "minor" | 99.9 |
 | Road surface "Dry" | 98.8 |
 | Weather "Clear" | 98.3 |
+| Weather "Clear" in three-hour windows with NOAA-recorded precipitation (n = 17,323) | 94.9 |
 | Lighting code 16 (code meaning undocumented) | 91.7 |
 | Mile marker missing | 53.0 |
 | Created by the `avlrrsubsystem` account | 49.8 |
@@ -315,3 +349,25 @@ Pascal Antwi¹, Thobias Sando²,
 | Dark at time of incident (solar elevation below −6°) | 21.7 |
 | Near-duplicate (same route and direction, ≤ 0.5 km, ≤ 15 min) | 1.8 |
 
+
+<a id="table-s2"></a>**Table S2.** Rate hotspot clusters: contiguous Gi* hot cells (q < 0.05) on incidents per million vehicle-km, named after their busiest cell, 2022–2024.
+
+| ID | Hotspot location | Routes | Size (1 km cells) | Incidents per year | Million vehicle-km per year | Incidents per million vehicle-km | Crash share (%) | Max Gi* z | Overlaps a count hotspot (Table 2) |
+| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| R1 | I-295 W at Buckman Bridge (Duval County) | I-295 W | 3 | 649 | 103.4 | 6.28 | 10.4 | 3.81 | Yes |
+| R2 | I-10 at ramp from CR-229 (Baker County, MM 326) | I-10 | 1 | 59 | 10.0 | 5.94 | 10.1 | 3.62 | No |
+| R3 | I-75 (Columbia County, MM 417) | I-75 | 5 | 511 | 89.1 | 5.73 | 7.6 | 10.45 | No |
+| R4 | I-295 E at Baymeadows Rd (Duval County, MM 57) | 295 East Express, I-295 E | 6 | 356 | 170.1 | 2.09 | 27.1 | 5.35 | No |
+
+*Note:* Rates are cluster totals (incidents ÷ vehicle-km). Gi* used empirical Bayes-smoothed cell rates for the 944 cells with exposure data.
+
+*Cited in [Section 3.7](#sec-3-7).*
+
+
+<a id="table-s3"></a>**Table S3.** LightGBM input ablation, day-ahead forecasts for 2024; mean ± s.d. over five seeds.
+
+[pending: model runs in progress]
+
+*Note:* Differences: day-level bootstrap (2,000 resamples) of mean daily deviance, seed-averaged predictions.
+
+*Cited in [Section 3.8](#sec-3-8).*

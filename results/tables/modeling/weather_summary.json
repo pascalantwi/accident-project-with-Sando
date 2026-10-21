@@ -1,0 +1,8 @@
+{
+  "wet_cell_window_share_pct": 8.43,
+  "incidents_in_wet_windows_pct": 10.0,
+  "recorded_weather_rain_pct_all": 0.83,
+  "recorded_weather_rain_pct_in_wet_windows": 3.24,
+  "recorded_weather_clear_pct_in_wet_windows": 94.93,
+  "strata": "window of day x month x day type"
+}

@@ -47,7 +47,7 @@ def cell_names():
         extra = ", ".join(x for x in [f"{county} County" if county else None,
                                       f"MM {mm:.0f}" if pd.notna(mm) and "MM" not in d else None] if x)
         return pd.Series({"route": route, "county": county, "mile_marker": None if pd.isna(mm) else round(mm),
-                          "name": f"{route} {d}" + (f" ({extra})" if extra else "")})
+                          "name": " ".join(x for x in [route, d] if x) + (f" ({extra})" if extra else "")})
 
     return inc.groupby("cell").apply(name, include_groups=False)
 
