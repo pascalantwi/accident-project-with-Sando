@@ -583,4 +583,3 @@ Event duration, measured from the first to the last logged update, differed mark
 
 *Note:* Bold: lowest validation deviance for each model. Differences below 0.1% were treated as ties and the smaller configuration (hidden size 32, learning rate 10⁻³) was retained for all three models.
 
-*Cited in [Section 2.8](#sec-2-8), [Section 3.7](#sec-3-7).*
