@@ -20,8 +20,13 @@ import urllib.parse
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 REF_LINE = re.compile(r'^<a id="ref-([\w-]+)"></a>\[\d+\] (.*)$', re.M)
-CITE = re.compile(r'\[\[\d+\]\]\((?:#ref-([\w-]+)|[^\s)]+ "ref-([\w-]+)")\)')
-LINK = re.compile(r"\[([^\]]+)\]\((https?://[^)]+)\)")
+CITE = re.compile(r'\[\[\d+\]\]\((?:#ref-([\w-]+)|[^"\s]+ "ref-([\w-]+)")\)')
+LINK = re.compile(r"\[([^\]]+)\]\((https?://(?:[^()\s]|%2[89])+)\)")
+
+
+def safe(url):
+    """Percent-encode parentheses so URLs (e.g. DOIs such as 10.1061/(ASCE)...) work in markdown links."""
+    return url.replace("(", "%28").replace(")", "%29")
 
 
 def plain(text):
@@ -33,10 +38,10 @@ def target(text):
     t = plain(text)
     doi = re.search(r"doi:\s*(10\.\S+?)\.?$", t)
     if doi:
-        return "https://doi.org/" + doi.group(1)
+        return safe("https://doi.org/" + doi.group(1))
     url = re.search(r"Available:\s*(https?://\S+?)\.?$", t)
     if url:
-        return url.group(1)
+        return safe(url.group(1))
     title = re.search(r'"([^"]+?),?"', t)
     query = f'"{title.group(1)}"' if title else t[:120]
     return "https://scholar.google.com/scholar?q=" + urllib.parse.quote(query)
@@ -45,8 +50,8 @@ def target(text):
 def linkify(text):
     """Make the DOI and URL in a reference clickable."""
     t = plain(text)
-    t = re.sub(r"doi:\s*(10\.\S+?)(\.?)$", lambda m: f"doi: [{m.group(1)}](https://doi.org/{m.group(1)}){m.group(2)}", t)
-    t = re.sub(r"Available:\s*(https?://\S+?)(\.?)$", lambda m: f"Available: [{m.group(1)}]({m.group(1)}){m.group(2)}", t)
+    t = re.sub(r"doi:\s*(10\.\S+?)(\.?)$", lambda m: f"doi: [{m.group(1)}]({safe('https://doi.org/' + m.group(1))}){m.group(2)}", t)
+    t = re.sub(r"Available:\s*(https?://\S+?)(\.?)$", lambda m: f"Available: [{m.group(1)}]({safe(m.group(1))}){m.group(2)}", t)
     return t
 
 
