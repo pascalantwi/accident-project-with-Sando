@@ -13,7 +13,7 @@ When I reviewed earlier studies, I found clear gaps:
 
 ---
 
-## 2. Methods: what I did
+## 2. Methods
 
 ### Study area
 
@@ -48,7 +48,7 @@ Along the way I calculated the **risk per vehicle** in each square, matched ever
 
 ---
 
-## 3. Results: what I found
+## 3. Results
 
 ### Most incidents are breakdowns, but crashes take the longest
 
