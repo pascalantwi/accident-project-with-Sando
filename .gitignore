@@ -5,3 +5,7 @@ data/raw/
 Incidents.csv
 incidents_records.csv.gz
 data/interim/
+
+# Generated manuscript exports (run src/manuscript/export.py)
+manuscript/manuscript_draft.docx
+manuscript/manuscript_draft.pdf

@@ -20,7 +20,8 @@ from docx.shared import Inches, Pt, RGBColor
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 CHROME = shutil.which("chromium") or "/opt/pw-browsers/chromium-1194/chrome-linux/chrome"
 PRINT_CSS = """
-@page { size: Letter; margin: 1in; }
+@page { size: Letter; margin: 1in 1in 0.9in;
+        @bottom-center { content: counter(page); font-family: 'Liberation Serif', serif; font-size: 10pt; } }
 body { font-family: 'Times New Roman', 'Liberation Serif', serif; font-size: 12pt; line-height: 1.35;
        max-width: none; margin: 0; padding: 0; color: #000; }
 h1 { font-size: 16pt; line-height: 1.25; margin: 0 0 10pt; }
@@ -36,7 +37,12 @@ th, td { padding: 2pt 4pt; vertical-align: top; text-align: left; }
 thead th { border-top: 1.2pt solid #000; border-bottom: 0.8pt solid #000; font-weight: normal; }
 tbody tr:last-child td { border-bottom: 1.2pt solid #000; }
 td[style*="right"], th[style*="right"] { text-align: right; }
+math { font-family: 'Times New Roman', 'Liberation Serif', serif; font-size: 1.05em; }
 math[display="block"] { margin: 8pt auto; }
+p.caption { font-size: 10.5pt; line-height: 1.3; text-align: left; margin: 2pt 0 12pt; }
+p:has(> a[id^="ref-"]) { text-align: left; font-size: 10.5pt; line-height: 1.3; padding-left: 2.2em;
+                         text-indent: -2.2em; margin-bottom: 5pt; hyphens: none; overflow-wrap: anywhere; }
+h2 + p:has(> a[id^="ref-"]) { margin-top: 4pt; }
 p:has(+ table), p:has(+ figure), p:has(+ p > img) { break-after: avoid; }
 p:has(> img) { break-after: avoid; }
 hr { border: none; border-top: 0.6pt solid #888; margin: 18pt 0; }
@@ -45,11 +51,13 @@ SRC = ROOT / "manuscript" / "manuscript_draft.md"
 OUT = ROOT / "manuscript" / "manuscript_draft.docx"
 
 
-def prepare(md):
-    md = re.sub(r'<a id="[\w-]+"></a>', "", md)                                # anchors
+def prepare(md, target="docx"):
+    if target == "docx":
+        # headings: "### 2.3 Title <a id="sec-2-3"></a>" -> "### 2.3 Title {#sec-2-3}" (Word bookmark)
+        md = re.sub(r'^(#+ .*?)\s*<a id="([\w-]+)"></a>\s*$', r"\1 {#\2}", md, flags=re.M)
+        md = re.sub(r'<a id="([\w-]+)"></a>', r"[]{#\1}", md)                  # other anchors -> spans
     md = re.sub(r"<sup>(.*?)</sup>", lambda m: "^" + m.group(1).replace("\\*", "\\*") + "^", md)
     md = md.replace("<br>\n", "\\\n")                                         # hard line breaks
-    md = re.sub(r"\[([^\[\]]+)\]\(#[\w-]+\)", r"\1", md)                       # internal links -> text
     # figures: image without alt text (the bold caption paragraph that follows is the caption)
     md = re.sub(r"!\[[^\]]*\]\(([^)]+\.png)\)", r"![](\1){width=6.3in}", md)
     md = re.sub(r"^\*\[Author note: (.*?)\]\*$", r"*[Author note: \1]*", md, flags=re.M)
@@ -118,6 +126,27 @@ def fit_table(table, total_in=6.5, font_pt=9):
     return True
 
 
+def add_page_number(section):
+    """Centred PAGE field in the section footer."""
+    from docx.enum.text import WD_ALIGN_PARAGRAPH
+    from docx.oxml import OxmlElement
+    from docx.oxml.ns import qn
+    p = section.footer.paragraphs[0]
+    p.text = ""
+    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    run = p.add_run()
+    for tag, attr in (("w:fldChar", "begin"), ("w:instrText", None), ("w:fldChar", "end")):
+        el = OxmlElement(tag)
+        if attr:
+            el.set(qn("w:fldCharType"), attr)
+        else:
+            el.set(qn("xml:space"), "preserve")
+            el.text = "PAGE"
+        run._r.append(el)
+    run.font.size = Pt(10)
+    run.font.name = "Times New Roman"
+
+
 def section_break(paragraph, landscape):
     """Insert a paragraph before `paragraph` that ends a section (portrait or landscape)."""
     import copy
@@ -150,6 +179,8 @@ def style(path):
         sec.page_width, sec.page_height = Inches(8.5), Inches(11)
         for side in ("left_margin", "right_margin", "top_margin", "bottom_margin"):
             setattr(sec, side, Inches(1))
+    for sec in doc.sections:
+        add_page_number(sec)
     styles = {st.name.lower(): st for st in doc.styles if st.name}
     sizes = {"normal": 12, "body text": 12, "first paragraph": 12, "compact": 12, "title": 16,
              "heading 1": 14, "heading 2": 12, "heading 3": 12, "abstract": 11, "bibliography": 11}
@@ -190,20 +221,25 @@ def style(path):
 
 
 def main():
-    md = prepare(SRC.read_text())
+    text = SRC.read_text()
     with tempfile.TemporaryDirectory() as tmp:
         tmp_md = pathlib.Path(tmp) / "manuscript.md"
-        tmp_md.write_text(md)
+        tmp_md.write_text(prepare(text, "docx"))
+        html_md = pathlib.Path(tmp) / "manuscript_html.md"
+        html_md.write_text(prepare(text, "html"))
         subprocess.run(["pandoc", str(tmp_md), "-f", "markdown+pipe_tables+tex_math_dollars+superscript",
                         "-t", "docx", "--resource-path", str(SRC.parent), "-o", str(OUT)], check=True)
         style(OUT)
         css = pathlib.Path(tmp) / "print.css"
         css.write_text(PRINT_CSS)
         html = pathlib.Path(tmp) / "manuscript.html"
-        subprocess.run(["pandoc", str(tmp_md), "-f", "markdown+pipe_tables+tex_math_dollars+superscript",
+        subprocess.run(["pandoc", str(html_md), "-f", "markdown+pipe_tables+tex_math_dollars+superscript",
                         "-t", "html5", "-s", "--mathml", "--embed-resources", "--css", str(css),
-                        "--metadata", "pagetitle=Manuscript", "--resource-path", str(SRC.parent),
-                        "-o", str(html)], check=True)
+                        "--metadata", "pagetitle=Manuscript", "--metadata", "lang=en-US",
+                        "--resource-path", str(SRC.parent), "-o", str(html)], check=True)
+        h = html.read_text()
+        h = re.sub(r"<p><strong>(Figure|Table) ", r'<p class="caption"><strong>\1 ', h)
+        html.write_text(h)
         subprocess.run([CHROME, "--headless", "--no-sandbox", "--disable-gpu", "--no-pdf-header-footer",
                         f"--print-to-pdf={OUT.with_suffix('.pdf')}", html.as_uri()],
                        check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
