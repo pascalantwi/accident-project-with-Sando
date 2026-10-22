@@ -1,6 +1,5 @@
-# My study, section by section
 
-## 1. Introduction: why I did this study
+## 1. Introduction
 
 Road Rangers help drivers after crashes, breakdowns and debris on the highway. The faster they arrive, the shorter the traffic jam and the lower the chance of a second crash. So I asked two simple questions: **where should the Road Ranger stations be, and how many trucks do they need?**
 
@@ -151,11 +150,11 @@ Figure 10 and Table 6 show what happens when trucks can be busy. **With only one
 
 My study also has limitations:
 
-- **I couldn't yet compare with the current Road Ranger stations**, because FDOT hasn't shared those locations.
+- **couldn't compare with the current Road Ranger stations**, because FDOT hasn't shared those locations.
 - About **half the incidents were logged by Road Rangers while patrolling**, so patrolled areas may look busier.
 - **Travel speeds come from speed limits**, not measured speeds.
 - I studied **only one district**.
 
-## 5. My main message
+## 5. Conclusion
 
 **Put Road Ranger stations in the right places across the whole district, not only at the busiest spots, and give each station two to three trucks. FDOT can plan this with the data it already has.**
