@@ -3,7 +3,7 @@
 
 Road Rangers help drivers after crashes, breakdowns and debris on the highway. The faster they arrive, the shorter the traffic jam and the lower the chance of a second crash. So I asked two simple questions: **where should the Road Ranger stations be, and how many trucks do they need?**
 
-When I reviewed earlier studies, I found clear gaps:
+ gaps:
 
 - They looked at **one highway or a few patrol beats**, never a whole district.
 - They used **guessed or average demand**, not real incident records.
