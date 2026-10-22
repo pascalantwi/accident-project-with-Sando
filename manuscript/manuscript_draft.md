@@ -1,6 +1,6 @@
 # Locating freeway service patrol stations with deep spatio-temporal incident forecasting: a predict-then-optimise study of FDOT District 2, Northeast Florida
 
-Pascal Antwi<sup>1</sup>, Thobias Sando<sup>2,\*</sup>
+Pascal Antwi<sup>1</sup>, Deo Gratias Nyamhanga<sup>2</sup>, Thobias Sando<sup>2,\*</sup>
 
 <sup>1</sup> Department of Mathematics and Statistics, College of Arts and Sciences, University of North Florida, Jacksonville, FL, USA<br>
 <sup>2</sup> School of Civil Engineering, College of Computing, Engineering and Construction, University of North Florida, Jacksonville, FL, USA<br>
